@@ -1,0 +1,540 @@
+FILE		0x0	0	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"
+FN_START	0x0	25	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"	"_entry"	"external"	
+FN_END		0x4	27	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"
+FN_START	0x8	69	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"InterruptVectorHigh"	"external"	
+FN_END		0xc	71	
+FILE		0x0	0	"C:\MCC18\v3_39\src\extended\stdclib\__init.c"
+FN_START	0xe	9	"C:\MCC18\v3_39\src\extended\stdclib\__init.c"	"__init"	"external"	
+FN_END		0xe	9	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"
+FN_START	0x18	60	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"InterruptVectorLow"	"external"	
+FN_END		0x1c	62	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"
+FN_START	0x1e	14	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_configure_master"	"external"	
+ADJUST		0x1e	14	1
+ADJUST		0x28	16	-1
+FN_END		0x2e	16	
+FN_START	0x30	30	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_master_send"	"external"	
+ADJUST		0x30	30	1
+ADJUST		0x3e	33	-1
+FN_END		0x44	33	
+FN_START	0x46	48	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_master_recv"	"external"	
+ADJUST		0x46	48	1
+ADJUST		0x54	51	-1
+FN_END		0x5a	51	
+FN_START	0x5c	53	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"start_i2c_slave_reply"	"external"	
+ADJUST		0x5c	53	1
+ADJUST		0xa2	56	1
+ADJUST		0xd4	56	-1
+ADJUST		0x126	67	-1
+FN_END		0x12c	67	
+FN_START	0x12e	71	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"handle_start"	"external"	
+ADJUST		0x12e	71	1
+ADJUST		0x1e6	92	-1
+FN_END		0x1ec	92	
+FN_START	0x1ee	100	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_int_handler"	"external"	
+ADJUST		0x1ee	100	1
+ADJUST		0x1f8	100	9
+ADJUST		0x280	132	1
+CALL		0x284	132	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"handle_start"	0
+ADJUST		0x286	132	-1
+ADJUST		0x5e6	248	1
+ADJUST		0x610	248	-1
+ADJUST		0x626	249	1
+ADJUST		0x62a	249	1
+ADJUST		0x630	249	1
+ADJUST		0x640	249	1
+CALL		0x642	249	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_sendmsg"	0
+ADJUST		0x646	249	-4
+ADJUST		0x6a0	255	1
+ADJUST		0x6a2	255	1
+ADJUST		0x6a8	255	1
+ADJUST		0x6ac	255	1
+CALL		0x6ae	255	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_sendmsg"	0
+ADJUST		0x6b2	255	-4
+ADJUST		0x6da	260	1
+ADJUST		0x6de	260	1
+ADJUST		0x6e4	260	1
+ADJUST		0x6e6	260	1
+CALL		0x6e8	260	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_sendmsg"	0
+ADJUST		0x6ec	260	-4
+ADJUST		0x6f0	263	-10
+FN_END		0x6f6	263	
+FN_START	0x6f8	268	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"init_i2c"	"external"	
+ADJUST		0x6f8	268	1
+ADJUST		0x754	274	-1
+FN_END		0x75a	274	
+FN_START	0x75c	279	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_configure_slave"	"external"	
+ADJUST		0x75c	279	1
+ADJUST		0x782	318	-1
+FN_END		0x788	318	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"
+FN_START	0x78a	14	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queue"	"external"	
+ADJUST		0x78a	14	1
+ADJUST		0x794	14	1
+ADJUST		0x7ea	22	-2
+FN_END		0x7f0	22	
+FN_START	0x7f2	24	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"send_msg"	"external"	
+ADJUST		0x7f2	24	1
+ADJUST		0x7fc	24	5
+ADJUST		0x86c	55	1
+ADJUST		0x870	55	1
+ADJUST		0x874	55	1
+ADJUST		0x878	55	1
+ADJUST		0x894	55	1
+ADJUST		0x898	55	1
+CALL		0x89c	55	"memcpy.O"	"memcpy"	0
+ADJUST		0x8a0	55	-6
+ADJUST		0x8b6	56	1
+ADJUST		0x8c8	56	-1
+ADJUST		0x8dc	61	-6
+FN_END		0x8e2	61	
+FN_START	0x8e4	63	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"recv_msg"	"external"	
+ADJUST		0x8e4	63	1
+ADJUST		0x8ee	63	5
+ADJUST		0x956	81	1
+ADJUST		0x95a	81	1
+ADJUST		0x976	81	1
+ADJUST		0x97a	81	1
+ADJUST		0x97e	81	1
+ADJUST		0x982	81	1
+CALL		0x986	81	"memcpy.O"	"memcpy"	0
+ADJUST		0x98a	81	-6
+ADJUST		0x9a0	87	1
+ADJUST		0x9b2	87	-1
+ADJUST		0x9ca	89	1
+ADJUST		0x9d4	89	-1
+ADJUST		0x9ee	96	-6
+FN_END		0x9f4	96	
+FN_START	0x9f6	103	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_sendmsg"	"external"	
+ADJUST		0x9f6	103	1
+ADJUST		0xa00	109	1
+ADJUST		0xa04	109	1
+ADJUST		0xa08	109	1
+ADJUST		0xa0c	109	1
+ADJUST		0xa12	109	1
+ADJUST		0xa16	109	1
+CALL		0xa18	109	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"send_msg"	0
+ADJUST		0xa1a	109	-6
+ADJUST		0xa1e	110	-1
+FN_END		0xa24	110	
+FN_START	0xa26	112	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_recvmsg"	"external"	
+ADJUST		0xa26	112	1
+ADJUST		0xa30	118	1
+ADJUST		0xa34	118	1
+ADJUST		0xa38	118	1
+ADJUST		0xa3c	118	1
+ADJUST		0xa40	118	1
+ADJUST		0xa46	118	1
+ADJUST		0xa4a	118	1
+CALL		0xa4c	118	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"recv_msg"	0
+ADJUST		0xa4e	118	-7
+ADJUST		0xa52	119	-1
+FN_END		0xa58	119	
+FN_START	0xa5a	126	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_sendmsg"	"external"	
+ADJUST		0xa5a	126	1
+ADJUST		0xa64	132	1
+ADJUST		0xa68	132	1
+ADJUST		0xa6c	132	1
+ADJUST		0xa70	132	1
+ADJUST		0xa76	132	1
+ADJUST		0xa7a	132	1
+CALL		0xa7c	132	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"send_msg"	0
+ADJUST		0xa7e	132	-6
+ADJUST		0xa82	133	-1
+FN_END		0xa88	133	
+FN_START	0xa8a	135	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_recvmsg"	"external"	
+ADJUST		0xa8a	135	1
+ADJUST		0xa94	141	1
+ADJUST		0xa98	141	1
+ADJUST		0xa9c	141	1
+ADJUST		0xaa0	141	1
+ADJUST		0xaa4	141	1
+ADJUST		0xaaa	141	1
+ADJUST		0xaae	141	1
+CALL		0xab0	141	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"recv_msg"	0
+ADJUST		0xab2	141	-7
+ADJUST		0xab6	142	-1
+FN_END		0xabc	142	
+FN_START	0xabe	150	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainLow_sendmsg"	"external"	
+ADJUST		0xabe	150	1
+ADJUST		0xac8	156	1
+ADJUST		0xacc	156	1
+ADJUST		0xad0	156	1
+ADJUST		0xad4	156	1
+ADJUST		0xada	156	1
+ADJUST		0xade	156	1
+CALL		0xae0	156	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"send_msg"	0
+ADJUST		0xae2	156	-6
+ADJUST		0xae6	157	-1
+FN_END		0xaec	157	
+FN_START	0xaee	159	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainLow_recvmsg"	"external"	
+ADJUST		0xaee	159	1
+ADJUST		0xaf8	165	1
+ADJUST		0xafc	165	1
+ADJUST		0xb00	165	1
+ADJUST		0xb04	165	1
+ADJUST		0xb08	165	1
+ADJUST		0xb0e	165	1
+ADJUST		0xb12	165	1
+CALL		0xb14	165	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"recv_msg"	0
+ADJUST		0xb16	165	-7
+ADJUST		0xb1a	166	-1
+FN_END		0xb20	166	
+FN_START	0xb22	174	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainHigh_sendmsg"	"external"	
+ADJUST		0xb22	174	1
+ADJUST		0xb2c	180	1
+ADJUST		0xb30	180	1
+ADJUST		0xb34	180	1
+ADJUST		0xb38	180	1
+ADJUST		0xb3e	180	1
+ADJUST		0xb42	180	1
+CALL		0xb44	180	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"send_msg"	0
+ADJUST		0xb46	180	-6
+ADJUST		0xb4a	181	-1
+FN_END		0xb50	181	
+FN_START	0xb52	183	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainHigh_recvmsg"	"external"	
+ADJUST		0xb52	183	1
+ADJUST		0xb5c	189	1
+ADJUST		0xb60	189	1
+ADJUST		0xb64	189	1
+ADJUST		0xb68	189	1
+ADJUST		0xb6c	189	1
+ADJUST		0xb72	189	1
+ADJUST		0xb76	189	1
+CALL		0xb78	189	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"recv_msg"	0
+ADJUST		0xb7a	189	-7
+ADJUST		0xb7e	190	-1
+FN_END		0xb84	190	
+FN_START	0xb86	195	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queues"	"external"	
+ADJUST		0xb8c	196	1
+ADJUST		0xb90	196	1
+CALL		0xb92	196	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queue"	0
+ADJUST		0xb94	196	-2
+ADJUST		0xb98	197	1
+ADJUST		0xb9c	197	1
+CALL		0xb9e	197	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queue"	0
+ADJUST		0xba0	197	-2
+ADJUST		0xba4	198	1
+ADJUST		0xba8	198	1
+CALL		0xbaa	198	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queue"	0
+ADJUST		0xbac	198	-2
+ADJUST		0xbb0	199	1
+ADJUST		0xbb4	199	1
+CALL		0xbb6	199	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queue"	0
+ADJUST		0xbb8	199	-2
+FN_END		0xbba	200	
+FN_START	0xbbc	204	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"enter_sleep_mode"	"external"	
+FN_END		0xbc0	216	
+FN_START	0xbc2	220	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"check_msg"	"external"	
+ADJUST		0xbc2	220	1
+ADJUST		0xc02	222	-1
+FN_END		0xc08	222	
+FN_START	0xc0a	228	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"SleepIfOkay"	"external"	
+CALL		0xc12	233	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_low_int"	0
+CALL		0xc28	238	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_high_int"	0
+ADJUST		0xc40	245	1
+ADJUST		0xc44	245	1
+CALL		0xc46	245	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"check_msg"	0
+ADJUST		0xc48	245	-2
+ADJUST		0xc52	248	1
+ADJUST		0xc56	248	1
+CALL		0xc58	248	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"check_msg"	0
+ADJUST		0xc5a	248	-2
+CALL		0xc62	251	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"enter_sleep_mode"	0
+FN_END		0xc64	252	
+FN_START	0xc66	257	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"block_on_To_msgqueues"	"external"	
+CALL		0xc66	257	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_main"	0
+ADJUST		0xc84	265	1
+ADJUST		0xc88	265	1
+CALL		0xc8a	265	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"check_msg"	0
+ADJUST		0xc8c	265	-2
+ADJUST		0xc9a	272	1
+ADJUST		0xc9e	272	1
+CALL		0xca0	272	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"check_msg"	0
+ADJUST		0xca2	272	-2
+ADJUST		0xcb0	279	1
+CALL		0xcb2	279	"d1ktcyx.O"	"Delay1KTCYx"	0
+ADJUST		0xcb6	279	-1
+FN_END		0xcba	284	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"
+FN_START	0xcbc	17	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"enable_interrupts"	"external"	
+FN_END		0xcc2	20	
+FN_START	0xcc4	23	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_high_int"	"external"	
+FN_END		0xce4	24	
+FN_START	0xce6	27	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"low_int_active"	"external"	
+FN_END		0xd06	28	
+FN_START	0xd08	31	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_low_int"	"external"	
+CALL		0xd16	33	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_high_int"	0
+FN_END		0xd3a	38	
+FN_START	0xd3c	41	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_main"	"external"	
+CALL		0xd3c	41	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_low_int"	0
+CALL		0xd4e	41	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"in_high_int"	0
+FN_END		0xd72	46	
+FN_START	0xd74	83	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"InterruptHandlerHigh"	"external"	
+ADJUST		0xdc4	83	18
+CALL		0xdcc	92	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_int_handler"	0
+CALL		0xdd6	99	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/user_interrupts.c"	"timer0_int_handler"	0
+CALL		0xdda	109	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"SleepIfOkay"	0
+ADJUST		0xe28	110	-18
+FN_END		0xe2c	110	
+FN_START	0xe2e	122	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"InterruptHandlerLow"	"external"	
+ADJUST		0xe88	122	19
+CALL		0xe90	126	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/user_interrupts.c"	"timer1_int_handler"	0
+CALL		0xe9a	132	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_uart.c"	"uart_recv_int_handler"	0
+ADJUST		0xef2	134	-19
+FN_END		0xef6	134	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/main.c"
+FN_START	0xef8	123	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/main.c"	"main"	"external"	
+ADJUST		0xef8	123	1
+ADJUST		0xf02	123	55
+ADJUST		0xf0e	155	1
+ADJUST		0xf10	155	1
+CALL		0xf14	155	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_uart.c"	"init_uart_recv"	0
+ADJUST		0xf18	155	-2
+ADJUST		0xf1e	158	1
+ADJUST		0xf20	158	1
+CALL		0xf24	158	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"init_i2c"	0
+ADJUST		0xf28	158	-2
+ADJUST		0xf2e	161	1
+ADJUST		0xf30	161	1
+CALL		0xf34	161	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer1_thread.c"	"init_timer1_lthread"	0
+ADJUST		0xf38	161	-2
+CALL		0xf3a	164	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"init_queues"	0
+ADJUST		0xf40	182	1
+CALL		0xf42	182	"C:\MCC18\v3_39\src\pmc_common\Timers\t0open.c"	"OpenTimer0"	0
+ADJUST		0xf46	182	-1
+ADJUST		0xf48	185	1
+ADJUST		0xf4c	185	1
+CALL		0xf4e	185	"C:\MCC18\v3_39\src\pmc_common\Timers\t1open.c"	"OpenTimer1"	0
+ADJUST		0xf52	185	-2
+ADJUST		0xf5c	206	1
+CALL		0xf5e	206	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"i2c_configure_slave"	0
+ADJUST		0xf62	206	-1
+ADJUST		0xf68	226	1
+ADJUST		0xf6a	226	1
+ADJUST		0xf6e	226	1
+CALL		0xf70	226	"C:\MCC18\v3_39\src\pmc_common\USART\u1open.c"	"Open1USART"	0
+ADJUST		0xf74	226	-3
+CALL		0xf76	234	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/interrupts.c"	"enable_interrupts"	0
+CALL		0xf7a	258	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"block_on_To_msgqueues"	0
+ADJUST		0xf82	265	1
+ADJUST		0xf84	265	1
+ADJUST		0xf8c	265	1
+ADJUST		0xf8e	265	1
+ADJUST		0xf94	265	1
+CALL		0xf96	265	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_recvmsg"	0
+ADJUST		0xf9a	265	-5
+ADJUST		0xfc2	275	1
+ADJUST		0xfc4	275	1
+ADJUST		0xfd4	275	1
+ADJUST		0xfd8	275	1
+ADJUST		0xfde	275	1
+ADJUST		0xfe0	275	1
+ADJUST		0xfe6	275	1
+ADJUST		0xfe8	275	1
+CALL		0xfec	275	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer0_thread.c"	"timer0_lthread"	0
+ADJUST		0xff0	275	-8
+ADJUST		0x1030	316	1
+ADJUST		0x1032	316	1
+ADJUST		0x1036	316	1
+CALL		0x103a	316	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_i2c.c"	"start_i2c_slave_reply"	0
+ADJUST		0x103e	316	-3
+ADJUST		0x1046	328	1
+ADJUST		0x1048	328	1
+ADJUST		0x1050	328	1
+ADJUST		0x1052	328	1
+ADJUST		0x1058	328	1
+CALL		0x105a	328	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_recvmsg"	0
+ADJUST		0x105e	328	-5
+ADJUST		0x1082	338	1
+ADJUST		0x1084	338	1
+ADJUST		0x1094	338	1
+ADJUST		0x1098	338	1
+ADJUST		0x109e	338	1
+ADJUST		0x10a0	338	1
+ADJUST		0x10a6	338	1
+ADJUST		0x10a8	338	1
+CALL		0x10ac	338	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer1_thread.c"	"timer1_lthread"	0
+ADJUST		0x10b0	338	-8
+ADJUST		0x10b8	344	1
+ADJUST		0x10ba	344	1
+ADJUST		0x10ca	344	1
+ADJUST		0x10ce	344	1
+ADJUST		0x10d4	344	1
+ADJUST		0x10d6	344	1
+ADJUST		0x10dc	344	1
+ADJUST		0x10de	344	1
+CALL		0x10e2	344	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/uart_thread.c"	"uart_lthread"	0
+ADJUST		0x10e6	344	-8
+ADJUST		0x10ec	356	-56
+FN_END		0x10f2	356	
+FILE		0x0	0	"div16s.O"
+FN_START	0x110c	66	"div16s.O"	"__div16s"	"visibility"	
+ADJUST		0x110c	66	5
+BRANCH	0x1110	70	0x1114
+FN_END		0x1110	70	
+FN_START	0x1112	76	"div16s.O"	"__mod16s"	"visibility"	
+ADJUST		0x1112	76	5
+LABEL	0x1114	79	0x1114
+ADJUST		0x116c	136	-1
+ADJUST		0x116e	138	-1
+ADJUST		0x1176	144	-5
+FN_END		0x1182	153	
+FILE		0x0	0	"div16u.O"
+FN_START	0x119c	69	"div16u.O"	"__div16u"	"visibility"	
+ADJUST		0x119c	69	5
+BRANCH	0x11a0	73	0x11a8
+FN_END		0x11a0	73	
+FN_START	0x11a2	79	"div16u.O"	"__mod16u"	"visibility"	
+ADJUST		0x11a2	79	5
+FN_END		0x11a4	81	
+LABEL	0x11a8	89	0x11a8
+ADJUST		0x11ee	145	-1
+ADJUST		0x11f0	147	-1
+ADJUST		0x11f8	153	-5
+FN_END		0x11fa	156	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_uart.c"
+FN_START	0x11fc	13	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_uart.c"	"uart_recv_int_handler"	"external"	
+CALL		0x1200	14	"C:\MCC18\v3_39\src\pmc_common\USART\u1read.c"	"Read1USART"	0
+ADJUST		0x1204	14	1
+ADJUST		0x122e	14	-1
+ADJUST		0x1266	23	1
+ADJUST		0x126a	23	1
+ADJUST		0x1270	23	1
+ADJUST		0x127e	23	1
+CALL		0x1280	23	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_sendmsg"	0
+ADJUST		0x1284	23	-4
+ADJUST		0x12a4	36	1
+ADJUST		0x12a6	36	1
+ADJUST		0x12aa	36	1
+ADJUST		0x12ac	36	1
+CALL		0x12ae	36	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_sendmsg"	0
+ADJUST		0x12b2	36	-4
+FN_END		0x12b4	38	
+FN_START	0x12b6	40	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/my_uart.c"	"init_uart_recv"	"external"	
+ADJUST		0x12b6	40	1
+ADJUST		0x12da	43	-1
+FN_END		0x12e0	43	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/user_interrupts.c"
+FN_START	0x12e2	16	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/user_interrupts.c"	"timer0_int_handler"	"external"	
+ADJUST		0x12e2	16	1
+ADJUST		0x12ec	16	6
+ADJUST		0x12f0	25	1
+ADJUST		0x12f2	25	1
+CALL		0x12f4	25	"C:\MCC18\v3_39\src\pmc_common\Timers\t0write.c"	"WriteTimer0"	0
+ADJUST		0x12f8	25	-2
+ADJUST		0x12fe	27	1
+ADJUST		0x1300	27	1
+ADJUST		0x1308	27	1
+ADJUST		0x130a	27	1
+ADJUST		0x1310	27	1
+CALL		0x1312	27	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainHigh_recvmsg"	0
+ADJUST		0x1316	27	-5
+ADJUST		0x132e	29	1
+ADJUST		0x1330	29	1
+ADJUST		0x1336	29	1
+ADJUST		0x133a	29	1
+CALL		0x133c	29	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainHigh_sendmsg"	0
+ADJUST		0x1340	29	-4
+ADJUST		0x1342	31	-7
+FN_END		0x1348	31	
+FN_START	0x134a	36	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/user_interrupts.c"	"timer1_int_handler"	"external"	
+ADJUST		0x134a	36	1
+ADJUST		0x1354	36	2
+CALL		0x1356	44	"C:\MCC18\v3_39\src\pmc_common\Timers\t1read.c"	"ReadTimer1"	0
+ADJUST		0x1364	45	1
+ADJUST		0x1366	45	1
+ADJUST		0x136a	45	1
+ADJUST		0x136c	45	1
+CALL		0x136e	45	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"ToMainLow_sendmsg"	0
+ADJUST		0x1372	45	-4
+ADJUST		0x1376	48	1
+ADJUST		0x1378	48	1
+CALL		0x137a	48	"C:\MCC18\v3_39\src\pmc_common\Timers\t1write.c"	"WriteTimer1"	0
+ADJUST		0x137e	48	-2
+ADJUST		0x1380	49	-3
+FN_END		0x1386	49	
+FILE		0x0	0	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"
+FN_START	0x1388	81	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"	"_do_cinit"	"external"	
+FN_END		0x1424	184	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer1_thread.c"
+FN_START	0x1426	6	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer1_thread.c"	"init_timer1_lthread"	"external"	
+ADJUST		0x1426	6	1
+ADJUST		0x143c	8	-1
+FN_END		0x1442	8	
+FN_START	0x1444	14	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer1_thread.c"	"timer1_lthread"	"external"	
+ADJUST		0x1444	14	1
+ADJUST		0x144e	14	1
+ADJUST		0x1460	20	1
+ADJUST		0x1462	20	1
+ADJUST		0x146c	20	1
+ADJUST		0x1470	20	1
+CALL		0x1474	20	"div16s.O"	"__mod16s"	0
+ADJUST		0x1478	20	-1
+ADJUST		0x147a	20	-1
+ADJUST		0x149e	21	1
+ADJUST		0x14a2	21	1
+ADJUST		0x14a8	21	1
+ADJUST		0x14ac	21	1
+CALL		0x14ae	21	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/messages.c"	"FromMainHigh_sendmsg"	0
+ADJUST		0x14b2	21	-4
+ADJUST		0x14ba	26	-2
+FN_END		0x14c0	26	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\USART\u1open.c"
+FN_START	0x14c2	123	"C:\MCC18\v3_39\src\pmc_common\USART\u1open.c"	"Open1USART"	"external"	
+FN_END		0x152c	168	
+FILE		0x0	0	"memcpy.O"
+FN_START	0x152e	30	"memcpy.O"	"memcpy"	"visibility"	
+ADJUST		0x152e	30	1
+ADJUST		0x1532	30	1
+ADJUST		0x1538	34	1
+ADJUST		0x153e	34	1
+ADJUST		0x1544	38	1
+ADJUST		0x154a	38	1
+ADJUST		0x1558	49	1
+ADJUST		0x155e	49	1
+ADJUST		0x1564	53	1
+ADJUST		0x156a	53	1
+ADJUST		0x1574	61	1
+ADJUST		0x1578	61	-1
+ADJUST		0x157c	61	1
+ADJUST		0x1580	61	-1
+FN_END		0x1582	63	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\Timers\t1open.c"
+FN_START	0x1584	43	"C:\MCC18\v3_39\src\pmc_common\Timers\t1open.c"	"OpenTimer1"	"external"	
+FN_END		0x15c4	93	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\USART\u1read.c"
+FN_START	0x15c6	17	"C:\MCC18\v3_39\src\pmc_common\USART\u1read.c"	"Read1USART"	"external"	
+FN_END		0x1602	39	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/uart_thread.c"
+FN_START	0x1604	9	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/uart_thread.c"	"uart_lthread"	"external"	
+ADJUST		0x1604	9	1
+ADJUST		0x1632	17	-1
+FN_END		0x1638	17	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\Timers\t0open.c"
+FN_START	0x163a	18	"C:\MCC18\v3_39\src\pmc_common\Timers\t0open.c"	"OpenTimer0"	"external"	
+FN_END		0x166e	31	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\Timers\t1write.c"
+FN_START	0x1670	14	"C:\MCC18\v3_39\src\pmc_common\Timers\t1write.c"	"WriteTimer1"	"external"	
+FN_END		0x169e	22	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\Timers\t1read.c"
+FN_START	0x16a0	15	"C:\MCC18\v3_39\src\pmc_common\Timers\t1read.c"	"ReadTimer1"	"external"	
+FN_END		0x16ce	23	
+FILE		0x0	0	"C:\MCC18\v3_39\src\pmc_common\Timers\t0write.c"
+FN_START	0x16d0	16	"C:\MCC18\v3_39\src\pmc_common\Timers\t0write.c"	"WriteTimer0"	"external"	
+FN_END		0x16fe	24	
+FILE		0x0	0	"d1ktcyx.O"
+FN_START	0x1700	19	"d1ktcyx.O"	"Delay1KTCYx"	"visibility"	
+ADJUST		0x1702	21	1
+FN_END		0x171e	41	
+FILE		0x0	0	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer0_thread.c"
+FN_START	0x1740	9	"/Volumes/MainFiles/Classes/ECE4534/PICFrameworkWindows/src/timer0_thread.c"	"timer0_lthread"	"external"	
+ADJUST		0x1740	9	1
+ADJUST		0x174a	9	2
+ADJUST		0x1754	16	-3
+FN_END		0x175a	16	
+FILE		0x0	0	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"
+FN_START	0x175c	34	"C:\MCC18\v3_39\src\extended\startup\c018i_e.c"	"_startup"	"external"	
+FN_END		0x1774	51	

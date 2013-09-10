@@ -1,0 +1,4022 @@
+Disassembly Listing for Framework
+Generated From:
+/Users/mtj/Dropbox/Classes/ECE4534/PICFramework/Framework.X/dist/Debug/debug/Framework.X.debug.cof
+Aug 13, 2012 5:11:53 PM
+
+---  C:/MCC18/v3_39/src/pmc_common/USART/uread.c  -------------------------------------------------------
+1504  CFD9     MOVFF FSR2L, POSTINC1
+1506  FFE6     NOP
+1508  CFDA     MOVFF FSR2H, POSTINC1
+150A  FFE6     NOP
+150C  CFE1     MOVFF FSR1L, FSR2L
+150E  FFD9     NOP
+1510  CFE2     MOVFF FSR1H, FSR2H
+1512  FFDA     NOP
+1514  E982     SUBFSR 2, 0x2
+1516  E841     ADDFSR 1, 0x1
+1518  0EF2     MOVLW 0xF2
+151A  0100     MOVLB 0x0
+151C  174E     ANDWF USART_Status, F, BANKED
+151E  ACAB     BTFSS RCSTA, 6, ACCESS
+1520  D003     BRA 0x1528
+1522  914E     BCF USART_Status, 0, BANKED
+1524  B0AB     BTFSC RCSTA, 0, ACCESS
+1526  814E     BSF USART_Status, 0, BANKED
+1528  B4AB     BTFSC RCSTA, 2, ACCESS
+152A  854E     BSF USART_Status, 2, BANKED
+152C  B2AB     BTFSC RCSTA, 1, ACCESS
+152E  874E     BSF USART_Status, 3, BANKED
+1530  50AE     MOVF RCREG, W, ACCESS
+1532  6E02     MOVWF [0x2], ACCESS
+1534  5002     MOVF [0x2], W, ACCESS
+1536  E942     SUBFSR 1, 0x2
+1538  CFE5     MOVFF POSTDEC1, FSR2H
+153A  FFDA     NOP
+153C  CFE7     MOVFF INDF1, FSR2L
+153E  FFD9     NOP
+1540  0012     RETURN 0
+---  C:/MCC18/v3_39/src/pmc_common/USART/uopen.c  -------------------------------------------------------
+13B4  CFD9     MOVFF FSR2L, POSTINC1
+13B6  FFE6     NOP
+13B8  CFDA     MOVFF FSR2H, POSTINC1
+13BA  FFE6     NOP
+13BC  CFE1     MOVFF FSR1L, FSR2L
+13BE  FFD9     NOP
+13C0  CFE2     MOVFF FSR1H, FSR2H
+13C2  FFDA     NOP
+13C4  E985     SUBFSR 2, 0x5
+13C6  6AAC     CLRF TXSTA, ACCESS
+13C8  6AAB     CLRF RCSTA, ACCESS
+13CA  B002     BTFSC [0x2], 0, ACCESS
+13CC  88AC     BSF TXSTA, 4, ACCESS
+13CE  A202     BTFSS [0x2], 1, ACCESS
+13D0  D002     BRA 0x13D6
+13D2  8CAC     BSF TXSTA, 6, ACCESS
+13D4  8CAB     BSF RCSTA, 6, ACCESS
+13D6  B402     BTFSC [0x2], 2, ACCESS
+13D8  8EAC     BSF TXSTA, 7, ACCESS
+13DA  A602     BTFSS [0x2], 3, ACCESS
+13DC  D002     BRA 0x13E2
+13DE  88AB     BSF RCSTA, 4, ACCESS
+13E0  D001     BRA 0x13E4
+13E2  8AAB     BSF RCSTA, 5, ACCESS
+13E4  B802     BTFSC [0x2], 4, ACCESS
+13E6  84AC     BSF TXSTA, 2, ACCESS
+13E8  989E     BCF PIR1, 4, ACCESS
+13EA  BA02     BTFSC [0x2], 5, ACCESS
+13EC  86AB     BSF RCSTA, 3, ACCESS
+13EE  AC02     BTFSS [0x2], 6, ACCESS
+13F0  D002     BRA 0x13F6
+13F2  8A9D     BSF PIE1, 5, ACCESS
+13F4  D001     BRA 0x13F8
+13F6  9A9D     BCF PIE1, 5, ACCESS
+13F8  9A9E     BCF PIR1, 5, ACCESS
+13FA  AE02     BTFSS [0x2], 7, ACCESS
+13FC  D002     BRA 0x1402
+13FE  889D     BSF PIE1, 4, ACCESS
+1400  D001     BRA 0x1404
+1402  989D     BCF PIE1, 4, ACCESS
+1404  EB00     MOVSF 0x0, 0xFAF
+1406  FFAF     NOP
+1408  0100     MOVLB 0x0
+140A  EB01     MOVSF 0x1, 0x45
+140C  F045     NOP
+140E  6B46     CLRF 0x46, BANKED
+1410  C045     MOVFF __tmp_0, SPBRGH
+1412  FFB0     NOP
+1414  8AAC     BSF TXSTA, 5, ACCESS
+1416  8EAB     BSF RCSTA, 7, ACCESS
+1418  9C94     BCF TRISC, 6, ACCESS
+141A  8E94     BSF TRISC, 7, ACCESS
+141C  50AC     MOVF TXSTA, W, ACCESS
+141E  0B10     ANDLW 0x10
+1420  E004     BZ 0x142A
+1422  50AC     MOVF TXSTA, W, ACCESS
+1424  0B80     ANDLW 0x80
+1426  E101     BNZ 0x142A
+1428  8C94     BSF TRISC, 6, ACCESS
+142A  E941     SUBFSR 1, 0x1
+142C  CFE5     MOVFF POSTDEC1, FSR2H
+142E  FFDA     NOP
+1430  CFE7     MOVFF INDF1, FSR2L
+1432  FFD9     NOP
+1434  0012     RETURN 0
+---  C:/MCC18/v3_39/src/pmc_common/Timers/t1write.c  ----------------------------------------------------
+1578  CFD9     MOVFF FSR2L, POSTINC1
+157A  FFE6     NOP
+157C  CFDA     MOVFF FSR2H, POSTINC1
+157E  FFE6     NOP
+1580  CFE1     MOVFF FSR1L, FSR2L
+1582  FFD9     NOP
+1584  CFE2     MOVFF FSR1H, FSR2H
+1586  FFDA     NOP
+1588  E984     SUBFSR 2, 0x4
+158A  E842     ADDFSR 1, 0x2
+158C  EB80     MOVSS 0x0, 0x4
+158E  F004     NOP
+1590  EB81     MOVSS 0x1, 0x5
+1592  F005     NOP
+1594  EB05     MOVSF 0x5, 0xFCF
+1596  FFCF     NOP
+1598  EB04     MOVSF 0x4, 0xFCE
+159A  FFCE     NOP
+159C  E943     SUBFSR 1, 0x3
+159E  CFE5     MOVFF POSTDEC1, FSR2H
+15A0  FFDA     NOP
+15A2  CFE7     MOVFF INDF1, FSR2L
+15A4  FFD9     NOP
+15A6  0012     RETURN 0
+---  C:/MCC18/v3_39/src/pmc_common/Timers/t1read.c  -----------------------------------------------------
+15A8  CFD9     MOVFF FSR2L, POSTINC1
+15AA  FFE6     NOP
+15AC  CFDA     MOVFF FSR2H, POSTINC1
+15AE  FFE6     NOP
+15B0  CFE1     MOVFF FSR1L, FSR2L
+15B2  FFD9     NOP
+15B4  CFE2     MOVFF FSR1H, FSR2H
+15B6  FFDA     NOP
+15B8  E982     SUBFSR 2, 0x2
+15BA  E842     ADDFSR 1, 0x2
+15BC  50CE     MOVF TMR1L, W, ACCESS
+15BE  6E02     MOVWF [0x2], ACCESS
+15C0  50CF     MOVF TMR1H, W, ACCESS
+15C2  6E03     MOVWF [0x3], ACCESS
+15C4  EB02     MOVSF 0x2, 0xFF3
+15C6  FFF3     NOP
+15C8  EB03     MOVSF 0x3, 0xFF4
+15CA  FFF4     NOP
+15CC  E943     SUBFSR 1, 0x3
+15CE  CFE5     MOVFF POSTDEC1, FSR2H
+15D0  FFDA     NOP
+15D2  CFE7     MOVFF INDF1, FSR2L
+15D4  FFD9     NOP
+15D6  0012     RETURN 0
+---  C:/MCC18/v3_39/src/pmc_common/Timers/t0write.c  ----------------------------------------------------
+15D8  CFD9     MOVFF FSR2L, POSTINC1
+15DA  FFE6     NOP
+15DC  CFDA     MOVFF FSR2H, POSTINC1
+15DE  FFE6     NOP
+15E0  CFE1     MOVFF FSR1L, FSR2L
+15E2  FFD9     NOP
+15E4  CFE2     MOVFF FSR1H, FSR2H
+15E6  FFDA     NOP
+15E8  E984     SUBFSR 2, 0x4
+15EA  E842     ADDFSR 1, 0x2
+15EC  EB80     MOVSS 0x0, 0x4
+15EE  F004     NOP
+15F0  EB81     MOVSS 0x1, 0x5
+15F2  F005     NOP
+15F4  EB05     MOVSF 0x5, 0xFD7
+15F6  FFD7     NOP
+15F8  EB04     MOVSF 0x4, 0xFD6
+15FA  FFD6     NOP
+15FC  E943     SUBFSR 1, 0x3
+15FE  CFE5     MOVFF POSTDEC1, FSR2H
+1600  FFDA     NOP
+1602  CFE7     MOVFF INDF1, FSR2L
+1604  FFD9     NOP
+1606  0012     RETURN 0
+---  C:/MCC18/v3_39/src/extended/stdclib/memcpy.asm  ----------------------------------------------------
+14AE  CFD9     MOVFF FSR2L, POSTINC1
+14B0  FFE6     NOP
+14B2  CFDA     MOVFF FSR2H, POSTINC1
+14B4  FFE6     NOP
+14B6  0EFA     MOVLW 0xFA
+14B8  CFE3     MOVFF PLUSW1, FSR2L
+14BA  FFD9     NOP
+14BC  0EFB     MOVLW 0xFB
+14BE  CFE3     MOVFF PLUSW1, FSR2H
+14C0  FFDA     NOP
+14C2  0EFC     MOVLW 0xFC
+14C4  CFE3     MOVFF PLUSW1, FSR0L
+14C6  FFE9     NOP
+14C8  0EFD     MOVLW 0xFD
+14CA  CFE3     MOVFF PLUSW1, FSR0H
+14CC  FFEA     NOP
+14CE  CFE9     MOVFF FSR0L, PRODL
+14D0  FFF3     NOP
+14D2  CFEA     MOVFF FSR0H, PRODH
+14D4  FFF4     NOP
+14D6  0EF8     MOVLW 0xF8
+14D8  50E3     MOVF PLUSW1, W, ACCESS
+14DA  E103     BNZ _4jContinue
+14DC  0EF9     MOVLW 0xF9
+14DE  50E3     MOVF PLUSW1, W, ACCESS
+14E0  E008     BZ jEnd
+14E2  0EF8     MOVLW 0xF8
+14E4  06E3     DECF PLUSW1, F, ACCESS
+14E6  E202     BC _5jEnd
+14E8  0EF9     MOVLW 0xF9
+14EA  06E3     DECF PLUSW1, F, ACCESS
+14EC  CFDE     MOVFF POSTINC2, POSTINC0
+14EE  FFEE     NOP
+14F0  D7F2     BRA jLoop
+14F2  0EFF     MOVLW 0xFF
+14F4  CFE3     MOVFF PLUSW1, FSR2H
+14F6  FFDA     NOP
+14F8  52E5     MOVF POSTDEC1, F, ACCESS
+14FA  0EFF     MOVLW 0xFF
+14FC  CFE3     MOVFF PLUSW1, FSR2L
+14FE  FFD9     NOP
+1500  52E5     MOVF POSTDEC1, F, ACCESS
+1502  0012     RETURN 0
+---  C:/MCC18/v3_39/src/extended/stdclib/__init.c  ------------------------------------------------------
+000E  0012     RETURN 0
+---  C:/MCC18/v3_39/src/extended/startup/c018i_e.c  -----------------------------------------------------
+0000  EF32     GOTO 0x1664
+0002  F00B     NOP
+0004  0012     RETURN 0
+1664  EE1C     LFSR 1, 0xC00
+1666  F000     NOP
+1668  EE2C     LFSR 2, 0xC00
+166A  F000     NOP
+166C  6AF8     CLRF TBLPTRU, ACCESS
+166E  EC3D     CALL 0x127A, 0
+1670  F009     NOP
+1672  EC07     CALL 0xE, 0
+1674  F000     NOP
+1676  EC80     CALL 0xF00, 0
+1678  F007     NOP
+167A  D7FB     BRA 0x1672
+167C  0012     RETURN 0
+127A  0E06     MOVLW 0x6
+127C  6EF6     MOVWF TBLPTRL, ACCESS
+127E  0E00     MOVLW 0x0
+1280  6EF7     MOVWF TBLPTRH, ACCESS
+1282  0E00     MOVLW 0x0
+1284  6EF8     MOVWF TBLPTRU, ACCESS
+1286  0100     MOVLB 0x0
+1288  0009     TBLRD*+
+128A  50F5     MOVF TABLAT, W, ACCESS
+128C  6F3C     MOVWF curr_entry, BANKED
+128E  0009     TBLRD*+
+1290  50F5     MOVF TABLAT, W, ACCESS
+1292  6F3D     MOVWF 0x3D, BANKED
+1294  E103     BNZ 0x129C
+1296  673C     TSTFSZ curr_entry, BANKED
+1298  D001     BRA 0x129C
+129A  D03D     BRA 0x1316
+129C  0009     TBLRD*+
+129E  50F5     MOVF TABLAT, W, ACCESS
+12A0  6F37     MOVWF prom, BANKED
+12A2  0009     TBLRD*+
+12A4  50F5     MOVF TABLAT, W, ACCESS
+12A6  6F38     MOVWF 0x38, BANKED
+12A8  0009     TBLRD*+
+12AA  50F5     MOVF TABLAT, W, ACCESS
+12AC  6F39     MOVWF 0x39, BANKED
+12AE  0009     TBLRD*+
+12B0  0009     TBLRD*+
+12B2  50F5     MOVF TABLAT, W, ACCESS
+12B4  6EE9     MOVWF FSR0L, ACCESS
+12B6  0009     TBLRD*+
+12B8  50F5     MOVF TABLAT, W, ACCESS
+12BA  6EEA     MOVWF FSR0H, ACCESS
+12BC  0009     TBLRD*+
+12BE  0009     TBLRD*+
+12C0  0009     TBLRD*+
+12C2  50F5     MOVF TABLAT, W, ACCESS
+12C4  6F3A     MOVWF curr_byte, BANKED
+12C6  0009     TBLRD*+
+12C8  50F5     MOVF TABLAT, W, ACCESS
+12CA  6F3B     MOVWF 0x3B, BANKED
+12CC  0009     TBLRD*+
+12CE  0009     TBLRD*+
+12D0  CFF6     MOVFF TBLPTRL, data_ptr
+12D2  F03E     NOP
+12D4  CFF7     MOVFF TBLPTRH, 0x3F
+12D6  F03F     NOP
+12D8  CFF8     MOVFF TBLPTRU, 0x40
+12DA  F040     NOP
+12DC  C037     MOVFF prom, TBLPTRL
+12DE  FFF6     NOP
+12E0  C038     MOVFF 0x38, TBLPTRH
+12E2  FFF7     NOP
+12E4  C039     MOVFF 0x39, TBLPTRU
+12E6  FFF8     NOP
+12E8  0100     MOVLB 0x0
+12EA  533A     MOVF curr_byte, F, BANKED
+12EC  E102     BNZ 0x12F2
+12EE  533B     MOVF 0x3B, F, BANKED
+12F0  E007     BZ 0x1300
+12F2  0009     TBLRD*+
+12F4  50F5     MOVF TABLAT, W, ACCESS
+12F6  6EEE     MOVWF POSTINC0, ACCESS
+12F8  073A     DECF curr_byte, F, BANKED
+12FA  E2F8     BC 0x12EC
+12FC  073B     DECF 0x3B, F, BANKED
+12FE  D7F9     BRA 0x12F2
+1300  C03E     MOVFF data_ptr, TBLPTRL
+1302  FFF6     NOP
+1304  C03F     MOVFF 0x3F, TBLPTRH
+1306  FFF7     NOP
+1308  C040     MOVFF 0x40, TBLPTRU
+130A  FFF8     NOP
+130C  0100     MOVLB 0x0
+130E  073C     DECF curr_entry, F, BANKED
+1310  0E00     MOVLW 0x0
+1312  5B3D     SUBWFB 0x3D, F, BANKED
+1314  D7BF     BRA 0x1294
+1316  0012     RETURN 0
+---  C:/MCC18/v3_39/src/extended/proc/p18F2680.asm  -----------------------------------------------------
+1628  0E00     MOVLW 0x0
+162A  6EF3     MOVWF PRODL, ACCESS
+162C  EE00     LFSR 0, 0x0
+162E  F000     NOP
+1630  0E0D     MOVLW 0xD
+1632  D801     RCALL zero_block
+1634  0012     RETURN 0
+1636  60EA     CPFSLT FSR0H, ACCESS
+1638  D002     BRA compare_l
+163A  6AEE     CLRF POSTINC0, ACCESS
+163C  D7FC     BRA zero_block
+163E  50F3     MOVF PRODL, W, ACCESS
+1640  60E9     CPFSLT FSR0L, ACCESS
+1642  0012     RETURN 0
+1644  6AEE     CLRF POSTINC0, ACCESS
+1646  D7FC     BRA loop_l
+---  C:/MCC18/v3_39/src/extended/math/div16u.asm  -------------------------------------------------------
+1436  E843     ADDFSR 1, 0x3
+1438  CFD9     MOVFF FSR2L, POSTINC1
+143A  FFE6     NOP
+143C  CFDA     MOVFF FSR2H, POSTINC1
+143E  FFE6     NOP
+1440  CFE1     MOVFF FSR1L, FSR2L
+1442  FFD9     NOP
+1444  CFE2     MOVFF FSR1H, FSR2H
+1446  FFDA     NOP
+1448  E989     SUBFSR 2, 0x9
+144A  6A06     CLRF [0x6], ACCESS
+144C  0012     RETURN 0
+144E  DFF3     RCALL SETUPSTK
+1450  8006     BSF [0x6], 0, ACCESS
+1452  D003     BRA divmod16u
+1454  DFF0     RCALL SETUPSTK
+1456  D001     BRA divmod16u
+1458  8206     BSF [0x6], 1, ACCESS
+145A  6A05     CLRF [0x5], ACCESS
+145C  6A04     CLRF [0x4], ACCESS
+145E  0E10     MOVLW 0x10
+1460  6EE7     MOVWF INDF1, ACCESS
+1462  90D8     BCF STATUS, 0, ACCESS
+1464  3602     RLCF [0x2], F, ACCESS
+1466  3603     RLCF [0x3], F, ACCESS
+1468  3604     RLCF [0x4], F, ACCESS
+146A  3605     RLCF [0x5], F, ACCESS
+146C  5000     MOVF [0x0], W, ACCESS
+146E  5C04     SUBWF [0x4], W, ACCESS
+1470  5001     MOVF [0x1], W, ACCESS
+1472  5805     SUBWFB [0x5], W, ACCESS
+1474  E305     BNC endloop
+1476  5000     MOVF [0x0], W, ACCESS
+1478  5E04     SUBWF [0x4], F, ACCESS
+147A  5001     MOVF [0x1], W, ACCESS
+147C  5A05     SUBWFB [0x5], F, ACCESS
+147E  2A02     INCF [0x2], F, ACCESS
+1480  2EE7     DECFSZ INDF1, F, ACCESS
+1482  D7F0     BRA loop
+1484  B206     BTFSC [0x6], 1, ACCESS
+1486  0012     RETURN 0
+1488  B006     BTFSC [0x6], 0, ACCESS
+148A  D006     BRA RETQUOTIENT
+148C  EB84     MOVSS 0x4, 0x0
+148E  F000     NOP
+1490  EB85     MOVSS 0x5, 0x1
+1492  F001     NOP
+1494  A006     BTFSS [0x6], 0, ACCESS
+1496  D004     BRA RESTORE
+1498  EB82     MOVSS 0x2, 0x0
+149A  F000     NOP
+149C  EB83     MOVSS 0x3, 0x1
+149E  F001     NOP
+14A0  52E5     MOVF POSTDEC1, F, ACCESS
+14A2  CFE5     MOVFF POSTDEC1, FSR2H
+14A4  FFDA     NOP
+14A6  CFE7     MOVFF INDF1, FSR2L
+14A8  FFD9     NOP
+14AA  E945     SUBFSR 1, 0x5
+14AC  0012     RETURN 0
+---  C:/MCC18/v3_39/src/extended/delays/d1ktcyx.asm  ----------------------------------------------------
+1608  0EFF     MOVLW 0xFF
+160A  50E3     MOVF PLUSW1, W, ACCESS
+160C  0100     MOVLB 0x0
+160E  6F4D     MOVWF DelayCounter1, BANKED
+1610  0E48     MOVLW 0x48
+1612  D001     BRA D1K_1
+1614  0E4C     MOVLW 0x4C
+1616  6EE7     MOVWF INDF1, ACCESS
+1618  2EE7     DECFSZ INDF1, F, ACCESS
+161A  D7FE     BRA 0x1618
+161C  6AE7     CLRF INDF1, ACCESS
+161E  2EE7     DECFSZ INDF1, F, ACCESS
+1620  D7FE     BRA 0x161E
+1622  2F4D     DECFSZ DelayCounter1, F, BANKED
+1624  D7F7     BRA D1Kx
+1626  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/user_interrupts.c  -----------------------------
+1:             // This is where the "user" interrupts handlers should go
+2:             // The *must* be declared in "user_interrupts.h"
+3:             
+4:             #include "maindefs.h"
+5:             #include <timers.h>
+6:             #include "user_interrupts.h"
+7:             #include "messages.h"
+8:             
+9:             // A function called by the interrupt handler
+10:            // This one does the action I wanted for this program on a timer0 interrupt
+11:            
+12:            void timer0_int_handler() {
+11D0  CFD9     MOVFF FSR2L, POSTINC1
+11D2  FFE6     NOP
+11D4  CFE1     MOVFF FSR1L, FSR2L
+11D6  FFD9     NOP
+11D8  E981     SUBFSR 2, 0x1
+11DA  E846     ADDFSR 1, 0x6
+13:                unsigned int val;
+14:                int length, msgtype;
+15:            
+16:                // toggle an LED
+17:                LATBbits.LATB0 = !LATBbits.LATB0;
+11DC  708A     BTG LATB, 0, ACCESS
+18:                // reset the timer
+19:                WriteTimer0(0);
+11DE  0E00     MOVLW 0x0
+11E0  6EE6     MOVWF POSTINC1, ACCESS
+11E2  6AE6     CLRF POSTINC1, ACCESS
+11E4  ECEC     CALL 0x15D8, 0
+11E6  F00A     NOP
+11E8  E942     SUBFSR 1, 0x2
+20:                // try to receive a message and, if we get one, echo it back
+21:                length = FromMainHigh_recvmsg(sizeof(val), (unsigned char *)&msgtype, (void *) &val);
+11EA  50D9     MOVF FSR2L, W, ACCESS
+11EC  0F01     ADDLW 0x1
+11EE  6EE6     MOVWF POSTINC1, ACCESS
+11F0  CFDA     MOVFF FSR2H, POSTINC1
+11F2  FFE6     NOP
+11F4  50D9     MOVF FSR2L, W, ACCESS
+11F6  0F05     ADDLW 0x5
+11F8  6EE6     MOVWF POSTINC1, ACCESS
+11FA  CFDA     MOVFF FSR2H, POSTINC1
+11FC  FFE6     NOP
+11FE  0E02     MOVLW 0x2
+1200  6EE6     MOVWF POSTINC1, ACCESS
+1202  ECA9     CALL 0xB52, 0
+1204  F005     NOP
+1206  E945     SUBFSR 1, 0x5
+1208  6E03     MOVWF [0x3], ACCESS
+120A  6A04     CLRF [0x4], ACCESS
+120C  BEE8     BTFSC WREG, 7, ACCESS
+120E  6804     SETF [0x4], ACCESS
+22:                if (length == sizeof (val)) {
+1210  0E02     MOVLW 0x2
+1212  1803     XORWF [0x3], W, ACCESS
+1214  E101     BNZ 0x1218
+1216  5004     MOVF [0x4], W, ACCESS
+1218  E10C     BNZ 0x1232
+23:                    ToMainHigh_sendmsg(sizeof (val), MSGT_TIMER0, (void *) &val);
+121A  50D9     MOVF FSR2L, W, ACCESS
+121C  0F01     ADDLW 0x1
+121E  6EE6     MOVWF POSTINC1, ACCESS
+1220  CFDA     MOVFF FSR2H, POSTINC1
+1222  FFE6     NOP
+1224  0E0A     MOVLW 0xA
+1226  6EE6     MOVWF POSTINC1, ACCESS
+1228  0E02     MOVLW 0x2
+122A  6EE6     MOVWF POSTINC1, ACCESS
+122C  EC2D     CALL 0xA5A, 0
+122E  F005     NOP
+1230  E944     SUBFSR 1, 0x4
+24:                }
+25:            }
+1232  E947     SUBFSR 1, 0x7
+1234  CFE7     MOVFF INDF1, FSR2L
+1236  FFD9     NOP
+1238  0012     RETURN 0
+26:            
+27:            // A function called by the interrupt handler
+28:            // This one does the action I wanted for this program on a timer1 interrupt
+29:            
+30:            void timer1_int_handler() {
+123A  CFD9     MOVFF FSR2L, POSTINC1
+123C  FFE6     NOP
+123E  CFE1     MOVFF FSR1L, FSR2L
+1240  FFD9     NOP
+1242  E981     SUBFSR 2, 0x1
+1244  E842     ADDFSR 1, 0x2
+31:                unsigned int result;
+32:            
+33:                // read the timer and then send an empty message to main()
+34:                LATBbits.LATB1 = !LATBbits.LATB1;
+1246  728A     BTG LATB, 1, ACCESS
+35:                result = ReadTimer1();
+1248  ECD4     CALL 0x15A8, 0
+124A  F00A     NOP
+124C  50F3     MOVF PRODL, W, ACCESS
+124E  6E01     MOVWF [0x1], ACCESS
+1250  50F4     MOVF PRODH, W, ACCESS
+1252  6E02     MOVWF [0x2], ACCESS
+36:                ToMainLow_sendmsg(0, MSGT_TIMER1, (void *) 0);
+1254  0E00     MOVLW 0x0
+1256  6EE6     MOVWF POSTINC1, ACCESS
+1258  6AE6     CLRF POSTINC1, ACCESS
+125A  0E0B     MOVLW 0xB
+125C  6EE6     MOVWF POSTINC1, ACCESS
+125E  6AE6     CLRF POSTINC1, ACCESS
+1260  ECFB     CALL 0x9F6, 0
+1262  F004     NOP
+1264  E944     SUBFSR 1, 0x4
+37:            
+38:                // reset the timer
+39:                WriteTimer1(0);
+1266  0E00     MOVLW 0x0
+1268  6EE6     MOVWF POSTINC1, ACCESS
+126A  6AE6     CLRF POSTINC1, ACCESS
+126C  ECBC     CALL 0x1578, 0
+126E  F00A     NOP
+1270  E942     SUBFSR 1, 0x2
+40:            }
+1272  E943     SUBFSR 1, 0x3
+1274  CFE7     MOVFF INDF1, FSR2L
+1276  FFD9     NOP
+1278  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/uart_thread.c  ---------------------------------
+1:             #include "maindefs.h"
+2:             #include <stdio.h>
+3:             #include "uart_thread.h"
+4:             
+5:             // This is a "logical" thread that processes messages from the UART
+6:             // It is not a "real" thread because there is only the single main thread
+7:             // of execution on the PIC because we are not using an RTOS.
+8:             
+9:             int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
+1542  CFD9     MOVFF FSR2L, POSTINC1
+1544  FFE6     NOP
+1546  CFE1     MOVFF FSR1L, FSR2L
+1548  FFD9     NOP
+154A  E989     SUBFSR 2, 0x9
+10:                if (msgtype == MSGT_OVERRUN) {
+154C  0E1E     MOVLW 0x1E
+154E  1804     XORWF [0x4], W, ACCESS
+1550  E101     BNZ 0x1554
+1552  5005     MOVF [0x5], W, ACCESS
+1554  E101     BNZ 0x1558
+11:                } else if (msgtype == MSGT_UART_DATA) {
+1556  D00C     BRA 0x1570
+1558  0E1F     MOVLW 0x1F
+155A  1804     XORWF [0x4], W, ACCESS
+155C  E101     BNZ 0x1560
+155E  5005     MOVF [0x5], W, ACCESS
+1560  E107     BNZ 0x1570
+12:                    // print the message (this assumes that the message
+13:                    // 		was a printable string)
+14:                    msgbuffer[length] = '\0'; // null-terminate the array as a string
+1562  5000     MOVF [0x0], W, ACCESS
+1564  2402     ADDWF [0x2], W, ACCESS
+1566  6EE9     MOVWF FSR0L, ACCESS
+1568  5001     MOVF [0x1], W, ACCESS
+156A  2003     ADDWFC [0x3], W, ACCESS
+156C  6EEA     MOVWF FSR0H, ACCESS
+156E  6AEF     CLRF INDF0, ACCESS
+15:                    // Now we would do something with it
+16:                }
+17:            }
+1570  E941     SUBFSR 1, 0x1
+1572  CFE7     MOVFF INDF1, FSR2L
+1574  FFD9     NOP
+1576  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/timer1_thread.c  -------------------------------
+1:             #include "maindefs.h"
+2:             #include <stdio.h>
+3:             #include "messages.h"
+4:             #include "timer1_thread.h"
+5:             
+6:             void init_timer1_lthread(timer1_thread_struct *tptr) {
+1318  CFD9     MOVFF FSR2L, POSTINC1
+131A  FFE6     NOP
+131C  CFE1     MOVFF FSR1L, FSR2L
+131E  FFD9     NOP
+1320  E983     SUBFSR 2, 0x3
+7:                 tptr->msgcount = 0;
+1322  EB00     MOVSF 0x0, 0xFE9
+1324  FFE9     NOP
+1326  EB01     MOVSF 0x1, 0xFEA
+1328  FFEA     NOP
+132A  6AEE     CLRF POSTINC0, ACCESS
+132C  6AED     CLRF POSTDEC0, ACCESS
+8:             }
+132E  E941     SUBFSR 1, 0x1
+1330  CFE7     MOVFF INDF1, FSR2L
+1332  FFD9     NOP
+1334  0012     RETURN 0
+9:             
+10:            // This is a "logical" thread that processes messages from TIMER1
+11:            // It is not a "real" thread because there is only the single main thread
+12:            // of execution on the PIC because we are not using an RTOS.
+13:            
+14:            int timer1_lthread(timer1_thread_struct *tptr, int msgtype, int length, unsigned char *msgbuffer) {
+1336  CFD9     MOVFF FSR2L, POSTINC1
+1338  FFE6     NOP
+133A  CFE1     MOVFF FSR1L, FSR2L
+133C  FFD9     NOP
+133E  E989     SUBFSR 2, 0x9
+1340  E841     ADDFSR 1, 0x1
+15:                signed char retval;
+16:            
+17:                tptr->msgcount++;
+1342  EB06     MOVSF 0x6, 0xFE9
+1344  FFE9     NOP
+1346  EB07     MOVSF 0x7, 0xFEA
+1348  FFEA     NOP
+134A  2AEE     INCF POSTINC0, F, ACCESS
+134C  0E00     MOVLW 0x0
+134E  22EF     ADDWFC INDF0, F, ACCESS
+18:                // Every tenth message we get from timer1 we
+19:                // send something to the High Priority Interrupt
+20:                if ((tptr->msgcount % 10) == 9) {
+1350  0E0A     MOVLW 0xA
+1352  6EE6     MOVWF POSTINC1, ACCESS
+1354  6AE6     CLRF POSTINC1, ACCESS
+1356  EB06     MOVSF 0x6, 0xFE9
+1358  FFE9     NOP
+135A  EB07     MOVSF 0x7, 0xFEA
+135C  FFEA     NOP
+135E  CFEE     MOVFF POSTINC0, POSTINC1
+1360  FFE6     NOP
+1362  CFEE     MOVFF POSTINC0, POSTINC1
+1364  FFE6     NOP
+1366  EC2A     CALL 0x1454, 0
+1368  F00A     NOP
+136A  52E5     MOVF POSTDEC1, F, ACCESS
+136C  CFE5     MOVFF POSTDEC1, 0x46
+136E  F046     NOP
+1370  CFE7     MOVFF INDF1, __tmp_0
+1372  F045     NOP
+1374  0100     MOVLB 0x0
+1376  0E09     MOVLW 0x9
+1378  1945     XORWF __tmp_0, W, BANKED
+137A  E101     BNZ 0x137E
+137C  5146     MOVF 0x46, W, BANKED
+137E  E116     BNZ 0x13AC
+21:                    retval = FromMainHigh_sendmsg(sizeof (tptr->msgcount), MSGT_MAIN1, (void *) &(tptr->msgcount));
+1380  EB06     MOVSF 0x6, 0xFE9
+1382  FFE9     NOP
+1384  EB07     MOVSF 0x7, 0xFEA
+1386  FFEA     NOP
+1388  CFE9     MOVFF FSR0L, __tmp_0
+138A  F045     NOP
+138C  CFEA     MOVFF FSR0H, 0x46
+138E  F046     NOP
+1390  C045     MOVFF __tmp_0, POSTINC1
+1392  FFE6     NOP
+1394  C046     MOVFF 0x46, POSTINC1
+1396  FFE6     NOP
+1398  0E14     MOVLW 0x14
+139A  6EE6     MOVWF POSTINC1, ACCESS
+139C  0E02     MOVLW 0x2
+139E  6EE6     MOVWF POSTINC1, ACCESS
+13A0  EC91     CALL 0xB22, 0
+13A2  F005     NOP
+13A4  E944     SUBFSR 1, 0x4
+13A6  6E09     MOVWF [0x9], ACCESS
+22:                    if (retval < 0) {
+13A8  3409     RLCF [0x9], W, ACCESS
+13AA  E300     BNC 0x13AC
+23:                        // We would handle the error here
+24:                    }
+25:                }
+26:            }
+13AC  E942     SUBFSR 1, 0x2
+13AE  CFE7     MOVFF INDF1, FSR2L
+13B0  FFD9     NOP
+13B2  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/timer0_thread.c  -------------------------------
+1:             #include "maindefs.h"
+2:             #include <stdio.h>
+3:             #include "timer0_thread.h"
+4:             
+5:             // This is a "logical" thread that processes messages from TIMER0
+6:             // It is not a "real" thread because there is only the single main thread
+7:             // of execution on the PIC because we are not using an RTOS.
+8:             
+9:             int timer0_lthread(timer0_thread_struct *tptr, int msgtype, int length, unsigned char *msgbuffer) {
+1648  CFD9     MOVFF FSR2L, POSTINC1
+164A  FFE6     NOP
+164C  CFE1     MOVFF FSR1L, FSR2L
+164E  FFD9     NOP
+1650  E989     SUBFSR 2, 0x9
+1652  E842     ADDFSR 1, 0x2
+10:                unsigned int *msgval;
+11:            
+12:                msgval = (unsigned int *) msgbuffer;
+1654  EB80     MOVSS 0x0, 0x9
+1656  F009     NOP
+1658  EB81     MOVSS 0x1, 0xA
+165A  F00A     NOP
+13:            
+14:                // Here is where we would do something with the message
+15:            
+16:            }
+165C  E943     SUBFSR 1, 0x3
+165E  CFE7     MOVFF INDF1, FSR2L
+1660  FFD9     NOP
+1662  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/my_uart.c  -------------------------------------
+1:             #include "maindefs.h"
+2:             #include <usart.h>
+3:             #include "my_uart.h"
+4:             
+5:             static uart_comm *uc_ptr;
+6:             
+7:             void uart_recv_int_handler() {
+8:                 if (DataRdyUSART()) {
+10EA  AA9E     BTFSS PIR1, 5, ACCESS
+10EC  D04C     BRA 0x1186
+9:                     uc_ptr->buffer[uc_ptr->buflen] = ReadUSART();
+10EE  EC82     CALL 0x1504, 0
+10F0  F00A     NOP
+10F2  6EE6     MOVWF POSTINC1, ACCESS
+10F4  C049     MOVFF uc_ptr, FSR0L
+10F6  FFE9     NOP
+10F8  C04A     MOVFF 0x4A, FSR0H
+10FA  FFEA     NOP
+10FC  CFE9     MOVFF FSR0L, __tmp_0
+10FE  F045     NOP
+1100  CFEA     MOVFF FSR0H, 0x46
+1102  F046     NOP
+1104  C049     MOVFF uc_ptr, FSR0L
+1106  FFE9     NOP
+1108  C04A     MOVFF 0x4A, FSR0H
+110A  FFEA     NOP
+110C  0E04     MOVLW 0x4
+110E  50EB     MOVF PLUSW0, W, ACCESS
+1110  0100     MOVLB 0x0
+1112  6AEA     CLRF FSR0H, ACCESS
+1114  2545     ADDWF __tmp_0, W, BANKED
+1116  6EE9     MOVWF FSR0L, ACCESS
+1118  5146     MOVF 0x46, W, BANKED
+111A  22EA     ADDWFC FSR0H, F, ACCESS
+111C  52E5     MOVF POSTDEC1, F, ACCESS
+111E  50E7     MOVF INDF1, W, ACCESS
+1120  6EEF     MOVWF INDF0, ACCESS
+10:                    uc_ptr->buflen++;
+1122  C049     MOVFF uc_ptr, FSR0L
+1124  FFE9     NOP
+1126  C04A     MOVFF 0x4A, FSR0H
+1128  FFEA     NOP
+112A  0E04     MOVLW 0x4
+112C  26E9     ADDWF FSR0L, F, ACCESS
+112E  0E00     MOVLW 0x0
+1130  22EA     ADDWFC FSR0H, F, ACCESS
+1132  2AEF     INCF INDF0, F, ACCESS
+11:                    // check if a message should be sent
+12:                    if (uc_ptr->buflen == MAXUARTBUF) {
+1134  C049     MOVFF uc_ptr, FSR0L
+1136  FFE9     NOP
+1138  C04A     MOVFF 0x4A, FSR0H
+113A  FFEA     NOP
+113C  0E04     MOVLW 0x4
+113E  50EB     MOVF PLUSW0, W, ACCESS
+1140  0804     SUBLW 0x4
+1142  E121     BNZ 0x1186
+13:                        ToMainLow_sendmsg(uc_ptr->buflen, MSGT_UART_DATA, (void *) uc_ptr->buffer);
+1144  C049     MOVFF uc_ptr, FSR0L
+1146  FFE9     NOP
+1148  C04A     MOVFF 0x4A, FSR0H
+114A  FFEA     NOP
+114C  CFE9     MOVFF FSR0L, __tmp_0
+114E  F045     NOP
+1150  CFEA     MOVFF FSR0H, 0x46
+1152  F046     NOP
+1154  C045     MOVFF __tmp_0, POSTINC1
+1156  FFE6     NOP
+1158  C046     MOVFF 0x46, POSTINC1
+115A  FFE6     NOP
+115C  0E1F     MOVLW 0x1F
+115E  6EE6     MOVWF POSTINC1, ACCESS
+1160  C049     MOVFF uc_ptr, FSR0L
+1162  FFE9     NOP
+1164  C04A     MOVFF 0x4A, FSR0H
+1166  FFEA     NOP
+1168  0E04     MOVLW 0x4
+116A  50EB     MOVF PLUSW0, W, ACCESS
+116C  6EE6     MOVWF POSTINC1, ACCESS
+116E  ECFB     CALL 0x9F6, 0
+1170  F004     NOP
+1172  E944     SUBFSR 1, 0x4
+14:                        uc_ptr->buflen = 0;
+1174  C049     MOVFF uc_ptr, FSR0L
+1176  FFE9     NOP
+1178  C04A     MOVFF 0x4A, FSR0H
+117A  FFEA     NOP
+117C  0E04     MOVLW 0x4
+117E  26E9     ADDWF FSR0L, F, ACCESS
+1180  0E00     MOVLW 0x0
+1182  22EA     ADDWFC FSR0H, F, ACCESS
+1184  6AEF     CLRF INDF0, ACCESS
+15:                    }
+16:                }
+17:                if (USART_Status.OVERRUN_ERROR == 1) {
+1186  0100     MOVLB 0x0
+1188  A74E     BTFSS USART_Status, 3, BANKED
+118A  D00B     BRA 0x11A2
+18:                    // we've overrun the USART and must reset
+19:                    // send an error message for this
+20:                    RCSTAbits.CREN = 0;
+118C  98AB     BCF RCSTA, 4, ACCESS
+21:                    RCSTAbits.CREN = 1;
+118E  88AB     BSF RCSTA, 4, ACCESS
+22:                    ToMainLow_sendmsg(0, MSGT_OVERRUN, (void *) 0);
+1190  0E00     MOVLW 0x0
+1192  6EE6     MOVWF POSTINC1, ACCESS
+1194  6AE6     CLRF POSTINC1, ACCESS
+1196  0E1E     MOVLW 0x1E
+1198  6EE6     MOVWF POSTINC1, ACCESS
+119A  6AE6     CLRF POSTINC1, ACCESS
+119C  ECFB     CALL 0x9F6, 0
+119E  F004     NOP
+11A0  E944     SUBFSR 1, 0x4
+23:                }
+24:            }
+11A2  0012     RETURN 0
+25:            
+26:            void init_uart_recv(uart_comm *uc) {
+11A4  CFD9     MOVFF FSR2L, POSTINC1
+11A6  FFE6     NOP
+11A8  CFE1     MOVFF FSR1L, FSR2L
+11AA  FFD9     NOP
+11AC  E983     SUBFSR 2, 0x3
+27:                uc_ptr = uc;
+11AE  EB00     MOVSF 0x0, 0x49
+11B0  F049     NOP
+11B2  EB01     MOVSF 0x1, 0x4A
+11B4  F04A     NOP
+28:                uc_ptr->buflen = 0;
+11B6  C049     MOVFF uc_ptr, FSR0L
+11B8  FFE9     NOP
+11BA  C04A     MOVFF 0x4A, FSR0H
+11BC  FFEA     NOP
+11BE  0E04     MOVLW 0x4
+11C0  26E9     ADDWF FSR0L, F, ACCESS
+11C2  0E00     MOVLW 0x0
+11C4  22EA     ADDWFC FSR0H, F, ACCESS
+11C6  6AEF     CLRF INDF0, ACCESS
+29:            }
+11C8  E941     SUBFSR 1, 0x1
+11CA  CFE7     MOVFF INDF1, FSR2L
+11CC  FFD9     NOP
+11CE  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/my_i2c.c  --------------------------------------
+1:             #include "maindefs.h"
+2:             #include <i2c.h>
+3:             #include "my_i2c.h"
+4:             
+5:             static i2c_comm *ic_ptr;
+6:             
+7:             // Configure for I2C Master mode -- the variable "slave_addr" should be stored in
+8:             //   i2c_comm (as pointed to by ic_ptr) for later use.
+9:             
+10:            void i2c_configure_master(unsigned char slave_addr) {
+001E  CFD9     MOVFF FSR2L, POSTINC1
+0020  FFE6     NOP
+0022  CFE1     MOVFF FSR1L, FSR2L
+0024  FFD9     NOP
+0026  E982     SUBFSR 2, 0x2
+11:                // Your code goes here
+12:            }
+0028  E941     SUBFSR 1, 0x1
+002A  CFE7     MOVFF INDF1, FSR2L
+002C  FFD9     NOP
+002E  0012     RETURN 0
+13:            
+14:            // Sending in I2C Master mode [slave write]
+15:            // 		returns -1 if the i2c bus is busy
+16:            // 		return 0 otherwise
+17:            // Will start the sending of an i2c message -- interrupt handler will take care of
+18:            //   completing the message send.  When the i2c message is sent (or the send has failed)
+19:            //   the interrupt handler will send an internal_message of type MSGT_MASTER_SEND_COMPLETE if
+20:            //   the send was successful and an internal_message of type MSGT_MASTER_SEND_FAILED if the
+21:            //   send failed (e.g., if the slave did not acknowledge).  Both of these internal_messages
+22:            //   will have a length of 0.
+23:            // The subroutine must copy the msg to be sent from the "msg" parameter below into
+24:            //   the structure to which ic_ptr points [there is already a suitable buffer there].
+25:            
+26:            unsigned char i2c_master_send(unsigned char length, unsigned char *msg) {
+0030  CFD9     MOVFF FSR2L, POSTINC1
+0032  FFE6     NOP
+0034  CFE1     MOVFF FSR1L, FSR2L
+0036  FFD9     NOP
+0038  E984     SUBFSR 2, 0x4
+27:                // Your code goes here
+28:                return(0);
+003A  0E00     MOVLW 0x0
+003C  D000     BRA 0x3E
+29:            }
+003E  E941     SUBFSR 1, 0x1
+0040  CFE7     MOVFF INDF1, FSR2L
+0042  FFD9     NOP
+0044  0012     RETURN 0
+30:            
+31:            // Receiving in I2C Master mode [slave read]
+32:            // 		returns -1 if the i2c bus is busy
+33:            // 		return 0 otherwise
+34:            // Will start the receiving of an i2c message -- interrupt handler will take care of
+35:            //   completing the i2c message receive.  When the receive is complete (or has failed)
+36:            //   the interrupt handler will send an internal_message of type MSGT_MASTER_RECV_COMPLETE if
+37:            //   the receive was successful and an internal_message of type MSGT_MASTER_RECV_FAILED if the
+38:            //   receive failed (e.g., if the slave did not acknowledge).  In the failure case
+39:            //   the internal_message will be of length 0.  In the successful case, the
+40:            //   internal_message will contain the message that was received [where the length
+41:            //   is determined by the parameter passed to i2c_master_recv()].
+42:            // The interrupt handler will be responsible for copying the message received into
+43:            
+44:            unsigned char i2c_master_recv(unsigned char length) {
+0046  CFD9     MOVFF FSR2L, POSTINC1
+0048  FFE6     NOP
+004A  CFE1     MOVFF FSR1L, FSR2L
+004C  FFD9     NOP
+004E  E982     SUBFSR 2, 0x2
+45:                // Your code goes here
+46:                return(0);
+0050  0E00     MOVLW 0x0
+0052  D000     BRA 0x54
+47:            }
+0054  E941     SUBFSR 1, 0x1
+0056  CFE7     MOVFF INDF1, FSR2L
+0058  FFD9     NOP
+005A  0012     RETURN 0
+48:            
+49:            void start_i2c_slave_reply(unsigned char length, unsigned char *msg) {
+005C  CFD9     MOVFF FSR2L, POSTINC1
+005E  FFE6     NOP
+0060  CFE1     MOVFF FSR1L, FSR2L
+0062  FFD9     NOP
+0064  E984     SUBFSR 2, 0x4
+50:            
+51:                for (ic_ptr->outbuflen = 0; ic_ptr->outbuflen < length; ic_ptr->outbuflen++) {
+0066  C04B     MOVFF ic_ptr, FSR0L
+0068  FFE9     NOP
+006A  C04C     MOVFF 0x4C, FSR0H
+006C  FFEA     NOP
+006E  0E19     MOVLW 0x19
+0070  26E9     ADDWF FSR0L, F, ACCESS
+0072  0E00     MOVLW 0x0
+0074  22EA     ADDWFC FSR0H, F, ACCESS
+0076  6AEF     CLRF INDF0, ACCESS
+0078  C04B     MOVFF ic_ptr, FSR0L
+007A  FFE9     NOP
+007C  C04C     MOVFF 0x4C, FSR0H
+007E  FFEA     NOP
+0080  0E19     MOVLW 0x19
+0082  50EB     MOVF PLUSW0, W, ACCESS
+0084  80D8     BSF STATUS, 0, ACCESS
+0086  5402     SUBFWB [0x2], W, ACCESS
+0088  E232     BC 0xEE
+00DA  C04B     MOVFF ic_ptr, FSR0L
+00DC  FFE9     NOP
+00DE  C04C     MOVFF 0x4C, FSR0H
+00E0  FFEA     NOP
+00E2  0E19     MOVLW 0x19
+00E4  26E9     ADDWF FSR0L, F, ACCESS
+00E6  0E00     MOVLW 0x0
+00E8  22EA     ADDWFC FSR0H, F, ACCESS
+00EA  2AEF     INCF INDF0, F, ACCESS
+00EC  D7C5     BRA 0x78
+52:                    ic_ptr->outbuffer[ic_ptr->outbuflen] = msg[ic_ptr->outbuflen];
+008A  C04B     MOVFF ic_ptr, FSR0L
+008C  FFE9     NOP
+008E  C04C     MOVFF 0x4C, FSR0H
+0090  FFEA     NOP
+0092  0E19     MOVLW 0x19
+0094  50EB     MOVF PLUSW0, W, ACCESS
+0096  2400     ADDWF [0x0], W, ACCESS
+0098  6EE9     MOVWF FSR0L, ACCESS
+009A  0E00     MOVLW 0x0
+009C  2001     ADDWFC [0x1], W, ACCESS
+009E  6EEA     MOVWF FSR0H, ACCESS
+00A0  50EF     MOVF INDF0, W, ACCESS
+00A2  6EE6     MOVWF POSTINC1, ACCESS
+00A4  C04B     MOVFF ic_ptr, FSR0L
+00A6  FFE9     NOP
+00A8  C04C     MOVFF 0x4C, FSR0H
+00AA  FFEA     NOP
+00AC  0E0F     MOVLW 0xF
+00AE  26E9     ADDWF FSR0L, F, ACCESS
+00B0  0E00     MOVLW 0x0
+00B2  22EA     ADDWFC FSR0H, F, ACCESS
+00B4  CFE9     MOVFF FSR0L, __tmp_0
+00B6  F045     NOP
+00B8  CFEA     MOVFF FSR0H, 0x46
+00BA  F046     NOP
+00BC  C04B     MOVFF ic_ptr, FSR0L
+00BE  FFE9     NOP
+00C0  C04C     MOVFF 0x4C, FSR0H
+00C2  FFEA     NOP
+00C4  0E19     MOVLW 0x19
+00C6  50EB     MOVF PLUSW0, W, ACCESS
+00C8  0100     MOVLB 0x0
+00CA  6AEA     CLRF FSR0H, ACCESS
+00CC  2545     ADDWF __tmp_0, W, BANKED
+00CE  6EE9     MOVWF FSR0L, ACCESS
+00D0  5146     MOVF 0x46, W, BANKED
+00D2  22EA     ADDWFC FSR0H, F, ACCESS
+00D4  52E5     MOVF POSTDEC1, F, ACCESS
+00D6  50E7     MOVF INDF1, W, ACCESS
+00D8  6EEF     MOVWF INDF0, ACCESS
+53:                }
+54:                ic_ptr->outbuflen = length;
+00EE  C04B     MOVFF ic_ptr, FSR0L
+00F0  FFE9     NOP
+00F2  C04C     MOVFF 0x4C, FSR0H
+00F4  FFEA     NOP
+00F6  0E19     MOVLW 0x19
+00F8  26E9     ADDWF FSR0L, F, ACCESS
+00FA  0E00     MOVLW 0x0
+00FC  22EA     ADDWFC FSR0H, F, ACCESS
+00FE  EB02     MOVSF 0x2, 0xFEF
+0100  FFEF     NOP
+55:                ic_ptr->outbufind = 1; // point to the second byte to be sent
+0102  C04B     MOVFF ic_ptr, FSR0L
+0104  FFE9     NOP
+0106  C04C     MOVFF 0x4C, FSR0H
+0108  FFEA     NOP
+010A  0E1A     MOVLW 0x1A
+010C  26E9     ADDWF FSR0L, F, ACCESS
+010E  0E00     MOVLW 0x0
+0110  22EA     ADDWFC FSR0H, F, ACCESS
+0112  0E01     MOVLW 0x1
+0114  6EEF     MOVWF INDF0, ACCESS
+56:            
+57:                // put the first byte into the I2C peripheral
+58:                SSPBUF = ic_ptr->outbuffer[0];
+0116  C04B     MOVFF ic_ptr, FSR0L
+0118  FFE9     NOP
+011A  C04C     MOVFF 0x4C, FSR0H
+011C  FFEA     NOP
+011E  0E0F     MOVLW 0xF
+0120  50EB     MOVF PLUSW0, W, ACCESS
+0122  6EC9     MOVWF SSPBUF, ACCESS
+59:                // we must be ready to go at this point, because we'll be releasing the I2C
+60:                // peripheral which will soon trigger an interrupt
+61:                SSPCON1bits.CKP = 1;
+0124  88C6     BSF SSPCON1, 4, ACCESS
+62:            
+63:            }
+0126  E941     SUBFSR 1, 0x1
+0128  CFE7     MOVFF INDF1, FSR2L
+012A  FFD9     NOP
+012C  0012     RETURN 0
+64:            
+65:            // an internal subroutine used in the slave version of the i2c_int_handler
+66:            
+67:            void handle_start(unsigned char data_read) {
+012E  CFD9     MOVFF FSR2L, POSTINC1
+0130  FFE6     NOP
+0132  CFE1     MOVFF FSR1L, FSR2L
+0134  FFD9     NOP
+0136  E982     SUBFSR 2, 0x2
+68:                ic_ptr->event_count = 1;
+0138  C04B     MOVFF ic_ptr, FSR0L
+013A  FFE9     NOP
+013C  C04C     MOVFF 0x4C, FSR0H
+013E  FFEA     NOP
+0140  0E0B     MOVLW 0xB
+0142  26E9     ADDWF FSR0L, F, ACCESS
+0144  0E00     MOVLW 0x0
+0146  22EA     ADDWFC FSR0H, F, ACCESS
+0148  0E01     MOVLW 0x1
+014A  6EEF     MOVWF INDF0, ACCESS
+69:                ic_ptr->buflen = 0;
+014C  C04B     MOVFF ic_ptr, FSR0L
+014E  FFE9     NOP
+0150  C04C     MOVFF 0x4C, FSR0H
+0152  FFEA     NOP
+0154  0E0A     MOVLW 0xA
+0156  26E9     ADDWF FSR0L, F, ACCESS
+0158  0E00     MOVLW 0x0
+015A  22EA     ADDWFC FSR0H, F, ACCESS
+015C  6AEF     CLRF INDF0, ACCESS
+70:                // check to see if we also got the address
+71:                if (data_read) {
+015E  5000     MOVF [0x0], W, ACCESS
+0160  E038     BZ 0x1D2
+72:                    if (SSPSTATbits.D_A == 1) {
+0162  AAC7     BTFSS SSPSTAT, 5, ACCESS
+0164  D01E     BRA 0x1A2
+73:                        // this is bad because we got data and
+74:                        // we wanted an address
+75:                        ic_ptr->status = I2C_IDLE;
+0166  C04B     MOVFF ic_ptr, FSR0L
+0168  FFE9     NOP
+016A  C04C     MOVFF 0x4C, FSR0H
+016C  FFEA     NOP
+016E  0E0C     MOVLW 0xC
+0170  26E9     ADDWF FSR0L, F, ACCESS
+0172  0E00     MOVLW 0x0
+0174  22EA     ADDWFC FSR0H, F, ACCESS
+0176  0E05     MOVLW 0x5
+0178  6EEF     MOVWF INDF0, ACCESS
+76:                        ic_ptr->error_count++;
+017A  C04B     MOVFF ic_ptr, FSR0L
+017C  FFE9     NOP
+017E  C04C     MOVFF 0x4C, FSR0H
+0180  FFEA     NOP
+0182  0E0E     MOVLW 0xE
+0184  26E9     ADDWF FSR0L, F, ACCESS
+0186  0E00     MOVLW 0x0
+0188  22EA     ADDWFC FSR0H, F, ACCESS
+018A  2AEF     INCF INDF0, F, ACCESS
+77:                        ic_ptr->error_code = I2C_ERR_NOADDR;
+018C  C04B     MOVFF ic_ptr, FSR0L
+018E  FFE9     NOP
+0190  C04C     MOVFF 0x4C, FSR0H
+0192  FFEA     NOP
+0194  0E0D     MOVLW 0xD
+0196  26E9     ADDWF FSR0L, F, ACCESS
+0198  0E00     MOVLW 0x0
+019A  22EA     ADDWFC FSR0H, F, ACCESS
+019C  0E05     MOVLW 0x5
+019E  6EEF     MOVWF INDF0, ACCESS
+78:                    } else {
+01A0  D017     BRA 0x1D0
+79:                        if (SSPSTATbits.R_W == 1) {
+01A2  A4C7     BTFSS SSPSTAT, 2, ACCESS
+01A4  D00B     BRA 0x1BC
+80:                            ic_ptr->status = I2C_SLAVE_SEND;
+01A6  C04B     MOVFF ic_ptr, FSR0L
+01A8  FFE9     NOP
+01AA  C04C     MOVFF 0x4C, FSR0H
+01AC  FFEA     NOP
+01AE  0E0C     MOVLW 0xC
+01B0  26E9     ADDWF FSR0L, F, ACCESS
+01B2  0E00     MOVLW 0x0
+01B4  22EA     ADDWFC FSR0H, F, ACCESS
+01B6  0E08     MOVLW 0x8
+01B8  6EEF     MOVWF INDF0, ACCESS
+81:                        } else {
+01BA  D00A     BRA 0x1D0
+82:                            ic_ptr->status = I2C_RCV_DATA;
+01BC  C04B     MOVFF ic_ptr, FSR0L
+01BE  FFE9     NOP
+01C0  C04C     MOVFF 0x4C, FSR0H
+01C2  FFEA     NOP
+01C4  0E0C     MOVLW 0xC
+01C6  26E9     ADDWF FSR0L, F, ACCESS
+01C8  0E00     MOVLW 0x0
+01CA  22EA     ADDWFC FSR0H, F, ACCESS
+01CC  0E07     MOVLW 0x7
+01CE  6EEF     MOVWF INDF0, ACCESS
+83:                        }
+84:                    }
+85:                } else {
+01D0  D00A     BRA 0x1E6
+86:                    ic_ptr->status = I2C_STARTED;
+01D2  C04B     MOVFF ic_ptr, FSR0L
+01D4  FFE9     NOP
+01D6  C04C     MOVFF 0x4C, FSR0H
+01D8  FFEA     NOP
+01DA  0E0C     MOVLW 0xC
+01DC  26E9     ADDWF FSR0L, F, ACCESS
+01DE  0E00     MOVLW 0x0
+01E0  22EA     ADDWFC FSR0H, F, ACCESS
+01E2  0E06     MOVLW 0x6
+01E4  6EEF     MOVWF INDF0, ACCESS
+87:                }
+88:            }
+01E6  E941     SUBFSR 1, 0x1
+01E8  CFE7     MOVFF INDF1, FSR2L
+01EA  FFD9     NOP
+01EC  0012     RETURN 0
+89:            
+90:            // this is the interrupt handler for i2c -- it is currently built for slave mode
+91:            // -- to add master mode, you should determine (at the top of the interrupt handler)
+92:            //    which mode you are in and call the appropriate subroutine.  The existing code
+93:            //    below should be moved into its own "i2c_slave_handler()" routine and the new
+94:            //    master code should be in a subroutine called "i2c_master_handler()"
+95:            
+96:            void i2c_int_handler() {
+01EE  CFD9     MOVFF FSR2L, POSTINC1
+01F0  FFE6     NOP
+01F2  CFE1     MOVFF FSR1L, FSR2L
+01F4  FFD9     NOP
+01F6  E981     SUBFSR 2, 0x1
+01F8  E849     ADDFSR 1, 0x9
+97:                unsigned char i2c_data;
+98:                unsigned char data_read = 0;
+01FA  6A02     CLRF [0x2], ACCESS
+99:                unsigned char data_written = 0;
+01FC  6A03     CLRF [0x3], ACCESS
+100:               unsigned char msg_ready = 0;
+01FE  6A04     CLRF [0x4], ACCESS
+101:               unsigned char msg_to_send = 0;
+0200  6A05     CLRF [0x5], ACCESS
+102:               unsigned char overrun_error = 0;
+0202  6A06     CLRF [0x6], ACCESS
+103:               unsigned char error_buf[3];
+104:           
+105:               // clear SSPOV
+106:               if (SSPCON1bits.SSPOV == 1) {
+0204  ACC6     BTFSS SSPCON1, 6, ACCESS
+0206  D020     BRA 0x248
+107:                   SSPCON1bits.SSPOV = 0;
+0208  9CC6     BCF SSPCON1, 6, ACCESS
+108:                   // we failed to read the buffer in time, so we know we
+109:                   // can't properly receive this message, just put us in the
+110:                   // a state where we are looking for a new message
+111:                   ic_ptr->status = I2C_IDLE;
+020A  C04B     MOVFF ic_ptr, FSR0L
+020C  FFE9     NOP
+020E  C04C     MOVFF 0x4C, FSR0H
+0210  FFEA     NOP
+0212  0E0C     MOVLW 0xC
+0214  26E9     ADDWF FSR0L, F, ACCESS
+0216  0E00     MOVLW 0x0
+0218  22EA     ADDWFC FSR0H, F, ACCESS
+021A  0E05     MOVLW 0x5
+021C  6EEF     MOVWF INDF0, ACCESS
+112:                   overrun_error = 1;
+021E  0E01     MOVLW 0x1
+0220  6E06     MOVWF [0x6], ACCESS
+113:                   ic_ptr->error_count++;
+0222  C04B     MOVFF ic_ptr, FSR0L
+0224  FFE9     NOP
+0226  C04C     MOVFF 0x4C, FSR0H
+0228  FFEA     NOP
+022A  0E0E     MOVLW 0xE
+022C  26E9     ADDWF FSR0L, F, ACCESS
+022E  0E00     MOVLW 0x0
+0230  22EA     ADDWFC FSR0H, F, ACCESS
+0232  2AEF     INCF INDF0, F, ACCESS
+114:                   ic_ptr->error_code = I2C_ERR_OVERRUN;
+0234  C04B     MOVFF ic_ptr, FSR0L
+0236  FFE9     NOP
+0238  C04C     MOVFF 0x4C, FSR0H
+023A  FFEA     NOP
+023C  0E0D     MOVLW 0xD
+023E  26E9     ADDWF FSR0L, F, ACCESS
+0240  0E00     MOVLW 0x0
+0242  22EA     ADDWFC FSR0H, F, ACCESS
+0244  0E04     MOVLW 0x4
+0246  6EEF     MOVWF INDF0, ACCESS
+115:               }
+116:               // read something if it is there
+117:               if (SSPSTATbits.BF == 1) {
+0248  A0C7     BTFSS SSPSTAT, 0, ACCESS
+024A  D004     BRA 0x254
+118:                   i2c_data = SSPBUF;
+024C  50C9     MOVF SSPBUF, W, ACCESS
+024E  6E01     MOVWF [0x1], ACCESS
+119:                   data_read = 1;
+0250  0E01     MOVLW 0x1
+0252  6E02     MOVWF [0x2], ACCESS
+120:               }
+121:           
+122:               // toggle an LED
+123:               //LATBbits.LATB2 = !LATBbits.LATB2;
+124:           
+125:               if (!overrun_error) {
+0254  5006     MOVF [0x6], W, ACCESS
+0256  E001     BZ 0x25A
+0258  D191     BRA 0x57C
+126:                   switch (ic_ptr->status) {
+025A  C04B     MOVFF ic_ptr, FSR0L
+025C  FFE9     NOP
+025E  C04C     MOVFF 0x4C, FSR0H
+0260  FFEA     NOP
+0262  0E0C     MOVLW 0xC
+0264  50EB     MOVF PLUSW0, W, ACCESS
+0266  0A07     XORLW 0x7
+0268  E101     BNZ 0x26C
+026A  D0D0     BRA 0x40C
+026C  0A0F     XORLW 0xF
+026E  E101     BNZ 0x272
+0270  D08D     BRA 0x38C
+0272  0A0E     XORLW 0xE
+0274  E015     BZ 0x2A0
+0276  0A03     XORLW 0x3
+0278  E001     BZ 0x27C
+027A  D180     BRA 0x57C
+127:                       case I2C_IDLE:
+128:                       {
+129:                           // ignore anything except a start
+130:                           if (SSPSTATbits.S == 1) {
+027C  A6C7     BTFSS SSPSTAT, 3, ACCESS
+027E  D00F     BRA 0x29E
+131:                               handle_start(data_read);
+0280  EB02     MOVSF 0x2, 0xFE6
+0282  FFE6     NOP
+0284  DF54     RCALL handle_start
+0286  E941     SUBFSR 1, 0x1
+132:                               // if we see a slave read, then we need to handle it here
+133:                               if (ic_ptr->status == I2C_SLAVE_SEND) {
+0288  C04B     MOVFF ic_ptr, FSR0L
+028A  FFE9     NOP
+028C  C04C     MOVFF 0x4C, FSR0H
+028E  FFEA     NOP
+0290  0E0C     MOVLW 0xC
+0292  50EB     MOVF PLUSW0, W, ACCESS
+0294  0808     SUBLW 0x8
+0296  E103     BNZ 0x29E
+134:                                   data_read = 0;
+0298  6A02     CLRF [0x2], ACCESS
+135:                                   msg_to_send = 1;
+029A  0E01     MOVLW 0x1
+029C  6E05     MOVWF [0x5], ACCESS
+136:                               }
+137:                           }
+138:                           break;
+029E  D16E     BRA 0x57C
+139:                       }
+140:                       case I2C_STARTED:
+141:                       {
+142:                           // in this case, we expect either an address or a stop bit
+143:                           if (SSPSTATbits.P == 1) {
+02A0  A8C7     BTFSS SSPSTAT, 4, ACCESS
+02A2  D02E     BRA 0x300
+144:                               // we need to check to see if we also read an
+145:                               // address (a message of length 0)
+146:                               ic_ptr->event_count++;
+02A4  C04B     MOVFF ic_ptr, FSR0L
+02A6  FFE9     NOP
+02A8  C04C     MOVFF 0x4C, FSR0H
+02AA  FFEA     NOP
+02AC  0E0B     MOVLW 0xB
+02AE  26E9     ADDWF FSR0L, F, ACCESS
+02B0  0E00     MOVLW 0x0
+02B2  22EA     ADDWFC FSR0H, F, ACCESS
+02B4  2AEF     INCF INDF0, F, ACCESS
+147:                               if (data_read) {
+02B6  5002     MOVF [0x2], W, ACCESS
+02B8  E018     BZ 0x2EA
+148:                                   if (SSPSTATbits.D_A == 0) {
+02BA  BAC7     BTFSC SSPSTAT, 5, ACCESS
+02BC  D003     BRA 0x2C4
+149:                                       msg_ready = 1;
+02BE  0E01     MOVLW 0x1
+02C0  6E04     MOVWF [0x4], ACCESS
+150:                                   } else {
+02C2  D013     BRA 0x2EA
+151:                                       ic_ptr->error_count++;
+02C4  C04B     MOVFF ic_ptr, FSR0L
+02C6  FFE9     NOP
+02C8  C04C     MOVFF 0x4C, FSR0H
+02CA  FFEA     NOP
+02CC  0E0E     MOVLW 0xE
+02CE  26E9     ADDWF FSR0L, F, ACCESS
+02D0  0E00     MOVLW 0x0
+02D2  22EA     ADDWFC FSR0H, F, ACCESS
+02D4  2AEF     INCF INDF0, F, ACCESS
+152:                                       ic_ptr->error_code = I2C_ERR_NODATA;
+02D6  C04B     MOVFF ic_ptr, FSR0L
+02D8  FFE9     NOP
+02DA  C04C     MOVFF 0x4C, FSR0H
+02DC  FFEA     NOP
+02DE  0E0D     MOVLW 0xD
+02E0  26E9     ADDWF FSR0L, F, ACCESS
+02E2  0E00     MOVLW 0x0
+02E4  22EA     ADDWFC FSR0H, F, ACCESS
+02E6  0E06     MOVLW 0x6
+02E8  6EEF     MOVWF INDF0, ACCESS
+153:                                   }
+154:                               }
+155:                               ic_ptr->status = I2C_IDLE;
+02EA  C04B     MOVFF ic_ptr, FSR0L
+02EC  FFE9     NOP
+02EE  C04C     MOVFF 0x4C, FSR0H
+02F0  FFEA     NOP
+02F2  0E0C     MOVLW 0xC
+02F4  26E9     ADDWF FSR0L, F, ACCESS
+02F6  0E00     MOVLW 0x0
+02F8  22EA     ADDWFC FSR0H, F, ACCESS
+02FA  0E05     MOVLW 0x5
+02FC  6EEF     MOVWF INDF0, ACCESS
+156:                           } else if (data_read) {
+02FE  D045     BRA 0x38A
+0300  5002     MOVF [0x2], W, ACCESS
+0302  E043     BZ 0x38A
+157:                               ic_ptr->event_count++;
+0304  C04B     MOVFF ic_ptr, FSR0L
+0306  FFE9     NOP
+0308  C04C     MOVFF 0x4C, FSR0H
+030A  FFEA     NOP
+030C  0E0B     MOVLW 0xB
+030E  26E9     ADDWF FSR0L, F, ACCESS
+0310  0E00     MOVLW 0x0
+0312  22EA     ADDWFC FSR0H, F, ACCESS
+0314  2AEF     INCF INDF0, F, ACCESS
+158:                               if (SSPSTATbits.D_A == 0) {
+0316  BAC7     BTFSC SSPSTAT, 5, ACCESS
+0318  D01B     BRA 0x350
+159:                                   if (SSPSTATbits.R_W == 0) { // slave write
+031A  B4C7     BTFSC SSPSTAT, 2, ACCESS
+031C  D00B     BRA 0x334
+160:                                       ic_ptr->status = I2C_RCV_DATA;
+031E  C04B     MOVFF ic_ptr, FSR0L
+0320  FFE9     NOP
+0322  C04C     MOVFF 0x4C, FSR0H
+0324  FFEA     NOP
+0326  0E0C     MOVLW 0xC
+0328  26E9     ADDWF FSR0L, F, ACCESS
+032A  0E00     MOVLW 0x0
+032C  22EA     ADDWFC FSR0H, F, ACCESS
+032E  0E07     MOVLW 0x7
+0330  6EEF     MOVWF INDF0, ACCESS
+161:                                   } else { // slave read
+0332  D00D     BRA 0x34E
+162:                                       ic_ptr->status = I2C_SLAVE_SEND;
+0334  C04B     MOVFF ic_ptr, FSR0L
+0336  FFE9     NOP
+0338  C04C     MOVFF 0x4C, FSR0H
+033A  FFEA     NOP
+033C  0E0C     MOVLW 0xC
+033E  26E9     ADDWF FSR0L, F, ACCESS
+0340  0E00     MOVLW 0x0
+0342  22EA     ADDWFC FSR0H, F, ACCESS
+0344  0E08     MOVLW 0x8
+0346  6EEF     MOVWF INDF0, ACCESS
+163:                                       msg_to_send = 1;
+0348  0E01     MOVLW 0x1
+034A  6E05     MOVWF [0x5], ACCESS
+164:                                       // don't let the clock stretching bit be let go
+165:                                       data_read = 0;
+034C  6A02     CLRF [0x2], ACCESS
+166:                                   }
+167:                               } else {
+034E  D01D     BRA 0x38A
+168:                                   ic_ptr->error_count++;
+0350  C04B     MOVFF ic_ptr, FSR0L
+0352  FFE9     NOP
+0354  C04C     MOVFF 0x4C, FSR0H
+0356  FFEA     NOP
+0358  0E0E     MOVLW 0xE
+035A  26E9     ADDWF FSR0L, F, ACCESS
+035C  0E00     MOVLW 0x0
+035E  22EA     ADDWFC FSR0H, F, ACCESS
+0360  2AEF     INCF INDF0, F, ACCESS
+169:                                   ic_ptr->status = I2C_IDLE;
+0362  C04B     MOVFF ic_ptr, FSR0L
+0364  FFE9     NOP
+0366  C04C     MOVFF 0x4C, FSR0H
+0368  FFEA     NOP
+036A  0E0C     MOVLW 0xC
+036C  26E9     ADDWF FSR0L, F, ACCESS
+036E  0E00     MOVLW 0x0
+0370  22EA     ADDWFC FSR0H, F, ACCESS
+0372  0E05     MOVLW 0x5
+0374  6EEF     MOVWF INDF0, ACCESS
+170:                                   ic_ptr->error_code = I2C_ERR_NODATA;
+0376  C04B     MOVFF ic_ptr, FSR0L
+0378  FFE9     NOP
+037A  C04C     MOVFF 0x4C, FSR0H
+037C  FFEA     NOP
+037E  0E0D     MOVLW 0xD
+0380  26E9     ADDWF FSR0L, F, ACCESS
+0382  0E00     MOVLW 0x0
+0384  22EA     ADDWFC FSR0H, F, ACCESS
+0386  0E06     MOVLW 0x6
+0388  6EEF     MOVWF INDF0, ACCESS
+171:                               }
+172:                           }
+173:                           break;
+038A  D0F8     BRA 0x57C
+174:                       }
+175:                       case I2C_SLAVE_SEND:
+176:                       {
+177:                           if (ic_ptr->outbufind < ic_ptr->outbuflen) {
+038C  C04B     MOVFF ic_ptr, FSR0L
+038E  FFE9     NOP
+0390  C04C     MOVFF 0x4C, FSR0H
+0392  FFEA     NOP
+0394  0E1A     MOVLW 0x1A
+0396  50EB     MOVF PLUSW0, W, ACCESS
+0398  0100     MOVLB 0x0
+039A  6F45     MOVWF __tmp_0, BANKED
+039C  C04B     MOVFF ic_ptr, FSR0L
+039E  FFE9     NOP
+03A0  C04C     MOVFF 0x4C, FSR0H
+03A2  FFEA     NOP
+03A4  0E19     MOVLW 0x19
+03A6  50EB     MOVF PLUSW0, W, ACCESS
+03A8  5D45     SUBWF __tmp_0, W, BANKED
+03AA  E225     BC 0x3F6
+178:                               SSPBUF = ic_ptr->outbuffer[ic_ptr->outbufind];
+03AC  C04B     MOVFF ic_ptr, FSR0L
+03AE  FFE9     NOP
+03B0  C04C     MOVFF 0x4C, FSR0H
+03B2  FFEA     NOP
+03B4  0E0F     MOVLW 0xF
+03B6  26E9     ADDWF FSR0L, F, ACCESS
+03B8  0E00     MOVLW 0x0
+03BA  22EA     ADDWFC FSR0H, F, ACCESS
+03BC  CFE9     MOVFF FSR0L, __tmp_0
+03BE  F045     NOP
+03C0  CFEA     MOVFF FSR0H, 0x46
+03C2  F046     NOP
+03C4  C04B     MOVFF ic_ptr, FSR0L
+03C6  FFE9     NOP
+03C8  C04C     MOVFF 0x4C, FSR0H
+03CA  FFEA     NOP
+03CC  0E1A     MOVLW 0x1A
+03CE  50EB     MOVF PLUSW0, W, ACCESS
+03D0  6AEA     CLRF FSR0H, ACCESS
+03D2  2545     ADDWF __tmp_0, W, BANKED
+03D4  6EE9     MOVWF FSR0L, ACCESS
+03D6  5146     MOVF 0x46, W, BANKED
+03D8  22EA     ADDWFC FSR0H, F, ACCESS
+03DA  50EF     MOVF INDF0, W, ACCESS
+03DC  6EC9     MOVWF SSPBUF, ACCESS
+179:                               ic_ptr->outbufind++;
+03DE  C04B     MOVFF ic_ptr, FSR0L
+03E0  FFE9     NOP
+03E2  C04C     MOVFF 0x4C, FSR0H
+03E4  FFEA     NOP
+03E6  0E1A     MOVLW 0x1A
+03E8  26E9     ADDWF FSR0L, F, ACCESS
+03EA  0E00     MOVLW 0x0
+03EC  22EA     ADDWFC FSR0H, F, ACCESS
+03EE  2AEF     INCF INDF0, F, ACCESS
+180:                               data_written = 1;
+03F0  0E01     MOVLW 0x1
+03F2  6E03     MOVWF [0x3], ACCESS
+181:                           } else {
+03F4  D00A     BRA 0x40A
+182:                               // we have nothing left to send
+183:                               ic_ptr->status = I2C_IDLE;
+03F6  C04B     MOVFF ic_ptr, FSR0L
+03F8  FFE9     NOP
+03FA  C04C     MOVFF 0x4C, FSR0H
+03FC  FFEA     NOP
+03FE  0E0C     MOVLW 0xC
+0400  26E9     ADDWF FSR0L, F, ACCESS
+0402  0E00     MOVLW 0x0
+0404  22EA     ADDWFC FSR0H, F, ACCESS
+0406  0E05     MOVLW 0x5
+0408  6EEF     MOVWF INDF0, ACCESS
+184:                           }
+185:                           break;
+040A  D0B8     BRA 0x57C
+186:                       }
+187:                       case I2C_RCV_DATA:
+188:                       {
+189:                           // we expect either data or a stop bit or a (if a restart, an addr)
+190:                           if (SSPSTATbits.P == 1) {
+040C  A8C7     BTFSS SSPSTAT, 4, ACCESS
+040E  D05A     BRA 0x4C4
+191:                               // we need to check to see if we also read data
+192:                               ic_ptr->event_count++;
+0410  C04B     MOVFF ic_ptr, FSR0L
+0412  FFE9     NOP
+0414  C04C     MOVFF 0x4C, FSR0H
+0416  FFEA     NOP
+0418  0E0B     MOVLW 0xB
+041A  26E9     ADDWF FSR0L, F, ACCESS
+041C  0E00     MOVLW 0x0
+041E  22EA     ADDWFC FSR0H, F, ACCESS
+0420  2AEF     INCF INDF0, F, ACCESS
+193:                               if (data_read) {
+0422  5002     MOVF [0x2], W, ACCESS
+0424  E042     BZ 0x4AA
+194:                                   if (SSPSTATbits.D_A == 1) {
+0426  AAC7     BTFSS SSPSTAT, 5, ACCESS
+0428  D022     BRA 0x46E
+195:                                       ic_ptr->buffer[ic_ptr->buflen] = i2c_data;
+042A  C04B     MOVFF ic_ptr, FSR0L
+042C  FFE9     NOP
+042E  C04C     MOVFF 0x4C, FSR0H
+0430  FFEA     NOP
+0432  CFE9     MOVFF FSR0L, __tmp_0
+0434  F045     NOP
+0436  CFEA     MOVFF FSR0H, 0x46
+0438  F046     NOP
+043A  C04B     MOVFF ic_ptr, FSR0L
+043C  FFE9     NOP
+043E  C04C     MOVFF 0x4C, FSR0H
+0440  FFEA     NOP
+0442  0E0A     MOVLW 0xA
+0444  50EB     MOVF PLUSW0, W, ACCESS
+0446  0100     MOVLB 0x0
+0448  6AEA     CLRF FSR0H, ACCESS
+044A  2545     ADDWF __tmp_0, W, BANKED
+044C  6EE9     MOVWF FSR0L, ACCESS
+044E  5146     MOVF 0x46, W, BANKED
+0450  22EA     ADDWFC FSR0H, F, ACCESS
+0452  EB01     MOVSF 0x1, 0xFEF
+0454  FFEF     NOP
+196:                                       ic_ptr->buflen++;
+0456  C04B     MOVFF ic_ptr, FSR0L
+0458  FFE9     NOP
+045A  C04C     MOVFF 0x4C, FSR0H
+045C  FFEA     NOP
+045E  0E0A     MOVLW 0xA
+0460  26E9     ADDWF FSR0L, F, ACCESS
+0462  0E00     MOVLW 0x0
+0464  22EA     ADDWFC FSR0H, F, ACCESS
+0466  2AEF     INCF INDF0, F, ACCESS
+197:                                       msg_ready = 1;
+0468  0E01     MOVLW 0x1
+046A  6E04     MOVWF [0x4], ACCESS
+198:                                   } else {
+046C  D01D     BRA 0x4A8
+199:                                       ic_ptr->error_count++;
+046E  C04B     MOVFF ic_ptr, FSR0L
+0470  FFE9     NOP
+0472  C04C     MOVFF 0x4C, FSR0H
+0474  FFEA     NOP
+0476  0E0E     MOVLW 0xE
+0478  26E9     ADDWF FSR0L, F, ACCESS
+047A  0E00     MOVLW 0x0
+047C  22EA     ADDWFC FSR0H, F, ACCESS
+047E  2AEF     INCF INDF0, F, ACCESS
+200:                                       ic_ptr->error_code = I2C_ERR_NODATA;
+0480  C04B     MOVFF ic_ptr, FSR0L
+0482  FFE9     NOP
+0484  C04C     MOVFF 0x4C, FSR0H
+0486  FFEA     NOP
+0488  0E0D     MOVLW 0xD
+048A  26E9     ADDWF FSR0L, F, ACCESS
+048C  0E00     MOVLW 0x0
+048E  22EA     ADDWFC FSR0H, F, ACCESS
+0490  0E06     MOVLW 0x6
+0492  6EEF     MOVWF INDF0, ACCESS
+201:                                       ic_ptr->status = I2C_IDLE;
+0494  C04B     MOVFF ic_ptr, FSR0L
+0496  FFE9     NOP
+0498  C04C     MOVFF 0x4C, FSR0H
+049A  FFEA     NOP
+049C  0E0C     MOVLW 0xC
+049E  26E9     ADDWF FSR0L, F, ACCESS
+04A0  0E00     MOVLW 0x0
+04A2  22EA     ADDWFC FSR0H, F, ACCESS
+04A4  0E05     MOVLW 0x5
+04A6  6EEF     MOVWF INDF0, ACCESS
+202:                                   }
+203:                               } else {
+04A8  D002     BRA 0x4AE
+204:                                   msg_ready = 1;
+04AA  0E01     MOVLW 0x1
+04AC  6E04     MOVWF [0x4], ACCESS
+205:                               }
+206:                               ic_ptr->status = I2C_IDLE;
+04AE  C04B     MOVFF ic_ptr, FSR0L
+04B0  FFE9     NOP
+04B2  C04C     MOVFF 0x4C, FSR0H
+04B4  FFEA     NOP
+04B6  0E0C     MOVLW 0xC
+04B8  26E9     ADDWF FSR0L, F, ACCESS
+04BA  0E00     MOVLW 0x0
+04BC  22EA     ADDWFC FSR0H, F, ACCESS
+04BE  0E05     MOVLW 0x5
+04C0  6EEF     MOVWF INDF0, ACCESS
+207:                           } else if (data_read) {
+04C2  D05B     BRA 0x57A
+04C4  5002     MOVF [0x2], W, ACCESS
+04C6  E059     BZ 0x57A
+208:                               ic_ptr->event_count++;
+04C8  C04B     MOVFF ic_ptr, FSR0L
+04CA  FFE9     NOP
+04CC  C04C     MOVFF 0x4C, FSR0H
+04CE  FFEA     NOP
+04D0  0E0B     MOVLW 0xB
+04D2  26E9     ADDWF FSR0L, F, ACCESS
+04D4  0E00     MOVLW 0x0
+04D6  22EA     ADDWFC FSR0H, F, ACCESS
+04D8  2AEF     INCF INDF0, F, ACCESS
+209:                               if (SSPSTATbits.D_A == 1) {
+04DA  AAC7     BTFSS SSPSTAT, 5, ACCESS
+04DC  D020     BRA 0x51E
+210:                                   ic_ptr->buffer[ic_ptr->buflen] = i2c_data;
+04DE  C04B     MOVFF ic_ptr, FSR0L
+04E0  FFE9     NOP
+04E2  C04C     MOVFF 0x4C, FSR0H
+04E4  FFEA     NOP
+04E6  CFE9     MOVFF FSR0L, __tmp_0
+04E8  F045     NOP
+04EA  CFEA     MOVFF FSR0H, 0x46
+04EC  F046     NOP
+04EE  C04B     MOVFF ic_ptr, FSR0L
+04F0  FFE9     NOP
+04F2  C04C     MOVFF 0x4C, FSR0H
+04F4  FFEA     NOP
+04F6  0E0A     MOVLW 0xA
+04F8  50EB     MOVF PLUSW0, W, ACCESS
+04FA  0100     MOVLB 0x0
+04FC  6AEA     CLRF FSR0H, ACCESS
+04FE  2545     ADDWF __tmp_0, W, BANKED
+0500  6EE9     MOVWF FSR0L, ACCESS
+0502  5146     MOVF 0x46, W, BANKED
+0504  22EA     ADDWFC FSR0H, F, ACCESS
+0506  EB01     MOVSF 0x1, 0xFEF
+0508  FFEF     NOP
+211:                                   ic_ptr->buflen++;
+050A  C04B     MOVFF ic_ptr, FSR0L
+050C  FFE9     NOP
+050E  C04C     MOVFF 0x4C, FSR0H
+0510  FFEA     NOP
+0512  0E0A     MOVLW 0xA
+0514  26E9     ADDWF FSR0L, F, ACCESS
+0516  0E00     MOVLW 0x0
+0518  22EA     ADDWFC FSR0H, F, ACCESS
+051A  2AEF     INCF INDF0, F, ACCESS
+212:                               } else /* a restart */ {
+051C  D02E     BRA 0x57A
+213:                                   if (SSPSTATbits.R_W == 1) {
+051E  A4C7     BTFSS SSPSTAT, 2, ACCESS
+0520  D00F     BRA 0x540
+214:                                       ic_ptr->status = I2C_SLAVE_SEND;
+0522  C04B     MOVFF ic_ptr, FSR0L
+0524  FFE9     NOP
+0526  C04C     MOVFF 0x4C, FSR0H
+0528  FFEA     NOP
+052A  0E0C     MOVLW 0xC
+052C  26E9     ADDWF FSR0L, F, ACCESS
+052E  0E00     MOVLW 0x0
+0530  22EA     ADDWFC FSR0H, F, ACCESS
+0532  0E08     MOVLW 0x8
+0534  6EEF     MOVWF INDF0, ACCESS
+215:                                       msg_ready = 1;
+0536  0E01     MOVLW 0x1
+0538  6E04     MOVWF [0x4], ACCESS
+216:                                       msg_to_send = 1;
+053A  6E05     MOVWF [0x5], ACCESS
+217:                                       // don't let the clock stretching bit be let go
+218:                                       data_read = 0;
+053C  6A02     CLRF [0x2], ACCESS
+219:                                   } else { /* bad to recv an address again, we aren't ready */
+053E  D01D     BRA 0x57A
+220:                                       ic_ptr->error_count++;
+0540  C04B     MOVFF ic_ptr, FSR0L
+0542  FFE9     NOP
+0544  C04C     MOVFF 0x4C, FSR0H
+0546  FFEA     NOP
+0548  0E0E     MOVLW 0xE
+054A  26E9     ADDWF FSR0L, F, ACCESS
+054C  0E00     MOVLW 0x0
+054E  22EA     ADDWFC FSR0H, F, ACCESS
+0550  2AEF     INCF INDF0, F, ACCESS
+221:                                       ic_ptr->error_code = I2C_ERR_NODATA;
+0552  C04B     MOVFF ic_ptr, FSR0L
+0554  FFE9     NOP
+0556  C04C     MOVFF 0x4C, FSR0H
+0558  FFEA     NOP
+055A  0E0D     MOVLW 0xD
+055C  26E9     ADDWF FSR0L, F, ACCESS
+055E  0E00     MOVLW 0x0
+0560  22EA     ADDWFC FSR0H, F, ACCESS
+0562  0E06     MOVLW 0x6
+0564  6EEF     MOVWF INDF0, ACCESS
+222:                                       ic_ptr->status = I2C_IDLE;
+0566  C04B     MOVFF ic_ptr, FSR0L
+0568  FFE9     NOP
+056A  C04C     MOVFF 0x4C, FSR0H
+056C  FFEA     NOP
+056E  0E0C     MOVLW 0xC
+0570  26E9     ADDWF FSR0L, F, ACCESS
+0572  0E00     MOVLW 0x0
+0574  22EA     ADDWFC FSR0H, F, ACCESS
+0576  0E05     MOVLW 0x5
+0578  6EEF     MOVWF INDF0, ACCESS
+223:                                   }
+224:                               }
+225:                           }
+226:                           break;
+057A  D000     BRA 0x57C
+227:                       }
+228:                   }
+229:               }
+230:           
+231:               // release the clock stretching bit (if we should)
+232:               if (data_read || data_written) {
+057C  5002     MOVF [0x2], W, ACCESS
+057E  E102     BNZ 0x584
+0580  5003     MOVF [0x3], W, ACCESS
+0582  E002     BZ 0x588
+233:                   // release the clock
+234:                   if (SSPCON1bits.CKP == 0) {
+0584  A8C6     BTFSS SSPCON1, 4, ACCESS
+235:                       SSPCON1bits.CKP = 1;
+0586  88C6     BSF SSPCON1, 4, ACCESS
+236:                   }
+237:               }
+238:           
+239:               // must check if the message is too long, if
+240:               if ((ic_ptr->buflen > MAXI2CBUF - 2) && (!msg_ready)) {
+0588  C04B     MOVFF ic_ptr, FSR0L
+058A  FFE9     NOP
+058C  C04C     MOVFF 0x4C, FSR0H
+058E  FFEA     NOP
+0590  0E0A     MOVLW 0xA
+0592  50EB     MOVF PLUSW0, W, ACCESS
+0594  0808     SUBLW 0x8
+0596  E21F     BC 0x5D6
+0598  5004     MOVF [0x4], W, ACCESS
+059A  E11D     BNZ 0x5D6
+241:                   ic_ptr->status = I2C_IDLE;
+059C  C04B     MOVFF ic_ptr, FSR0L
+059E  FFE9     NOP
+05A0  C04C     MOVFF 0x4C, FSR0H
+05A2  FFEA     NOP
+05A4  0E0C     MOVLW 0xC
+05A6  26E9     ADDWF FSR0L, F, ACCESS
+05A8  0E00     MOVLW 0x0
+05AA  22EA     ADDWFC FSR0H, F, ACCESS
+05AC  0E05     MOVLW 0x5
+05AE  6EEF     MOVWF INDF0, ACCESS
+242:                   ic_ptr->error_count++;
+05B0  C04B     MOVFF ic_ptr, FSR0L
+05B2  FFE9     NOP
+05B4  C04C     MOVFF 0x4C, FSR0H
+05B6  FFEA     NOP
+05B8  0E0E     MOVLW 0xE
+05BA  26E9     ADDWF FSR0L, F, ACCESS
+05BC  0E00     MOVLW 0x0
+05BE  22EA     ADDWFC FSR0H, F, ACCESS
+05C0  2AEF     INCF INDF0, F, ACCESS
+243:                   ic_ptr->error_code = I2C_ERR_MSGTOOLONG;
+05C2  C04B     MOVFF ic_ptr, FSR0L
+05C4  FFE9     NOP
+05C6  C04C     MOVFF 0x4C, FSR0H
+05C8  FFEA     NOP
+05CA  0E0D     MOVLW 0xD
+05CC  26E9     ADDWF FSR0L, F, ACCESS
+05CE  0E00     MOVLW 0x0
+05D0  22EA     ADDWFC FSR0H, F, ACCESS
+05D2  0E07     MOVLW 0x7
+05D4  6EEF     MOVWF INDF0, ACCESS
+244:               }
+245:           
+246:               if (msg_ready) {
+05D6  5004     MOVF [0x4], W, ACCESS
+05D8  E041     BZ 0x65C
+247:                   ic_ptr->buffer[ic_ptr->buflen] = ic_ptr->event_count;
+05DA  C04B     MOVFF ic_ptr, FSR0L
+05DC  FFE9     NOP
+05DE  C04C     MOVFF 0x4C, FSR0H
+05E0  FFEA     NOP
+05E2  0E0B     MOVLW 0xB
+05E4  50EB     MOVF PLUSW0, W, ACCESS
+05E6  6EE6     MOVWF POSTINC1, ACCESS
+05E8  C04B     MOVFF ic_ptr, FSR0L
+05EA  FFE9     NOP
+05EC  C04C     MOVFF 0x4C, FSR0H
+05EE  FFEA     NOP
+05F0  CFE9     MOVFF FSR0L, __tmp_0
+05F2  F045     NOP
+05F4  CFEA     MOVFF FSR0H, 0x46
+05F6  F046     NOP
+05F8  C04B     MOVFF ic_ptr, FSR0L
+05FA  FFE9     NOP
+05FC  C04C     MOVFF 0x4C, FSR0H
+05FE  FFEA     NOP
+0600  0E0A     MOVLW 0xA
+0602  50EB     MOVF PLUSW0, W, ACCESS
+0604  0100     MOVLB 0x0
+0606  6AEA     CLRF FSR0H, ACCESS
+0608  2545     ADDWF __tmp_0, W, BANKED
+060A  6EE9     MOVWF FSR0L, ACCESS
+060C  5146     MOVF 0x46, W, BANKED
+060E  22EA     ADDWFC FSR0H, F, ACCESS
+0610  52E5     MOVF POSTDEC1, F, ACCESS
+0612  50E7     MOVF INDF1, W, ACCESS
+0614  6EEF     MOVWF INDF0, ACCESS
+248:                   ToMainHigh_sendmsg(ic_ptr->buflen + 1, MSGT_I2C_DATA, (void *) ic_ptr->buffer);
+0616  C04B     MOVFF ic_ptr, FSR0L
+0618  FFE9     NOP
+061A  C04C     MOVFF 0x4C, FSR0H
+061C  FFEA     NOP
+061E  CFE9     MOVFF FSR0L, __tmp_0
+0620  F045     NOP
+0622  CFEA     MOVFF FSR0H, 0x46
+0624  F046     NOP
+0626  C045     MOVFF __tmp_0, POSTINC1
+0628  FFE6     NOP
+062A  C046     MOVFF 0x46, POSTINC1
+062C  FFE6     NOP
+062E  0E28     MOVLW 0x28
+0630  6EE6     MOVWF POSTINC1, ACCESS
+0632  C04B     MOVFF ic_ptr, FSR0L
+0634  FFE9     NOP
+0636  C04C     MOVFF 0x4C, FSR0H
+0638  FFEA     NOP
+063A  0E0A     MOVLW 0xA
+063C  50EB     MOVF PLUSW0, W, ACCESS
+063E  0F01     ADDLW 0x1
+0640  6EE6     MOVWF POSTINC1, ACCESS
+0642  EC2D     CALL 0xA5A, 0
+0644  F005     NOP
+0646  E944     SUBFSR 1, 0x4
+249:                   ic_ptr->buflen = 0;
+0648  C04B     MOVFF ic_ptr, FSR0L
+064A  FFE9     NOP
+064C  C04C     MOVFF 0x4C, FSR0H
+064E  FFEA     NOP
+0650  0E0A     MOVLW 0xA
+0652  26E9     ADDWF FSR0L, F, ACCESS
+0654  0E00     MOVLW 0x0
+0656  22EA     ADDWFC FSR0H, F, ACCESS
+0658  6AEF     CLRF INDF0, ACCESS
+250:               } else if (ic_ptr->error_count >= I2C_ERR_THRESHOLD) {
+065A  D035     BRA 0x6C6
+065C  C04B     MOVFF ic_ptr, FSR0L
+065E  FFE9     NOP
+0660  C04C     MOVFF 0x4C, FSR0H
+0662  FFEA     NOP
+0664  0E0E     MOVLW 0xE
+0666  50EB     MOVF PLUSW0, W, ACCESS
+0668  0100     MOVLB 0x0
+066A  6F45     MOVWF __tmp_0, BANKED
+066C  0E01     MOVLW 0x1
+066E  5D45     SUBWF __tmp_0, W, BANKED
+0670  E32A     BNC 0x6C6
+251:                   error_buf[0] = ic_ptr->error_count;
+0672  C04B     MOVFF ic_ptr, FSR0L
+0674  FFE9     NOP
+0676  C04C     MOVFF 0x4C, FSR0H
+0678  FFEA     NOP
+067A  0E0E     MOVLW 0xE
+067C  50EB     MOVF PLUSW0, W, ACCESS
+067E  6E07     MOVWF [0x7], ACCESS
+252:                   error_buf[1] = ic_ptr->error_code;
+0680  C04B     MOVFF ic_ptr, FSR0L
+0682  FFE9     NOP
+0684  C04C     MOVFF 0x4C, FSR0H
+0686  FFEA     NOP
+0688  0E0D     MOVLW 0xD
+068A  50EB     MOVF PLUSW0, W, ACCESS
+068C  6E08     MOVWF [0x8], ACCESS
+253:                   error_buf[2] = ic_ptr->event_count;
+068E  C04B     MOVFF ic_ptr, FSR0L
+0690  FFE9     NOP
+0692  C04C     MOVFF 0x4C, FSR0H
+0694  FFEA     NOP
+0696  0E0B     MOVLW 0xB
+0698  50EB     MOVF PLUSW0, W, ACCESS
+069A  6E09     MOVWF [0x9], ACCESS
+254:                   ToMainHigh_sendmsg(sizeof (unsigned char) *3, MSGT_I2C_DBG, (void *) error_buf);
+069C  50D9     MOVF FSR2L, W, ACCESS
+069E  0F07     ADDLW 0x7
+06A0  6EE6     MOVWF POSTINC1, ACCESS
+06A2  CFDA     MOVFF FSR2H, POSTINC1
+06A4  FFE6     NOP
+06A6  0E29     MOVLW 0x29
+06A8  6EE6     MOVWF POSTINC1, ACCESS
+06AA  0E03     MOVLW 0x3
+06AC  6EE6     MOVWF POSTINC1, ACCESS
+06AE  EC2D     CALL 0xA5A, 0
+06B0  F005     NOP
+06B2  E944     SUBFSR 1, 0x4
+255:                   ic_ptr->error_count = 0;
+06B4  C04B     MOVFF ic_ptr, FSR0L
+06B6  FFE9     NOP
+06B8  C04C     MOVFF 0x4C, FSR0H
+06BA  FFEA     NOP
+06BC  0E0E     MOVLW 0xE
+06BE  26E9     ADDWF FSR0L, F, ACCESS
+06C0  0E00     MOVLW 0x0
+06C2  22EA     ADDWFC FSR0H, F, ACCESS
+06C4  6AEF     CLRF INDF0, ACCESS
+256:               }
+257:               if (msg_to_send) {
+06C6  5005     MOVF [0x5], W, ACCESS
+06C8  E013     BZ 0x6F0
+258:                   // send to the queue to *ask* for the data to be sent out
+259:                   ToMainHigh_sendmsg(0, MSGT_I2C_RQST, (void *) ic_ptr->buffer);
+06CA  C04B     MOVFF ic_ptr, FSR0L
+06CC  FFE9     NOP
+06CE  C04C     MOVFF 0x4C, FSR0H
+06D0  FFEA     NOP
+06D2  CFE9     MOVFF FSR0L, __tmp_0
+06D4  F045     NOP
+06D6  CFEA     MOVFF FSR0H, 0x46
+06D8  F046     NOP
+06DA  C045     MOVFF __tmp_0, POSTINC1
+06DC  FFE6     NOP
+06DE  C046     MOVFF 0x46, POSTINC1
+06E0  FFE6     NOP
+06E2  0E2A     MOVLW 0x2A
+06E4  6EE6     MOVWF POSTINC1, ACCESS
+06E6  6AE6     CLRF POSTINC1, ACCESS
+06E8  EC2D     CALL 0xA5A, 0
+06EA  F005     NOP
+06EC  E944     SUBFSR 1, 0x4
+260:                   msg_to_send = 0;
+06EE  6A05     CLRF [0x5], ACCESS
+261:               }
+262:           }
+06F0  E94A     SUBFSR 1, 0xA
+06F2  CFE7     MOVFF INDF1, FSR2L
+06F4  FFD9     NOP
+06F6  0012     RETURN 0
+263:           
+264:           // set up the data structures for this i2c code
+265:           // should be called once before any i2c routines are called
+266:           
+267:           void init_i2c(i2c_comm *ic) {
+06F8  CFD9     MOVFF FSR2L, POSTINC1
+06FA  FFE6     NOP
+06FC  CFE1     MOVFF FSR1L, FSR2L
+06FE  FFD9     NOP
+0700  E983     SUBFSR 2, 0x3
+268:               ic_ptr = ic;
+0702  EB00     MOVSF 0x0, 0x4B
+0704  F04B     NOP
+0706  EB01     MOVSF 0x1, 0x4C
+0708  F04C     NOP
+269:               ic_ptr->buflen = 0;
+070A  C04B     MOVFF ic_ptr, FSR0L
+070C  FFE9     NOP
+070E  C04C     MOVFF 0x4C, FSR0H
+0710  FFEA     NOP
+0712  0E0A     MOVLW 0xA
+0714  26E9     ADDWF FSR0L, F, ACCESS
+0716  0E00     MOVLW 0x0
+0718  22EA     ADDWFC FSR0H, F, ACCESS
+071A  6AEF     CLRF INDF0, ACCESS
+270:               ic_ptr->event_count = 0;
+071C  C04B     MOVFF ic_ptr, FSR0L
+071E  FFE9     NOP
+0720  C04C     MOVFF 0x4C, FSR0H
+0722  FFEA     NOP
+0724  0E0B     MOVLW 0xB
+0726  26E9     ADDWF FSR0L, F, ACCESS
+0728  0E00     MOVLW 0x0
+072A  22EA     ADDWFC FSR0H, F, ACCESS
+072C  6AEF     CLRF INDF0, ACCESS
+271:               ic_ptr->status = I2C_IDLE;
+072E  C04B     MOVFF ic_ptr, FSR0L
+0730  FFE9     NOP
+0732  C04C     MOVFF 0x4C, FSR0H
+0734  FFEA     NOP
+0736  0E0C     MOVLW 0xC
+0738  26E9     ADDWF FSR0L, F, ACCESS
+073A  0E00     MOVLW 0x0
+073C  22EA     ADDWFC FSR0H, F, ACCESS
+073E  0E05     MOVLW 0x5
+0740  6EEF     MOVWF INDF0, ACCESS
+272:               ic_ptr->error_count = 0;
+0742  C04B     MOVFF ic_ptr, FSR0L
+0744  FFE9     NOP
+0746  C04C     MOVFF 0x4C, FSR0H
+0748  FFEA     NOP
+074A  0E0E     MOVLW 0xE
+074C  26E9     ADDWF FSR0L, F, ACCESS
+074E  0E00     MOVLW 0x0
+0750  22EA     ADDWFC FSR0H, F, ACCESS
+0752  6AEF     CLRF INDF0, ACCESS
+273:           }
+0754  E941     SUBFSR 1, 0x1
+0756  CFE7     MOVFF INDF1, FSR2L
+0758  FFD9     NOP
+075A  0012     RETURN 0
+274:           
+275:           // setup the PIC to operate as a slave
+276:           // the address must include the R/W bit
+277:           
+278:           void i2c_configure_slave(unsigned char addr) {
+075C  CFD9     MOVFF FSR2L, POSTINC1
+075E  FFE6     NOP
+0760  CFE1     MOVFF FSR1L, FSR2L
+0762  FFD9     NOP
+0764  E982     SUBFSR 2, 0x2
+279:           
+280:               // ensure the two lines are set for input (we are a slave)
+281:               TRISCbits.TRISC3 = 1;
+0766  8694     BSF TRISC, 3, ACCESS
+282:               TRISCbits.TRISC4 = 1;
+0768  8894     BSF TRISC, 4, ACCESS
+283:               // set the address
+284:               SSPADD = addr;
+076A  EB00     MOVSF 0x0, 0xFC8
+076C  FFC8     NOP
+285:               //OpenI2C(SLAVE_7,SLEW_OFF); // replaced w/ code below
+286:               SSPSTAT = 0x0;
+076E  6AC7     CLRF SSPSTAT, ACCESS
+287:               SSPCON1 = 0x0;
+0770  6AC6     CLRF SSPCON1, ACCESS
+288:               SSPCON2 = 0x0;
+0772  6AC5     CLRF SSPCON2, ACCESS
+289:               SSPCON1 |= 0x0E; // enable Slave 7-bit w/ start/stop interrupts
+0774  0E0E     MOVLW 0xE
+0776  12C6     IORWF SSPCON1, F, ACCESS
+290:               SSPSTAT |= SLEW_OFF;
+0778  8EC7     BSF SSPSTAT, 7, ACCESS
+291:           #ifdef I2C_V3
+292:               I2C1_SCL = 1;
+293:               I2C1_SDA = 1;
+294:           #else 
+295:           #ifdef I2C_V1
+296:               I2C_SCL = 1;
+077A  8694     BSF TRISC, 3, ACCESS
+297:               I2C_SDA = 1;
+077C  8894     BSF TRISC, 4, ACCESS
+298:           #else
+299:               Something is messed up
+300:           #endif
+301:           #endif
+302:               // enable clock-stretching
+303:               SSPCON2bits.SEN = 1;
+077E  80C5     BSF SSPCON2, 0, ACCESS
+304:               SSPCON1 |= SSPENB;
+0780  8AC6     BSF SSPCON1, 5, ACCESS
+305:               // end of i2c configure
+306:           }
+0782  E941     SUBFSR 1, 0x1
+0784  CFE7     MOVFF INDF1, FSR2L
+0786  FFD9     NOP
+0788  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/messages.c  ------------------------------------
+1:             #include "maindefs.h"
+2:             #include "interrupts.h"
+3:             #include "messages.h"
+4:             #include <string.h>
+5:             #include <delays.h>
+6:             
+7:             // The key to making this code safe for interrupts is that
+8:             // each queue is filled by only one writer and read by one reader.
+9:             // ToMainQueueLow: Writer is a low priority interrupt, Reader is main()
+10:            // ToMainQueueHigh: Writer is a high priority interrupt, Reader is main()
+11:            // FromMainQueueLow: Writer is main(), Reader is a low priority interrupt
+12:            // FromMainQueueHigh: Writer is main(), Reader is a high priority interrupt
+13:            
+14:            void init_queue(msg_queue *qptr) {
+078A  CFD9     MOVFF FSR2L, POSTINC1
+078C  FFE6     NOP
+078E  CFE1     MOVFF FSR1L, FSR2L
+0790  FFD9     NOP
+0792  E983     SUBFSR 2, 0x3
+0794  E841     ADDFSR 1, 0x1
+15:                unsigned char i;
+16:            
+17:                qptr->cur_write_ind = 0;
+0796  EB00     MOVSF 0x0, 0xFE9
+0798  FFE9     NOP
+079A  EB01     MOVSF 0x1, 0xFEA
+079C  FFEA     NOP
+079E  0E34     MOVLW 0x34
+07A0  26E9     ADDWF FSR0L, F, ACCESS
+07A2  0E00     MOVLW 0x0
+07A4  22EA     ADDWFC FSR0H, F, ACCESS
+07A6  6AEF     CLRF INDF0, ACCESS
+18:                qptr->cur_read_ind = 0;
+07A8  EB00     MOVSF 0x0, 0xFE9
+07AA  FFE9     NOP
+07AC  EB01     MOVSF 0x1, 0xFEA
+07AE  FFEA     NOP
+07B0  0E35     MOVLW 0x35
+07B2  26E9     ADDWF FSR0L, F, ACCESS
+07B4  0E00     MOVLW 0x0
+07B6  22EA     ADDWFC FSR0H, F, ACCESS
+07B8  6AEF     CLRF INDF0, ACCESS
+19:                for (i = 0; i < MSGQUEUELEN; i++) {
+07BA  6A03     CLRF [0x3], ACCESS
+07BC  0E04     MOVLW 0x4
+07BE  5C03     SUBWF [0x3], W, ACCESS
+07C0  E214     BC 0x7EA
+07E6  2A03     INCF [0x3], F, ACCESS
+07E8  D7E9     BRA 0x7BC
+20:                    qptr->queue[i].full = 0;
+07C2  EB00     MOVSF 0x0, 0xFE9
+07C4  FFE9     NOP
+07C6  EB01     MOVSF 0x1, 0xFEA
+07C8  FFEA     NOP
+07CA  CFE9     MOVFF FSR0L, __tmp_0
+07CC  F045     NOP
+07CE  CFEA     MOVFF FSR0H, 0x46
+07D0  F046     NOP
+07D2  5003     MOVF [0x3], W, ACCESS
+07D4  0D0D     MULLW 0xD
+07D6  0100     MOVLB 0x0
+07D8  5145     MOVF __tmp_0, W, BANKED
+07DA  24F3     ADDWF PRODL, W, ACCESS
+07DC  6EE9     MOVWF FSR0L, ACCESS
+07DE  5146     MOVF 0x46, W, BANKED
+07E0  20F4     ADDWFC PRODH, W, ACCESS
+07E2  6EEA     MOVWF FSR0H, ACCESS
+07E4  6AEF     CLRF INDF0, ACCESS
+21:                }
+22:            }
+07EA  E942     SUBFSR 1, 0x2
+07EC  CFE7     MOVFF INDF1, FSR2L
+07EE  FFD9     NOP
+07F0  0012     RETURN 0
+23:            
+24:            signed char send_msg(msg_queue *qptr, unsigned char length, unsigned char msgtype, void *data) {
+07F2  CFD9     MOVFF FSR2L, POSTINC1
+07F4  FFE6     NOP
+07F6  CFE1     MOVFF FSR1L, FSR2L
+07F8  FFD9     NOP
+07FA  E987     SUBFSR 2, 0x7
+07FC  E845     ADDFSR 1, 0x5
+25:                unsigned char slot;
+26:                //unsigned char *msgptr = (unsigned char *) data;
+27:                msg *qmsg;
+28:                size_t tlength = length;
+07FE  5003     MOVF [0x3], W, ACCESS
+0800  6E0A     MOVWF [0xA], ACCESS
+0802  6A0B     CLRF [0xB], ACCESS
+29:            
+30:            #ifdef DEBUG
+31:                if (length > MSGLEN) {
+32:                    return (MSGBAD_LEN);
+33:                } else if (length < 0) {
+34:                    return (MSGBAD_LEN);
+35:                }
+36:            #endif
+37:            
+38:                slot = qptr->cur_write_ind;
+0804  EB04     MOVSF 0x4, 0xFE9
+0806  FFE9     NOP
+0808  EB05     MOVSF 0x5, 0xFEA
+080A  FFEA     NOP
+080C  0E34     MOVLW 0x34
+080E  26E9     ADDWF FSR0L, F, ACCESS
+0810  0E00     MOVLW 0x0
+0812  22EA     ADDWFC FSR0H, F, ACCESS
+0814  50EF     MOVF INDF0, W, ACCESS
+0816  6E07     MOVWF [0x7], ACCESS
+39:                qmsg = &(qptr->queue[slot]);
+0818  EB04     MOVSF 0x4, 0xFE9
+081A  FFE9     NOP
+081C  EB05     MOVSF 0x5, 0xFEA
+081E  FFEA     NOP
+0820  CFE9     MOVFF FSR0L, __tmp_0
+0822  F045     NOP
+0824  CFEA     MOVFF FSR0H, 0x46
+0826  F046     NOP
+0828  5007     MOVF [0x7], W, ACCESS
+082A  0D0D     MULLW 0xD
+082C  0100     MOVLB 0x0
+082E  50F3     MOVF PRODL, W, ACCESS
+0830  2545     ADDWF __tmp_0, W, BANKED
+0832  6E08     MOVWF [0x8], ACCESS
+0834  50F4     MOVF PRODH, W, ACCESS
+0836  2146     ADDWFC 0x46, W, BANKED
+0838  6E09     MOVWF [0x9], ACCESS
+40:                // if the slot isn't empty, then we should return
+41:                if (qmsg->full != 0) {
+083A  EB08     MOVSF 0x8, 0xFE9
+083C  FFE9     NOP
+083E  EB09     MOVSF 0x9, 0xFEA
+0840  FFEA     NOP
+0842  50EF     MOVF INDF0, W, ACCESS
+0844  E002     BZ 0x84A
+42:                    return (MSGQUEUE_FULL);
+0846  0EFF     MOVLW 0xFF
+0848  D049     BRA 0x8DC
+43:                }
+44:            
+45:                // now fill in the message
+46:                qmsg->length = length;
+084A  EB08     MOVSF 0x8, 0xFE9
+084C  FFE9     NOP
+084E  EB09     MOVSF 0x9, 0xFEA
+0850  FFEA     NOP
+0852  52EE     MOVF POSTINC0, F, ACCESS
+0854  EB03     MOVSF 0x3, 0xFEF
+0856  FFEF     NOP
+47:                qmsg->msgtype = msgtype;
+0858  EB08     MOVSF 0x8, 0xFE9
+085A  FFE9     NOP
+085C  EB09     MOVSF 0x9, 0xFEA
+085E  FFEA     NOP
+0860  0E02     MOVLW 0x2
+0862  26E9     ADDWF FSR0L, F, ACCESS
+0864  0E00     MOVLW 0x0
+0866  22EA     ADDWFC FSR0H, F, ACCESS
+0868  EB02     MOVSF 0x2, 0xFEF
+086A  FFEF     NOP
+48:            
+49:                /*
+50:                        for (i=0;i<length;i++) {
+51:                                qptr->queue[slot].data[i] = msgptr[i];
+52:                        }
+53:                 */
+54:            
+55:                memcpy(qmsg->data, data, tlength);
+086C  EB0A     MOVSF 0xA, 0xFE6
+086E  FFE6     NOP
+0870  EB0B     MOVSF 0xB, 0xFE6
+0872  FFE6     NOP
+0874  EB00     MOVSF 0x0, 0xFE6
+0876  FFE6     NOP
+0878  EB01     MOVSF 0x1, 0xFE6
+087A  FFE6     NOP
+087C  EB08     MOVSF 0x8, 0xFE9
+087E  FFE9     NOP
+0880  EB09     MOVSF 0x9, 0xFEA
+0882  FFEA     NOP
+0884  0E03     MOVLW 0x3
+0886  26E9     ADDWF FSR0L, F, ACCESS
+0888  0E00     MOVLW 0x0
+088A  22EA     ADDWFC FSR0H, F, ACCESS
+088C  CFE9     MOVFF FSR0L, __tmp_0
+088E  F045     NOP
+0890  CFEA     MOVFF FSR0H, 0x46
+0892  F046     NOP
+0894  C045     MOVFF __tmp_0, POSTINC1
+0896  FFE6     NOP
+0898  C046     MOVFF 0x46, POSTINC1
+089A  FFE6     NOP
+089C  EC57     CALL 0x14AE, 0
+089E  F00A     NOP
+08A0  E946     SUBFSR 1, 0x6
+56:                qptr->cur_write_ind = (qptr->cur_write_ind + 1) % MSGQUEUELEN;
+08A2  EB04     MOVSF 0x4, 0xFE9
+08A4  FFE9     NOP
+08A6  EB05     MOVSF 0x5, 0xFEA
+08A8  FFEA     NOP
+08AA  0E34     MOVLW 0x34
+08AC  26E9     ADDWF FSR0L, F, ACCESS
+08AE  0E00     MOVLW 0x0
+08B0  22EA     ADDWFC FSR0H, F, ACCESS
+08B2  28EF     INCF INDF0, W, ACCESS
+08B4  0B03     ANDLW 0x3
+08B6  6EE6     MOVWF POSTINC1, ACCESS
+08B8  EB04     MOVSF 0x4, 0xFE9
+08BA  FFE9     NOP
+08BC  EB05     MOVSF 0x5, 0xFEA
+08BE  FFEA     NOP
+08C0  0E34     MOVLW 0x34
+08C2  26E9     ADDWF FSR0L, F, ACCESS
+08C4  0E00     MOVLW 0x0
+08C6  22EA     ADDWFC FSR0H, F, ACCESS
+08C8  52E5     MOVF POSTDEC1, F, ACCESS
+08CA  50E7     MOVF INDF1, W, ACCESS
+08CC  6EEF     MOVWF INDF0, ACCESS
+57:            
+58:                // This *must* be done after the message is completely inserted
+59:                qmsg->full = 1;
+08CE  EB08     MOVSF 0x8, 0xFE9
+08D0  FFE9     NOP
+08D2  EB09     MOVSF 0x9, 0xFEA
+08D4  FFEA     NOP
+08D6  0E01     MOVLW 0x1
+08D8  6EEF     MOVWF INDF0, ACCESS
+60:                return (MSGSEND_OKAY);
+08DA  D000     BRA 0x8DC
+61:            }
+08DC  E946     SUBFSR 1, 0x6
+08DE  CFE7     MOVFF INDF1, FSR2L
+08E0  FFD9     NOP
+08E2  0012     RETURN 0
+62:            
+63:            signed char recv_msg(msg_queue *qptr, unsigned char maxlength, unsigned char *msgtype, void *data) {
+08E4  CFD9     MOVFF FSR2L, POSTINC1
+08E6  FFE6     NOP
+08E8  CFE1     MOVFF FSR1L, FSR2L
+08EA  FFD9     NOP
+08EC  E988     SUBFSR 2, 0x8
+08EE  E845     ADDFSR 1, 0x5
+64:                unsigned char slot;
+65:                //unsigned char	i;
+66:                //unsigned char	retlength;
+67:                //unsigned char *msg = (unsigned char *) data;
+68:                msg *qmsg;
+69:                size_t tlength;
+70:            
+71:                // check to see if anything is available
+72:                slot = qptr->cur_read_ind;
+08F0  EB05     MOVSF 0x5, 0xFE9
+08F2  FFE9     NOP
+08F4  EB06     MOVSF 0x6, 0xFEA
+08F6  FFEA     NOP
+08F8  0E35     MOVLW 0x35
+08FA  26E9     ADDWF FSR0L, F, ACCESS
+08FC  0E00     MOVLW 0x0
+08FE  22EA     ADDWFC FSR0H, F, ACCESS
+0900  50EF     MOVF INDF0, W, ACCESS
+0902  6E08     MOVWF [0x8], ACCESS
+73:                qmsg = &(qptr->queue[slot]);
+0904  EB05     MOVSF 0x5, 0xFE9
+0906  FFE9     NOP
+0908  EB06     MOVSF 0x6, 0xFEA
+090A  FFEA     NOP
+090C  CFE9     MOVFF FSR0L, __tmp_0
+090E  F045     NOP
+0910  CFEA     MOVFF FSR0H, 0x46
+0912  F046     NOP
+0914  5008     MOVF [0x8], W, ACCESS
+0916  0D0D     MULLW 0xD
+0918  0100     MOVLB 0x0
+091A  50F3     MOVF PRODL, W, ACCESS
+091C  2545     ADDWF __tmp_0, W, BANKED
+091E  6E09     MOVWF [0x9], ACCESS
+0920  50F4     MOVF PRODH, W, ACCESS
+0922  2146     ADDWFC 0x46, W, BANKED
+0924  6E0A     MOVWF [0xA], ACCESS
+74:                if (qmsg->full == 1) {
+0926  EB09     MOVSF 0x9, 0xFE9
+0928  FFE9     NOP
+092A  EB0A     MOVSF 0xA, 0xFEA
+092C  FFEA     NOP
+092E  04EF     DECF INDF0, W, ACCESS
+0930  E15C     BNZ 0x9EA
+75:                    // not enough room in the buffer provided
+76:                    if (qmsg->length > maxlength) {
+0932  EB09     MOVSF 0x9, 0xFE9
+0934  FFE9     NOP
+0936  EB0A     MOVSF 0xA, 0xFEA
+0938  FFEA     NOP
+093A  52EE     MOVF POSTINC0, F, ACCESS
+093C  50EF     MOVF INDF0, W, ACCESS
+093E  5C04     SUBWF [0x4], W, ACCESS
+0940  E202     BC 0x946
+77:                        return (MSGBUFFER_TOOSMALL);
+0942  0EFD     MOVLW 0xFD
+0944  D054     BRA 0x9EE
+78:                    }
+79:                    // now actually copy the message
+80:                    tlength = qmsg->length;
+0946  EB09     MOVSF 0x9, 0xFE9
+0948  FFE9     NOP
+094A  EB0A     MOVSF 0xA, 0xFEA
+094C  FFEA     NOP
+094E  52EE     MOVF POSTINC0, F, ACCESS
+0950  50EF     MOVF INDF0, W, ACCESS
+0952  6E0B     MOVWF [0xB], ACCESS
+0954  6A0C     CLRF [0xC], ACCESS
+81:                    memcpy(data, qmsg->data, tlength);
+0956  EB0B     MOVSF 0xB, 0xFE6
+0958  FFE6     NOP
+095A  EB0C     MOVSF 0xC, 0xFE6
+095C  FFE6     NOP
+095E  EB09     MOVSF 0x9, 0xFE9
+0960  FFE9     NOP
+0962  EB0A     MOVSF 0xA, 0xFEA
+0964  FFEA     NOP
+0966  0E03     MOVLW 0x3
+0968  26E9     ADDWF FSR0L, F, ACCESS
+096A  0E00     MOVLW 0x0
+096C  22EA     ADDWFC FSR0H, F, ACCESS
+096E  CFE9     MOVFF FSR0L, __tmp_0
+0970  F045     NOP
+0972  CFEA     MOVFF FSR0H, 0x46
+0974  F046     NOP
+0976  C045     MOVFF __tmp_0, POSTINC1
+0978  FFE6     NOP
+097A  C046     MOVFF 0x46, POSTINC1
+097C  FFE6     NOP
+097E  EB00     MOVSF 0x0, 0xFE6
+0980  FFE6     NOP
+0982  EB01     MOVSF 0x1, 0xFE6
+0984  FFE6     NOP
+0986  EC57     CALL 0x14AE, 0
+0988  F00A     NOP
+098A  E946     SUBFSR 1, 0x6
+82:                    /*
+83:                    for (i=0;i<qmsg->length;i++) {
+84:                            ((unsigned char *) data)[i] = qptr->queue[slot].data[i];
+85:                    }
+86:                     */
+87:                    qptr->cur_read_ind = (qptr->cur_read_ind + 1) % MSGQUEUELEN;
+098C  EB05     MOVSF 0x5, 0xFE9
+098E  FFE9     NOP
+0990  EB06     MOVSF 0x6, 0xFEA
+0992  FFEA     NOP
+0994  0E35     MOVLW 0x35
+0996  26E9     ADDWF FSR0L, F, ACCESS
+0998  0E00     MOVLW 0x0
+099A  22EA     ADDWFC FSR0H, F, ACCESS
+099C  28EF     INCF INDF0, W, ACCESS
+099E  0B03     ANDLW 0x3
+09A0  6EE6     MOVWF POSTINC1, ACCESS
+09A2  EB05     MOVSF 0x5, 0xFE9
+09A4  FFE9     NOP
+09A6  EB06     MOVSF 0x6, 0xFEA
+09A8  FFEA     NOP
+09AA  0E35     MOVLW 0x35
+09AC  26E9     ADDWF FSR0L, F, ACCESS
+09AE  0E00     MOVLW 0x0
+09B0  22EA     ADDWFC FSR0H, F, ACCESS
+09B2  52E5     MOVF POSTDEC1, F, ACCESS
+09B4  50E7     MOVF INDF1, W, ACCESS
+09B6  6EEF     MOVWF INDF0, ACCESS
+88:                    //retlength = qptr->queue[slot].length;
+89:                    (*msgtype) = qmsg->msgtype;
+09B8  EB09     MOVSF 0x9, 0xFE9
+09BA  FFE9     NOP
+09BC  EB0A     MOVSF 0xA, 0xFEA
+09BE  FFEA     NOP
+09C0  0E02     MOVLW 0x2
+09C2  26E9     ADDWF FSR0L, F, ACCESS
+09C4  0E00     MOVLW 0x0
+09C6  22EA     ADDWFC FSR0H, F, ACCESS
+09C8  50EF     MOVF INDF0, W, ACCESS
+09CA  6EE6     MOVWF POSTINC1, ACCESS
+09CC  EB02     MOVSF 0x2, 0xFE9
+09CE  FFE9     NOP
+09D0  EB03     MOVSF 0x3, 0xFEA
+09D2  FFEA     NOP
+09D4  52E5     MOVF POSTDEC1, F, ACCESS
+09D6  50E7     MOVF INDF1, W, ACCESS
+09D8  6EEF     MOVWF INDF0, ACCESS
+90:                    // this must be done after the message is completely extracted
+91:                    qmsg->full = 0;
+09DA  EB09     MOVSF 0x9, 0xFE9
+09DC  FFE9     NOP
+09DE  EB0A     MOVSF 0xA, 0xFEA
+09E0  FFEA     NOP
+09E2  6AEF     CLRF INDF0, ACCESS
+92:                    return (tlength);
+09E4  500B     MOVF [0xB], W, ACCESS
+09E6  D003     BRA 0x9EE
+93:                } else {
+09E8  D002     BRA 0x9EE
+94:                    return (MSGQUEUE_EMPTY);
+09EA  0EFC     MOVLW 0xFC
+09EC  D000     BRA 0x9EE
+95:                }
+96:            }
+09EE  E946     SUBFSR 1, 0x6
+09F0  CFE7     MOVFF INDF1, FSR2L
+09F2  FFD9     NOP
+09F4  0012     RETURN 0
+97:            #ifndef __XC8
+98:            #pragma udata msgqueue1
+99:            #endif
+100:           
+101:           static msg_queue ToMainLow_MQ;
+102:           
+103:           signed char ToMainLow_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
+09F6  CFD9     MOVFF FSR2L, POSTINC1
+09F8  FFE6     NOP
+09FA  CFE1     MOVFF FSR1L, FSR2L
+09FC  FFD9     NOP
+09FE  E985     SUBFSR 2, 0x5
+104:           #ifdef DEBUG
+105:               if (!in_low_int()) {
+106:                   return (MSG_NOT_IN_LOW);
+107:               }
+108:           #endif
+109:               return (send_msg(&ToMainLow_MQ, length, msgtype, data));
+0A00  EB00     MOVSF 0x0, 0xFE6
+0A02  FFE6     NOP
+0A04  EB01     MOVSF 0x1, 0xFE6
+0A06  FFE6     NOP
+0A08  EB02     MOVSF 0x2, 0xFE6
+0A0A  FFE6     NOP
+0A0C  EB03     MOVSF 0x3, 0xFE6
+0A0E  FFE6     NOP
+0A10  0E00     MOVLW 0x0
+0A12  6EE6     MOVWF POSTINC1, ACCESS
+0A14  0E01     MOVLW 0x1
+0A16  6EE6     MOVWF POSTINC1, ACCESS
+0A18  DEEC     RCALL send_msg
+0A1A  E946     SUBFSR 1, 0x6
+0A1C  D000     BRA 0xA1E
+110:           }
+0A1E  E941     SUBFSR 1, 0x1
+0A20  CFE7     MOVFF INDF1, FSR2L
+0A22  FFD9     NOP
+0A24  0012     RETURN 0
+111:           
+112:           signed char ToMainLow_recvmsg(unsigned char maxlength, unsigned char *msgtype, void *data) {
+0A26  CFD9     MOVFF FSR2L, POSTINC1
+0A28  FFE6     NOP
+0A2A  CFE1     MOVFF FSR1L, FSR2L
+0A2C  FFD9     NOP
+0A2E  E986     SUBFSR 2, 0x6
+113:           #ifdef DEBUG
+114:               if (!in_main()) {
+115:                   return (MSG_NOT_IN_MAIN);
+116:               }
+117:           #endif
+118:               return (recv_msg(&ToMainLow_MQ, maxlength, msgtype, data));
+0A30  EB00     MOVSF 0x0, 0xFE6
+0A32  FFE6     NOP
+0A34  EB01     MOVSF 0x1, 0xFE6
+0A36  FFE6     NOP
+0A38  EB02     MOVSF 0x2, 0xFE6
+0A3A  FFE6     NOP
+0A3C  EB03     MOVSF 0x3, 0xFE6
+0A3E  FFE6     NOP
+0A40  EB04     MOVSF 0x4, 0xFE6
+0A42  FFE6     NOP
+0A44  0E00     MOVLW 0x0
+0A46  6EE6     MOVWF POSTINC1, ACCESS
+0A48  0E01     MOVLW 0x1
+0A4A  6EE6     MOVWF POSTINC1, ACCESS
+0A4C  DF4B     RCALL recv_msg
+0A4E  E947     SUBFSR 1, 0x7
+0A50  D000     BRA 0xA52
+119:           }
+0A52  E941     SUBFSR 1, 0x1
+0A54  CFE7     MOVFF INDF1, FSR2L
+0A56  FFD9     NOP
+0A58  0012     RETURN 0
+120:           #ifndef __XC8
+121:           #pragma udata msgqueue2
+122:           #endif
+123:           
+124:           static msg_queue ToMainHigh_MQ;
+125:           
+126:           signed char ToMainHigh_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
+0A5A  CFD9     MOVFF FSR2L, POSTINC1
+0A5C  FFE6     NOP
+0A5E  CFE1     MOVFF FSR1L, FSR2L
+0A60  FFD9     NOP
+0A62  E985     SUBFSR 2, 0x5
+127:           #ifdef DEBUG
+128:               if (!in_high_int()) {
+129:                   return (MSG_NOT_IN_HIGH);
+130:               }
+131:           #endif
+132:               return (send_msg(&ToMainHigh_MQ, length, msgtype, data));
+0A64  EB00     MOVSF 0x0, 0xFE6
+0A66  FFE6     NOP
+0A68  EB01     MOVSF 0x1, 0xFE6
+0A6A  FFE6     NOP
+0A6C  EB02     MOVSF 0x2, 0xFE6
+0A6E  FFE6     NOP
+0A70  EB03     MOVSF 0x3, 0xFE6
+0A72  FFE6     NOP
+0A74  0E96     MOVLW 0x96
+0A76  6EE6     MOVWF POSTINC1, ACCESS
+0A78  0E00     MOVLW 0x0
+0A7A  6EE6     MOVWF POSTINC1, ACCESS
+0A7C  DEBA     RCALL send_msg
+0A7E  E946     SUBFSR 1, 0x6
+0A80  D000     BRA 0xA82
+133:           }
+0A82  E941     SUBFSR 1, 0x1
+0A84  CFE7     MOVFF INDF1, FSR2L
+0A86  FFD9     NOP
+0A88  0012     RETURN 0
+134:           
+135:           signed char ToMainHigh_recvmsg(unsigned char maxlength, unsigned char *msgtype, void *data) {
+0A8A  CFD9     MOVFF FSR2L, POSTINC1
+0A8C  FFE6     NOP
+0A8E  CFE1     MOVFF FSR1L, FSR2L
+0A90  FFD9     NOP
+0A92  E986     SUBFSR 2, 0x6
+136:           #ifdef DEBUG
+137:               if (!in_main()) {
+138:                   return (MSG_NOT_IN_MAIN);
+139:               }
+140:           #endif
+141:               return (recv_msg(&ToMainHigh_MQ, maxlength, msgtype, data));
+0A94  EB00     MOVSF 0x0, 0xFE6
+0A96  FFE6     NOP
+0A98  EB01     MOVSF 0x1, 0xFE6
+0A9A  FFE6     NOP
+0A9C  EB02     MOVSF 0x2, 0xFE6
+0A9E  FFE6     NOP
+0AA0  EB03     MOVSF 0x3, 0xFE6
+0AA2  FFE6     NOP
+0AA4  EB04     MOVSF 0x4, 0xFE6
+0AA6  FFE6     NOP
+0AA8  0E96     MOVLW 0x96
+0AAA  6EE6     MOVWF POSTINC1, ACCESS
+0AAC  0E00     MOVLW 0x0
+0AAE  6EE6     MOVWF POSTINC1, ACCESS
+0AB0  DF19     RCALL recv_msg
+0AB2  E947     SUBFSR 1, 0x7
+0AB4  D000     BRA 0xAB6
+142:           }
+0AB6  E941     SUBFSR 1, 0x1
+0AB8  CFE7     MOVFF INDF1, FSR2L
+0ABA  FFD9     NOP
+0ABC  0012     RETURN 0
+143:           
+144:           #ifndef __XC8
+145:           #pragma udata msgqueue3
+146:           #endif
+147:           
+148:           static msg_queue FromMainLow_MQ;
+149:           
+150:           signed char FromMainLow_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
+0ABE  CFD9     MOVFF FSR2L, POSTINC1
+0AC0  FFE6     NOP
+0AC2  CFE1     MOVFF FSR1L, FSR2L
+0AC4  FFD9     NOP
+0AC6  E985     SUBFSR 2, 0x5
+151:           #ifdef DEBUG
+152:               if (!in_main()) {
+153:                   return (MSG_NOT_IN_MAIN);
+154:               }
+155:           #endif
+156:               return (send_msg(&FromMainLow_MQ, length, msgtype, data));
+0AC8  EB00     MOVSF 0x0, 0xFE6
+0ACA  FFE6     NOP
+0ACC  EB01     MOVSF 0x1, 0xFE6
+0ACE  FFE6     NOP
+0AD0  EB02     MOVSF 0x2, 0xFE6
+0AD2  FFE6     NOP
+0AD4  EB03     MOVSF 0x3, 0xFE6
+0AD6  FFE6     NOP
+0AD8  0E60     MOVLW 0x60
+0ADA  6EE6     MOVWF POSTINC1, ACCESS
+0ADC  0E00     MOVLW 0x0
+0ADE  6EE6     MOVWF POSTINC1, ACCESS
+0AE0  DE88     RCALL send_msg
+0AE2  E946     SUBFSR 1, 0x6
+0AE4  D000     BRA 0xAE6
+157:           }
+0AE6  E941     SUBFSR 1, 0x1
+0AE8  CFE7     MOVFF INDF1, FSR2L
+0AEA  FFD9     NOP
+0AEC  0012     RETURN 0
+158:           
+159:           signed char FromMainLow_recvmsg(unsigned char maxlength, unsigned char *msgtype, void *data) {
+0AEE  CFD9     MOVFF FSR2L, POSTINC1
+0AF0  FFE6     NOP
+0AF2  CFE1     MOVFF FSR1L, FSR2L
+0AF4  FFD9     NOP
+0AF6  E986     SUBFSR 2, 0x6
+160:           #ifdef DEBUG
+161:               if (!in_low_int()) {
+162:                   return (MSG_NOT_IN_LOW);
+163:               }
+164:           #endif
+165:               return (recv_msg(&FromMainLow_MQ, maxlength, msgtype, data));
+0AF8  EB00     MOVSF 0x0, 0xFE6
+0AFA  FFE6     NOP
+0AFC  EB01     MOVSF 0x1, 0xFE6
+0AFE  FFE6     NOP
+0B00  EB02     MOVSF 0x2, 0xFE6
+0B02  FFE6     NOP
+0B04  EB03     MOVSF 0x3, 0xFE6
+0B06  FFE6     NOP
+0B08  EB04     MOVSF 0x4, 0xFE6
+0B0A  FFE6     NOP
+0B0C  0E60     MOVLW 0x60
+0B0E  6EE6     MOVWF POSTINC1, ACCESS
+0B10  0E00     MOVLW 0x0
+0B12  6EE6     MOVWF POSTINC1, ACCESS
+0B14  DEE7     RCALL recv_msg
+0B16  E947     SUBFSR 1, 0x7
+0B18  D000     BRA 0xB1A
+166:           }
+0B1A  E941     SUBFSR 1, 0x1
+0B1C  CFE7     MOVFF INDF1, FSR2L
+0B1E  FFD9     NOP
+0B20  0012     RETURN 0
+167:           
+168:           #ifndef __XC8
+169:           #pragma udata msgqueue4
+170:           #endif
+171:           
+172:           static msg_queue FromMainHigh_MQ;
+173:           
+174:           signed char FromMainHigh_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
+0B22  CFD9     MOVFF FSR2L, POSTINC1
+0B24  FFE6     NOP
+0B26  CFE1     MOVFF FSR1L, FSR2L
+0B28  FFD9     NOP
+0B2A  E985     SUBFSR 2, 0x5
+175:           #ifdef DEBUG
+176:               if (!in_main()) {
+177:                   return (MSG_NOT_IN_MAIN);
+178:               }
+179:           #endif
+180:               return (send_msg(&FromMainHigh_MQ, length, msgtype, data));
+0B2C  EB00     MOVSF 0x0, 0xFE6
+0B2E  FFE6     NOP
+0B30  EB01     MOVSF 0x1, 0xFE6
+0B32  FFE6     NOP
+0B34  EB02     MOVSF 0x2, 0xFE6
+0B36  FFE6     NOP
+0B38  EB03     MOVSF 0x3, 0xFE6
+0B3A  FFE6     NOP
+0B3C  0E00     MOVLW 0x0
+0B3E  6EE6     MOVWF POSTINC1, ACCESS
+0B40  0E00     MOVLW 0x0
+0B42  6EE6     MOVWF POSTINC1, ACCESS
+0B44  DE56     RCALL send_msg
+0B46  E946     SUBFSR 1, 0x6
+0B48  D000     BRA 0xB4A
+181:           }
+0B4A  E941     SUBFSR 1, 0x1
+0B4C  CFE7     MOVFF INDF1, FSR2L
+0B4E  FFD9     NOP
+0B50  0012     RETURN 0
+182:           
+183:           signed char FromMainHigh_recvmsg(unsigned char maxlength, unsigned char *msgtype, void *data) {
+0B52  CFD9     MOVFF FSR2L, POSTINC1
+0B54  FFE6     NOP
+0B56  CFE1     MOVFF FSR1L, FSR2L
+0B58  FFD9     NOP
+0B5A  E986     SUBFSR 2, 0x6
+184:           #ifdef DEBUG
+185:               if (!in_high_int()) {
+186:                   return (MSG_NOT_IN_HIGH);
+187:               }
+188:           #endif
+189:               return (recv_msg(&FromMainHigh_MQ, maxlength, msgtype, data));
+0B5C  EB00     MOVSF 0x0, 0xFE6
+0B5E  FFE6     NOP
+0B60  EB01     MOVSF 0x1, 0xFE6
+0B62  FFE6     NOP
+0B64  EB02     MOVSF 0x2, 0xFE6
+0B66  FFE6     NOP
+0B68  EB03     MOVSF 0x3, 0xFE6
+0B6A  FFE6     NOP
+0B6C  EB04     MOVSF 0x4, 0xFE6
+0B6E  FFE6     NOP
+0B70  0E00     MOVLW 0x0
+0B72  6EE6     MOVWF POSTINC1, ACCESS
+0B74  0E00     MOVLW 0x0
+0B76  6EE6     MOVWF POSTINC1, ACCESS
+0B78  DEB5     RCALL recv_msg
+0B7A  E947     SUBFSR 1, 0x7
+0B7C  D000     BRA 0xB7E
+190:           }
+0B7E  E941     SUBFSR 1, 0x1
+0B80  CFE7     MOVFF INDF1, FSR2L
+0B82  FFD9     NOP
+0B84  0012     RETURN 0
+191:           
+192:           static unsigned char MQ_Main_Willing_to_block;
+193:           
+194:           void init_queues() {
+195:               MQ_Main_Willing_to_block = 0;
+0B86  0100     MOVLB 0x0
+0B88  6B36     CLRF t0thread_data, BANKED
+196:               init_queue(&ToMainLow_MQ);
+0B8A  0E00     MOVLW 0x0
+0B8C  6EE6     MOVWF POSTINC1, ACCESS
+0B8E  0E01     MOVLW 0x1
+0B90  6EE6     MOVWF POSTINC1, ACCESS
+0B92  DDFB     RCALL init_queue
+0B94  E942     SUBFSR 1, 0x2
+197:               init_queue(&ToMainHigh_MQ);
+0B96  0E96     MOVLW 0x96
+0B98  6EE6     MOVWF POSTINC1, ACCESS
+0B9A  0E00     MOVLW 0x0
+0B9C  6EE6     MOVWF POSTINC1, ACCESS
+0B9E  DDF5     RCALL init_queue
+0BA0  E942     SUBFSR 1, 0x2
+198:               init_queue(&FromMainLow_MQ);
+0BA2  0E60     MOVLW 0x60
+0BA4  6EE6     MOVWF POSTINC1, ACCESS
+0BA6  0E00     MOVLW 0x0
+0BA8  6EE6     MOVWF POSTINC1, ACCESS
+0BAA  DDEF     RCALL init_queue
+0BAC  E942     SUBFSR 1, 0x2
+199:               init_queue(&FromMainHigh_MQ);
+0BAE  0E00     MOVLW 0x0
+0BB0  6EE6     MOVWF POSTINC1, ACCESS
+0BB2  0E00     MOVLW 0x0
+0BB4  6EE6     MOVWF POSTINC1, ACCESS
+0BB6  DDE9     RCALL init_queue
+0BB8  E942     SUBFSR 1, 0x2
+200:           }
+0BBA  0012     RETURN 0
+201:           
+202:           void enter_sleep_mode(void) {
+203:               // Here we set up the clock to go into IDLE on sleep
+204:               OSCCONbits.IDLEN = 1; // set to idle on sleep
+0BBC  8ED3     BSF OSCCON, 7, ACCESS
+205:               // now we go into sleep
+206:               // only something like an interrupt will bring us out of this
+207:               #ifndef __XC8
+208:               _asm
+209:                       sleep
+0BBE  0003     SLEEP
+210:               _endasm
+211:               #else
+212:               #asm
+213:               SLEEP
+214:               #endasm
+215:               #endif
+216:           }
+0BC0  0012     RETURN 0
+217:           
+218:           // check if message available
+219:           
+220:           unsigned char check_msg(msg_queue *qptr) {
+0BC2  CFD9     MOVFF FSR2L, POSTINC1
+0BC4  FFE6     NOP
+0BC6  CFE1     MOVFF FSR1L, FSR2L
+0BC8  FFD9     NOP
+0BCA  E983     SUBFSR 2, 0x3
+221:               return (qptr->queue[qptr->cur_read_ind].full);
+0BCC  EB00     MOVSF 0x0, 0xFE9
+0BCE  FFE9     NOP
+0BD0  EB01     MOVSF 0x1, 0xFEA
+0BD2  FFEA     NOP
+0BD4  CFE9     MOVFF FSR0L, __tmp_0
+0BD6  F045     NOP
+0BD8  CFEA     MOVFF FSR0H, 0x46
+0BDA  F046     NOP
+0BDC  EB00     MOVSF 0x0, 0xFE9
+0BDE  FFE9     NOP
+0BE0  EB01     MOVSF 0x1, 0xFEA
+0BE2  FFEA     NOP
+0BE4  0E35     MOVLW 0x35
+0BE6  26E9     ADDWF FSR0L, F, ACCESS
+0BE8  0E00     MOVLW 0x0
+0BEA  22EA     ADDWFC FSR0H, F, ACCESS
+0BEC  50EF     MOVF INDF0, W, ACCESS
+0BEE  0D0D     MULLW 0xD
+0BF0  0100     MOVLB 0x0
+0BF2  5145     MOVF __tmp_0, W, BANKED
+0BF4  24F3     ADDWF PRODL, W, ACCESS
+0BF6  6EE9     MOVWF FSR0L, ACCESS
+0BF8  5146     MOVF 0x46, W, BANKED
+0BFA  20F4     ADDWFC PRODH, W, ACCESS
+0BFC  6EEA     MOVWF FSR0H, ACCESS
+0BFE  50EF     MOVF INDF0, W, ACCESS
+0C00  D000     BRA 0xC02
+222:           }
+0C02  E941     SUBFSR 1, 0x1
+0C04  CFE7     MOVFF INDF1, FSR2L
+0C06  FFD9     NOP
+0C08  0012     RETURN 0
+223:           
+224:           // This should only be called from a High Priority Interrupt
+225:           
+226:           void SleepIfOkay() {
+227:               // we won't sleep if the main isn't willing to block
+228:               if (MQ_Main_Willing_to_block == 0) {
+0C0A  0100     MOVLB 0x0
+0C0C  5136     MOVF t0thread_data, W, BANKED
+0C0E  E101     BNZ 0xC12
+229:                   return;
+0C10  D029     BRA 0xC64
+230:               }
+231:               // check to see if we are handling a low priority interrupt
+232:               // if so, we are not going to sleep
+233:               if (in_low_int()) {
+0C12  EC88     CALL 0xD10, 0
+0C14  F006     NOP
+0C16  CFF3     MOVFF PRODL, __tmp_0
+0C18  F045     NOP
+0C1A  CFF4     MOVFF PRODH, 0x46
+0C1C  F046     NOP
+0C1E  0100     MOVLB 0x0
+0C20  5145     MOVF __tmp_0, W, BANKED
+0C22  1146     IORWF 0x46, W, BANKED
+0C24  E001     BZ 0xC28
+234:                   return;
+0C26  D01E     BRA 0xC64
+235:               }
+236:               // we know that we are in a high priority interrupt handler
+237:               // but we'll check to make sure and return if we are not
+238:               if (!in_high_int()) {
+0C28  EC66     CALL 0xCCC, 0
+0C2A  F006     NOP
+0C2C  CFF3     MOVFF PRODL, __tmp_0
+0C2E  F045     NOP
+0C30  CFF4     MOVFF PRODH, 0x46
+0C32  F046     NOP
+0C34  0100     MOVLB 0x0
+0C36  5145     MOVF __tmp_0, W, BANKED
+0C38  1146     IORWF 0x46, W, BANKED
+0C3A  E101     BNZ 0xC3E
+239:                   return;
+0C3C  D013     BRA 0xC64
+240:               }
+241:               // since we are the only thing executing that could be
+242:               // putting something into a message queue destined for main()
+243:               // we can safely check the message queues now
+244:               //   if they are empty, we'll go to sleep
+245:               if (check_msg(&ToMainHigh_MQ)) {
+0C3E  0E96     MOVLW 0x96
+0C40  6EE6     MOVWF POSTINC1, ACCESS
+0C42  0E00     MOVLW 0x0
+0C44  6EE6     MOVWF POSTINC1, ACCESS
+0C46  DFBD     RCALL check_msg
+0C48  E942     SUBFSR 1, 0x2
+0C4A  0900     IORLW 0x0
+0C4C  E001     BZ 0xC50
+246:                   return;
+0C4E  D00A     BRA 0xC64
+247:               }
+248:               if (check_msg(&ToMainLow_MQ)) {
+0C50  0E00     MOVLW 0x0
+0C52  6EE6     MOVWF POSTINC1, ACCESS
+0C54  0E01     MOVLW 0x1
+0C56  6EE6     MOVWF POSTINC1, ACCESS
+0C58  DFB4     RCALL check_msg
+0C5A  E942     SUBFSR 1, 0x2
+0C5C  0900     IORLW 0x0
+0C5E  E001     BZ 0xC62
+249:                   return;
+0C60  D001     BRA 0xC64
+250:               }
+251:               enter_sleep_mode();
+0C62  DFAC     RCALL enter_sleep_mode
+252:           }
+0C64  0012     RETURN 0
+253:           
+254:           // only called from "main"
+255:           
+256:           void block_on_To_msgqueues() {
+257:               if (!in_main()) {
+0C66  ECA2     CALL 0xD44, 0
+0C68  F006     NOP
+0C6A  CFF3     MOVFF PRODL, __tmp_0
+0C6C  F045     NOP
+0C6E  CFF4     MOVFF PRODH, 0x46
+0C70  F046     NOP
+0C72  0100     MOVLB 0x0
+0C74  5145     MOVF __tmp_0, W, BANKED
+0C76  1146     IORWF 0x46, W, BANKED
+0C78  E101     BNZ 0xC7C
+258:                   return;
+0C7A  D023     BRA 0xCC2
+259:               }
+260:               LATBbits.LATB3 = 1;
+0C7C  868A     BSF LATB, 3, ACCESS
+261:               MQ_Main_Willing_to_block = 1;
+0C7E  0100     MOVLB 0x0
+0C80  0E01     MOVLW 0x1
+0C82  6F36     MOVWF t0thread_data, BANKED
+262:               while (1) {
+0CC0  D7E1     BRA 0xC84
+263:                   if (check_msg(&ToMainHigh_MQ)) {
+0C84  0E96     MOVLW 0x96
+0C86  6EE6     MOVWF POSTINC1, ACCESS
+0C88  0E00     MOVLW 0x0
+0C8A  6EE6     MOVWF POSTINC1, ACCESS
+0C8C  DF9A     RCALL check_msg
+0C8E  E942     SUBFSR 1, 0x2
+0C90  0900     IORLW 0x0
+0C92  E004     BZ 0xC9C
+264:                       MQ_Main_Willing_to_block = 0;
+0C94  0100     MOVLB 0x0
+0C96  6B36     CLRF t0thread_data, BANKED
+265:                       LATBbits.LATB3 = 0;
+0C98  968A     BCF LATB, 3, ACCESS
+266:                       return;
+0C9A  D013     BRA 0xCC2
+267:                   }
+268:                   if (check_msg(&ToMainLow_MQ)) {
+0C9C  0E00     MOVLW 0x0
+0C9E  6EE6     MOVWF POSTINC1, ACCESS
+0CA0  0E01     MOVLW 0x1
+0CA2  6EE6     MOVWF POSTINC1, ACCESS
+0CA4  DF8E     RCALL check_msg
+0CA6  E942     SUBFSR 1, 0x2
+0CA8  0900     IORLW 0x0
+0CAA  E004     BZ 0xCB4
+269:                       MQ_Main_Willing_to_block = 0;
+0CAC  0100     MOVLB 0x0
+0CAE  6B36     CLRF t0thread_data, BANKED
+270:                       LATBbits.LATB3 = 0;
+0CB0  968A     BCF LATB, 3, ACCESS
+271:                       return;
+0CB2  D007     BRA 0xCC2
+272:                   }
+273:                   Delay1KTCYx(10);
+0CB4  0E0A     MOVLW 0xA
+0CB6  6EE6     MOVWF POSTINC1, ACCESS
+0CB8  EC04     CALL 0x1608, 0
+0CBA  F00B     NOP
+0CBC  E941     SUBFSR 1, 0x1
+274:                   LATBbits.LATB3 = !LATBbits.LATB3;
+0CBE  768A     BTG LATB, 3, ACCESS
+275:               }
+276:           }
+0CC2  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/main.c  ----------------------------------------
+1:             #include "maindefs.h"
+2:             #include <stdio.h>
+3:             #ifndef __XC8
+4:             #include <usart.h>
+5:             #include <i2c.h>
+6:             #include <timers.h>
+7:             #else
+8:             //#include <plib/usart.h>
+9:             //#include <plib/i2c.h>
+10:            //#include <plib/timers.h>
+11:            #endif
+12:            #include "interrupts.h"
+13:            #include "messages.h"
+14:            #include "my_uart.h"
+15:            #include "my_i2c.h"
+16:            #include "uart_thread.h"
+17:            #include "timer1_thread.h"
+18:            #include "timer0_thread.h"
+19:            
+20:            #ifdef __18F45J10
+21:            // CONFIG1L
+22:            #pragma config WDTEN = OFF      // Watchdog Timer Enable bit (WDT disabled (control is placed on SWDTEN bit))
+23:            #pragma config STVREN = OFF     // Stack Overflow/Underflow Reset Enable bit (Reset on stack overflow/underflow disabled)
+24:            #pragma config XINST = ON       // Extended Instruction Set Enable bit (Instruction set extension and Indexed Addressing mode enabled)
+25:            
+26:            // CONFIG1H
+27:            #pragma config CP0 = OFF        // Code Protection bit (Program memory is not code-protected)
+28:            
+29:            // CONFIG2L
+30:            #pragma config FOSC = HSPLL     // Oscillator Selection bits (HS oscillator, PLL enabled and under software control)
+31:            #pragma config FOSC2 = ON       // Default/Reset System Clock Select bit (Clock selected by FOSC as system clock is enabled when OSCCON<1:0> = 00)
+32:            #pragma config FCMEN = ON       // Fail-Safe Clock Monitor Enable bit (Fail-Safe Clock Monitor enabled)
+33:            #pragma config IESO = ON        // Two-Speed Start-up (Internal/External Oscillator Switchover) Control bit (Two-Speed Start-up enabled)
+34:            
+35:            // CONFIG2H
+36:            #pragma config WDTPS = 32768    // Watchdog Timer Postscale Select bits (1:32768)
+37:            
+38:            // CONFIG3H
+39:            #pragma config CCP2MX = DEFAULT // CCP2 MUX bit (CCP2 is multiplexed with RC1)
+40:            
+41:            #else
+42:            #ifdef __18F2680
+43:            #pragma config OSC = IRCIO67    // Oscillator Selection bits (Internal oscillator block, port function on RA6 and RA7)
+44:            #pragma config FCMEN = OFF      // Fail-Safe Clock Monitor Enable bit (Fail-Safe Clock Monitor disabled)
+45:            #pragma config IESO = OFF       // Internal/External Oscillator Switchover bit (Oscillator Switchover mode disabled)
+46:            
+47:            // CONFIG2L
+48:            #pragma config PWRT = OFF       // Power-up Timer Enable bit (PWRT disabled)
+49:            #pragma config BOREN = OFF      // Brown-out Reset Enable bits (Brown-out Reset disabled in hardware and software)
+50:            #pragma config BORV = 3         // Brown-out Reset Voltage bits (VBOR set to 2.1V)
+51:            
+52:            // CONFIG2H
+53:            #pragma config WDT = OFF        // Watchdog Timer Enable bit (WDT disabled (control is placed on the SWDTEN bit))
+54:            #pragma config WDTPS = 32768    // Watchdog Timer Postscale Select bits (1:32768)
+55:            
+56:            // CONFIG3H
+57:            #pragma config PBADEN = OFF     // PORTB A/D Enable bit (PORTB<4:0> pins are configured as digital I/O on Reset)
+58:            #pragma config LPT1OSC = OFF    // Low-Power Timer 1 Oscillator Enable bit (Timer1 configured for higher power operation)
+59:            #pragma config MCLRE = ON       // MCLR Pin Enable bit (MCLR pin enabled; RE3 input pin disabled)
+60:            
+61:            // CONFIG4L
+62:            #pragma config STVREN = OFF     // Stack Full/Underflow Reset Enable bit (Stack full/underflow will not cause Reset)
+63:            #pragma config LVP = OFF        // Single-Supply ICSP Enable bit (Single-Supply ICSP disabled)
+64:            #pragma config BBSIZ = 1024     // Boot Block Size Select bits (1K words (2K bytes) Boot Block)
+65:            #pragma config XINST = ON       // Extended Instruction Set Enable bit (Instruction set extension and Indexed Addressing mode enabled)
+66:            #else
+67:            //Something is messed up
+68:            #endif
+69:            #endif
+70:            
+71:            void main(void) {
+0F00  CFD9     MOVFF FSR2L, POSTINC1
+0F02  FFE6     NOP
+0F04  CFE1     MOVFF FSR1L, FSR2L
+0F06  FFD9     NOP
+0F08  E981     SUBFSR 2, 0x1
+0F0A  E877     ADDFSR 1, 0x37
+72:                char c;
+73:                signed char length;
+74:                unsigned char msgtype;
+75:                unsigned char last_reg_recvd;
+76:                uart_comm uc;
+77:                i2c_comm ic;
+78:                unsigned char msgbuffer[MSGLEN + 1];
+79:                unsigned char i;
+80:                uart_thread_struct uthread_data; // info for uart_lthread
+81:                timer1_thread_struct t1thread_data; // info for timer1_lthread
+82:                timer0_thread_struct t0thread_data; // info for timer0_lthread
+83:            
+84:            #ifdef __18F2680
+85:                OSCCON = 0xFC; // see datasheet
+0F0C  0EFC     MOVLW 0xFC
+0F0E  6ED3     MOVWF OSCCON, ACCESS
+86:                // We have enough room below the Max Freq to enable the PLL for this chip
+87:                OSCTUNEbits.PLLEN = 1; // 4x the clock speed in the previous line
+0F10  8C9B     BSF OSCTUNE, 6, ACCESS
+88:            #else
+89:                OSCCON = 0x82; // see datasheeet
+90:                OSCTUNEbits.PLLEN = 0; // Makes the clock exceed the PIC's rated speed if the PLL is on
+91:            #endif
+92:            
+93:                // initialize my uart recv handling code
+94:                init_uart_recv(&uc);
+0F12  50D9     MOVF FSR2L, W, ACCESS
+0F14  0F05     ADDLW 0x5
+0F16  6EE6     MOVWF POSTINC1, ACCESS
+0F18  CFDA     MOVFF FSR2H, POSTINC1
+0F1A  FFE6     NOP
+0F1C  ECD2     CALL 0x11A4, 0
+0F1E  F008     NOP
+0F20  E942     SUBFSR 1, 0x2
+95:            
+96:                // initialize the i2c code
+97:                init_i2c(&ic);
+0F22  50D9     MOVF FSR2L, W, ACCESS
+0F24  0F0A     ADDLW 0xA
+0F26  6EE6     MOVWF POSTINC1, ACCESS
+0F28  CFDA     MOVFF FSR2H, POSTINC1
+0F2A  FFE6     NOP
+0F2C  EC7C     CALL 0x6F8, 0
+0F2E  F003     NOP
+0F30  E942     SUBFSR 1, 0x2
+98:            
+99:                // init the timer1 lthread
+100:               init_timer1_lthread(&t1thread_data);
+0F32  50D9     MOVF FSR2L, W, ACCESS
+0F34  0F34     ADDLW 0x34
+0F36  6EE6     MOVWF POSTINC1, ACCESS
+0F38  CFDA     MOVFF FSR2H, POSTINC1
+0F3A  FFE6     NOP
+0F3C  EC8C     CALL 0x1318, 0
+0F3E  F009     NOP
+0F40  E942     SUBFSR 1, 0x2
+101:           
+102:               // initialize message queues before enabling any interrupts
+103:               init_queues();
+0F42  ECC3     CALL 0xB86, 0
+0F44  F005     NOP
+104:           
+105:               // set direction for PORTB to output
+106:               TRISB = 0x0;
+0F46  6A93     CLRF TRISB, ACCESS
+107:               LATB = 0x0;
+0F48  6A8A     CLRF LATB, ACCESS
+108:           
+109:               // how to set up PORTA for input (for the V4 board with the PIC2680)
+110:               /*
+111:                       PORTA = 0x0;	// clear the port
+112:                       LATA = 0x0;		// clear the output latch
+113:                       ADCON1 = 0x0F;	// turn off the A2D function on these pins
+114:                       // Only for 40-pin version of this chip CMCON = 0x07;	// turn the comparator off
+115:                       TRISA = 0x0F;	// set RA3-RA0 to inputs
+116:                */
+117:           
+118:               // initialize Timers
+119:              // OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
+120:              // OpenTimer1(TIMER_INT_ON & T1_PS_1_8 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
+121:           
+122:               // Peripheral interrupts can have their priority set to high or low
+123:               // enable high-priority interrupts and low-priority interrupts
+124:               enable_interrupts();
+0F4A  EC62     CALL 0xCC4, 0
+0F4C  F006     NOP
+125:           
+126:               // Decide on the priority of the enabled peripheral interrupts
+127:               // 0 is low, 1 is high
+128:               // Timer1 interrupt
+129:               IPR1bits.TMR1IP = 0;
+0F4E  909F     BCF IPR1, 0, ACCESS
+130:               // USART RX interrupt
+131:               IPR1bits.RCIP = 0;
+0F50  9A9F     BCF IPR1, 5, ACCESS
+132:               // I2C interrupt
+133:               IPR1bits.SSPIP = 1;
+0F52  869F     BSF IPR1, 3, ACCESS
+134:           
+135:               // configure the hardware i2c device as a slave (0x9E -> 0x4F) or (0x9A -> 0x4D)
+136:           #if 1
+137:               // Note that the temperature sensor Address bits (A0, A1, A2) are also the
+138:               // least significant bits of LATB -- take care when changing them
+139:               i2c_configure_slave(0x9E);
+0F54  0E9E     MOVLW 0x9E
+0F56  6EE6     MOVWF POSTINC1, ACCESS
+0F58  ECAE     CALL 0x75C, 0
+0F5A  F003     NOP
+0F5C  E941     SUBFSR 1, 0x1
+140:           #else
+141:               // If I want to test the temperature sensor from the ARM, I just make
+142:               // sure this PIC does not have the same address and configure the
+143:               // temperature sensor address bits and then just stay in an infinite loop
+144:               i2c_configure_slave(0x9A);
+145:               LATBbits.LATB1 = 1;
+146:               LATBbits.LATB0 = 1;
+147:               LATBbits.LATB2 = 1;
+148:               for (;;);
+149:           #endif
+150:           
+151:               // must specifically enable the I2C interrupts
+152:               PIE1bits.SSPIE = 1;
+0F5E  869D     BSF PIE1, 3, ACCESS
+153:           
+154:               // configure the hardware USART device
+155:               OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
+156:                       USART_CONT_RX & USART_BRGH_LOW, 0x19);
+0F60  0E19     MOVLW 0x19
+0F62  6EE6     MOVWF POSTINC1, ACCESS
+0F64  6AE6     CLRF POSTINC1, ACCESS
+0F66  0E6C     MOVLW 0x6C
+0F68  6EE6     MOVWF POSTINC1, ACCESS
+0F6A  ECDA     CALL 0x13B4, 0
+0F6C  F009     NOP
+0F6E  E943     SUBFSR 1, 0x3
+157:           
+158:               /* Junk to force an I2C interrupt in the simulator (if you wanted to)
+159:               PIR1bits.SSPIF = 1;
+160:               _asm
+161:               goto 0x08
+162:               _endasm;
+163:                */
+164:           
+165:               // printf() is available, but is not advisable.  It goes to the UART pin
+166:               // on the PIC and then you must hook something up to that to view it.
+167:               // It is also slow and is blocking, so it will perturb your code's operation
+168:               // Here is how it looks: printf("Hello\r\n");
+169:           
+170:           
+171:               // loop forever
+172:               // This loop is responsible for "handing off" messages to the subroutines
+173:               // that should get them.  Although the subroutines are not threads, but
+174:               // they can be equated with the tasks in your task diagram if you
+175:               // structure them properly.
+176:               while (1) {
+10E0  D747     BRA 0xF70
+177:                   // Call a routine that blocks until either on the incoming
+178:                   // messages queues has a message (this may put the processor into
+179:                   // an idle mode)
+180:                   block_on_To_msgqueues();
+0F70  EC33     CALL 0xC66, 0
+0F72  F006     NOP
+181:           
+182:                   // At this point, one or both of the queues has a message.  It
+183:                   // makes sense to check the high-priority messages first -- in fact,
+184:                   // you may only want to check the low-priority messages when there
+185:                   // is not a high priority message.  That is a design decision and
+186:                   // I haven't done it here.
+187:                   length = ToMainHigh_recvmsg(MSGLEN, &msgtype, (void *) msgbuffer);
+0F74  50D9     MOVF FSR2L, W, ACCESS
+0F76  0F26     ADDLW 0x26
+0F78  6EE6     MOVWF POSTINC1, ACCESS
+0F7A  CFDA     MOVFF FSR2H, POSTINC1
+0F7C  FFE6     NOP
+0F7E  50D9     MOVF FSR2L, W, ACCESS
+0F80  0F03     ADDLW 0x3
+0F82  6EE6     MOVWF POSTINC1, ACCESS
+0F84  CFDA     MOVFF FSR2H, POSTINC1
+0F86  FFE6     NOP
+0F88  0E0A     MOVLW 0xA
+0F8A  6EE6     MOVWF POSTINC1, ACCESS
+0F8C  EC45     CALL 0xA8A, 0
+0F8E  F005     NOP
+0F90  E945     SUBFSR 1, 0x5
+0F92  6E02     MOVWF [0x2], ACCESS
+188:                   if (length < 0) {
+0F94  3402     RLCF [0x2], W, ACCESS
+0F96  E304     BNC 0xFA0
+189:                       // no message, check the error code to see if it is concern
+190:                       if (length != MSGQUEUE_EMPTY) {
+0F98  0EFC     MOVLW 0xFC
+0F9A  5C02     SUBWF [0x2], W, ACCESS
+0F9C  E000     BZ 0xF9E
+191:                           // This case be handled by your code.
+192:                       }
+193:                   } else {
+0F9E  D04C     BRA 0x1038
+194:                       switch (msgtype) {
+0FA0  5003     MOVF [0x3], W, ACCESS
+0FA2  0A2A     XORLW 0x2A
+0FA4  E025     BZ 0xFF0
+0FA6  0A02     XORLW 0x2
+0FA8  E020     BZ 0xFEA
+0FAA  0A01     XORLW 0x1
+0FAC  E01E     BZ 0xFEA
+0FAE  0A23     XORLW 0x23
+0FB0  E001     BZ 0xFB4
+195:                           case MSGT_TIMER0:
+196:                           {
+197:                               timer0_lthread(&t0thread_data, msgtype, length, msgbuffer);
+0FB4  50D9     MOVF FSR2L, W, ACCESS
+0FB6  0F26     ADDLW 0x26
+0FB8  6EE6     MOVWF POSTINC1, ACCESS
+0FBA  CFDA     MOVFF FSR2H, POSTINC1
+0FBC  FFE6     NOP
+0FBE  EB02     MOVSF 0x2, 0x45
+0FC0  F045     NOP
+0FC2  0100     MOVLB 0x0
+0FC4  6B46     CLRF 0x46, BANKED
+0FC6  BF45     BTFSC __tmp_0, 7, BANKED
+0FC8  6946     SETF 0x46, BANKED
+0FCA  C045     MOVFF __tmp_0, POSTINC1
+0FCC  FFE6     NOP
+0FCE  C046     MOVFF 0x46, POSTINC1
+0FD0  FFE6     NOP
+0FD2  5003     MOVF [0x3], W, ACCESS
+0FD4  6EE6     MOVWF POSTINC1, ACCESS
+0FD6  6AE6     CLRF POSTINC1, ACCESS
+0FD8  50D9     MOVF FSR2L, W, ACCESS
+0FDA  0F36     ADDLW 0x36
+0FDC  6EE6     MOVWF POSTINC1, ACCESS
+0FDE  CFDA     MOVFF FSR2H, POSTINC1
+0FE0  FFE6     NOP
+0FE2  EC24     CALL 0x1648, 0
+0FE4  F00B     NOP
+0FE6  E948     SUBFSR 1, 0x8
+198:                               break;
+0FE8  D027     BRA 0x1038
+199:                           };
+200:                           case MSGT_I2C_DATA:
+201:                           case MSGT_I2C_DBG:
+202:                           {
+203:                               // Here is where you could handle debugging, if you wanted
+204:                               // keep track of the first byte received for later use (if desired)
+205:                               last_reg_recvd = msgbuffer[0];
+0FEA  EBA6     MOVSS 0x26, 0x4
+0FEC  F004     NOP
+206:                               break;
+0FEE  D024     BRA 0x1038
+207:                           };
+208:                           case MSGT_I2C_RQST:
+209:                           {
+210:                               // Generally, this is *NOT* how I recommend you handle an I2C slave request
+211:                               // I recommend that you handle it completely inside the i2c interrupt handler
+212:                               // by reading the data from a queue (i.e., you would not send a message, as is done
+213:                               // now, from the i2c interrupt handler to main to ask for data).
+214:                               //
+215:                               // The last byte received is the "register" that is trying to be read
+216:                               // The response is dependent on the register.
+217:                               switch (last_reg_recvd) {
+0FF0  5004     MOVF [0x4], W, ACCESS
+0FF2  0AA9     XORLW 0xA9
+0FF4  E011     BZ 0x1018
+0FF6  0A01     XORLW 0x1
+0FF8  E00A     BZ 0x100E
+0FFA  0A02     XORLW 0x2
+0FFC  E001     BZ 0x1000
+0FFE  D011     BRA 0x1022
+218:                                   case 0xaa:
+219:                                   {
+220:                                       length = 2;
+1000  0E02     MOVLW 0x2
+1002  6E02     MOVWF [0x2], ACCESS
+221:                                       msgbuffer[0] = 0x55;
+1004  0E55     MOVLW 0x55
+1006  6E26     MOVWF [0x26], ACCESS
+222:                                       msgbuffer[1] = 0xAA;
+1008  0EAA     MOVLW 0xAA
+100A  6E27     MOVWF [0x27], ACCESS
+223:                                       break;
+100C  D00A     BRA 0x1022
+224:                                   }
+225:                                   case 0xa8:
+226:                                   {
+227:                                       length = 1;
+100E  0E01     MOVLW 0x1
+1010  6E02     MOVWF [0x2], ACCESS
+228:                                       msgbuffer[0] = 0x3A;
+1012  0E3A     MOVLW 0x3A
+1014  6E26     MOVWF [0x26], ACCESS
+229:                                       break;
+1016  D005     BRA 0x1022
+230:                                   }
+231:                                   case 0xa9:
+232:                                   {
+233:                                       length = 1;
+1018  0E01     MOVLW 0x1
+101A  6E02     MOVWF [0x2], ACCESS
+234:                                       msgbuffer[0] = 0xA3;
+101C  0EA3     MOVLW 0xA3
+101E  6E26     MOVWF [0x26], ACCESS
+235:                                       break;
+1020  D000     BRA 0x1022
+236:                                   }
+237:                               };
+238:                               start_i2c_slave_reply(length, msgbuffer);
+1022  50D9     MOVF FSR2L, W, ACCESS
+1024  0F26     ADDLW 0x26
+1026  6EE6     MOVWF POSTINC1, ACCESS
+1028  CFDA     MOVFF FSR2H, POSTINC1
+102A  FFE6     NOP
+102C  EB02     MOVSF 0x2, 0xFE6
+102E  FFE6     NOP
+1030  EC2E     CALL 0x5C, 0
+1032  F000     NOP
+1034  E943     SUBFSR 1, 0x3
+239:                               break;
+1036  D000     BRA 0x1038
+240:                           };
+241:                           default:
+242:                           {
+243:                               // Your code should handle this error
+244:                               break;
+0FB2  D042     BRA 0x1038
+245:                           };
+246:                       };
+247:                   }
+248:           
+249:                   // Check the low priority queue
+250:                   length = ToMainLow_recvmsg(MSGLEN, &msgtype, (void *) msgbuffer);
+1038  50D9     MOVF FSR2L, W, ACCESS
+103A  0F26     ADDLW 0x26
+103C  6EE6     MOVWF POSTINC1, ACCESS
+103E  CFDA     MOVFF FSR2H, POSTINC1
+1040  FFE6     NOP
+1042  50D9     MOVF FSR2L, W, ACCESS
+1044  0F03     ADDLW 0x3
+1046  6EE6     MOVWF POSTINC1, ACCESS
+1048  CFDA     MOVFF FSR2H, POSTINC1
+104A  FFE6     NOP
+104C  0E0A     MOVLW 0xA
+104E  6EE6     MOVWF POSTINC1, ACCESS
+1050  EC13     CALL 0xA26, 0
+1052  F005     NOP
+1054  E945     SUBFSR 1, 0x5
+1056  6E02     MOVWF [0x2], ACCESS
+251:                   if (length < 0) {
+1058  3402     RLCF [0x2], W, ACCESS
+105A  E304     BNC 0x1064
+252:                       // no message, check the error code to see if it is concern
+253:                       if (length != MSGQUEUE_EMPTY) {
+105C  0EFC     MOVLW 0xFC
+105E  5C02     SUBWF [0x2], W, ACCESS
+1060  E000     BZ 0x1062
+254:                           // Your code should handle this situation
+255:                       }
+256:                   } else {
+1062  D03E     BRA 0x10E0
+257:                       switch (msgtype) {
+1064  5003     MOVF [0x3], W, ACCESS
+1066  0A1E     XORLW 0x1E
+1068  E020     BZ 0x10AA
+106A  0A01     XORLW 0x1
+106C  E01E     BZ 0x10AA
+106E  0A14     XORLW 0x14
+1070  E001     BZ 0x1074
+258:                           case MSGT_TIMER1:
+259:                           {
+260:                               timer1_lthread(&t1thread_data, msgtype, length, msgbuffer);
+1074  50D9     MOVF FSR2L, W, ACCESS
+1076  0F26     ADDLW 0x26
+1078  6EE6     MOVWF POSTINC1, ACCESS
+107A  CFDA     MOVFF FSR2H, POSTINC1
+107C  FFE6     NOP
+107E  EB02     MOVSF 0x2, 0x45
+1080  F045     NOP
+1082  0100     MOVLB 0x0
+1084  6B46     CLRF 0x46, BANKED
+1086  BF45     BTFSC __tmp_0, 7, BANKED
+1088  6946     SETF 0x46, BANKED
+108A  C045     MOVFF __tmp_0, POSTINC1
+108C  FFE6     NOP
+108E  C046     MOVFF 0x46, POSTINC1
+1090  FFE6     NOP
+1092  5003     MOVF [0x3], W, ACCESS
+1094  6EE6     MOVWF POSTINC1, ACCESS
+1096  6AE6     CLRF POSTINC1, ACCESS
+1098  50D9     MOVF FSR2L, W, ACCESS
+109A  0F34     ADDLW 0x34
+109C  6EE6     MOVWF POSTINC1, ACCESS
+109E  CFDA     MOVFF FSR2H, POSTINC1
+10A0  FFE6     NOP
+10A2  EC9B     CALL 0x1336, 0
+10A4  F009     NOP
+10A6  E948     SUBFSR 1, 0x8
+261:                               break;
+10A8  D01B     BRA 0x10E0
+262:                           };
+263:                           case MSGT_OVERRUN:
+264:                           case MSGT_UART_DATA:
+265:                           {
+266:                               uart_lthread(&uthread_data, msgtype, length, msgbuffer);
+10AA  50D9     MOVF FSR2L, W, ACCESS
+10AC  0F26     ADDLW 0x26
+10AE  6EE6     MOVWF POSTINC1, ACCESS
+10B0  CFDA     MOVFF FSR2H, POSTINC1
+10B2  FFE6     NOP
+10B4  EB02     MOVSF 0x2, 0x45
+10B6  F045     NOP
+10B8  0100     MOVLB 0x0
+10BA  6B46     CLRF 0x46, BANKED
+10BC  BF45     BTFSC __tmp_0, 7, BANKED
+10BE  6946     SETF 0x46, BANKED
+10C0  C045     MOVFF __tmp_0, POSTINC1
+10C2  FFE6     NOP
+10C4  C046     MOVFF 0x46, POSTINC1
+10C6  FFE6     NOP
+10C8  5003     MOVF [0x3], W, ACCESS
+10CA  6EE6     MOVWF POSTINC1, ACCESS
+10CC  6AE6     CLRF POSTINC1, ACCESS
+10CE  50D9     MOVF FSR2L, W, ACCESS
+10D0  0F32     ADDLW 0x32
+10D2  6EE6     MOVWF POSTINC1, ACCESS
+10D4  CFDA     MOVFF FSR2H, POSTINC1
+10D6  FFE6     NOP
+10D8  ECA1     CALL 0x1542, 0
+10DA  F00A     NOP
+10DC  E948     SUBFSR 1, 0x8
+267:                               break;
+10DE  D000     BRA 0x10E0
+268:                           };
+269:                           default:
+270:                           {
+271:                               // Your code should handle this error
+272:                               break;
+1072  D036     BRA 0x10E0
+273:                           };
+274:                       };
+275:                   }
+276:               }
+277:           
+278:           }
+10E2  E978     SUBFSR 1, 0x38
+10E4  CFE7     MOVFF INDF1, FSR2L
+10E6  FFD9     NOP
+10E8  0012     RETURN 0
+---  /Users/mtj/Dropbox/Classes/ece4534/PICFramework/src/interrupts.c  ----------------------------------
+1:             #include "maindefs.h"
+2:             #include "interrupts.h"
+3:             #include "user_interrupts.h"
+4:             #include "messages.h"
+5:             
+6:             //----------------------------------------------------------------------------
+7:             // Note: This code for processing interrupts is configured to allow for high and
+8:             //       low priority interrupts.  The high priority interrupt can interrupt the
+9:             //       the processing of a low priority interrupt.  However, only one of each type
+10:            //       can be processed at the same time.  It is possible to enable nesting of low
+11:            //       priority interrupts, but this code is not setup for that and this nesting is not
+12:            //       enabled.
+13:            
+14:            void enable_interrupts() {
+15:                // Peripheral interrupts can have their priority set to high or low
+16:                // enable high-priority interrupts and low-priority interrupts
+17:                RCONbits.IPEN = 1;
+0CC4  8ED0     BSF RCON, 7, ACCESS
+18:                INTCONbits.GIEH = 1;
+0CC6  8EF2     BSF INTCON, 7, ACCESS
+19:                INTCONbits.GIEL = 1;
+0CC8  8CF2     BSF INTCON, 6, ACCESS
+20:            }
+0CCA  0012     RETURN 0
+21:            
+22:            int in_high_int() {
+23:                return (!INTCONbits.GIEH);
+0CCC  50F2     MOVF INTCON, W, ACCESS
+0CCE  0B80     ANDLW 0x80
+0CD0  0A80     XORLW 0x80
+0CD2  E001     BZ 0xCD6
+0CD4  0E01     MOVLW 0x1
+0CD6  0100     MOVLB 0x0
+0CD8  6F45     MOVWF __tmp_0, BANKED
+0CDA  6B46     CLRF 0x46, BANKED
+0CDC  0B80     ANDLW 0x80
+0CDE  E001     BZ 0xCE2
+0CE0  6946     SETF 0x46, BANKED
+0CE2  C045     MOVFF __tmp_0, PRODL
+0CE4  FFF3     NOP
+0CE6  C046     MOVFF 0x46, PRODH
+0CE8  FFF4     NOP
+0CEA  D000     BRA 0xCEC
+24:            }
+0CEC  0012     RETURN 0
+25:            
+26:            int low_int_active() {
+27:                return (!INTCONbits.GIEL);
+0CEE  50F2     MOVF INTCON, W, ACCESS
+0CF0  0B40     ANDLW 0x40
+0CF2  0A40     XORLW 0x40
+0CF4  E001     BZ 0xCF8
+0CF6  0E01     MOVLW 0x1
+0CF8  0100     MOVLB 0x0
+0CFA  6F45     MOVWF __tmp_0, BANKED
+0CFC  6B46     CLRF 0x46, BANKED
+0CFE  0B80     ANDLW 0x80
+0D00  E001     BZ 0xD04
+0D02  6946     SETF 0x46, BANKED
+0D04  C045     MOVFF __tmp_0, PRODL
+0D06  FFF3     NOP
+0D08  C046     MOVFF 0x46, PRODH
+0D0A  FFF4     NOP
+0D0C  D000     BRA 0xD0E
+28:            }
+0D0E  0012     RETURN 0
+29:            
+30:            int in_low_int() {
+31:                if (INTCONbits.GIEL == 1) {
+0D10  ACF2     BTFSS INTCON, 6, ACCESS
+0D12  D005     BRA 0xD1E
+32:                    return (0);
+0D14  0E00     MOVLW 0x0
+0D16  6EF3     MOVWF PRODL, ACCESS
+0D18  6AF4     CLRF PRODH, ACCESS
+0D1A  D013     BRA 0xD42
+33:                } else if (in_high_int()) {
+0D1C  D012     BRA 0xD42
+0D1E  DFD6     RCALL in_high_int
+0D20  CFF3     MOVFF PRODL, __tmp_0
+0D22  F045     NOP
+0D24  CFF4     MOVFF PRODH, 0x46
+0D26  F046     NOP
+0D28  0100     MOVLB 0x0
+0D2A  5145     MOVF __tmp_0, W, BANKED
+0D2C  1146     IORWF 0x46, W, BANKED
+0D2E  E005     BZ 0xD3A
+34:                    return (0);
+0D30  0E00     MOVLW 0x0
+0D32  6EF3     MOVWF PRODL, ACCESS
+0D34  6AF4     CLRF PRODH, ACCESS
+0D36  D005     BRA 0xD42
+35:                } else {
+0D38  D004     BRA 0xD42
+36:                    return (1);
+0D3A  0E01     MOVLW 0x1
+0D3C  6EF3     MOVWF PRODL, ACCESS
+0D3E  6AF4     CLRF PRODH, ACCESS
+0D40  D000     BRA 0xD42
+37:                }
+38:            }
+0D42  0012     RETURN 0
+39:            
+40:            int in_main() {
+41:                if ((!in_low_int()) && (!in_high_int())) {
+0D44  DFE5     RCALL in_low_int
+0D46  CFF3     MOVFF PRODL, __tmp_0
+0D48  F045     NOP
+0D4A  CFF4     MOVFF PRODH, 0x46
+0D4C  F046     NOP
+0D4E  0100     MOVLB 0x0
+0D50  5145     MOVF __tmp_0, W, BANKED
+0D52  1146     IORWF 0x46, W, BANKED
+0D54  E10E     BNZ 0xD72
+0D56  DFBA     RCALL in_high_int
+0D58  CFF3     MOVFF PRODL, 0x47
+0D5A  F047     NOP
+0D5C  CFF4     MOVFF PRODH, 0x48
+0D5E  F048     NOP
+0D60  0100     MOVLB 0x0
+0D62  5147     MOVF 0x47, W, BANKED
+0D64  1148     IORWF 0x48, W, BANKED
+0D66  E105     BNZ 0xD72
+42:                    return (1);
+0D68  0E01     MOVLW 0x1
+0D6A  6EF3     MOVWF PRODL, ACCESS
+0D6C  6AF4     CLRF PRODH, ACCESS
+0D6E  D005     BRA 0xD7A
+43:                } else {
+0D70  D004     BRA 0xD7A
+44:                    return (0);
+0D72  0E00     MOVLW 0x0
+0D74  6EF3     MOVWF PRODL, ACCESS
+0D76  6AF4     CLRF PRODH, ACCESS
+0D78  D000     BRA 0xD7A
+45:                }
+46:            }
+0D7A  0012     RETURN 0
+47:            
+48:            #ifdef __XC8
+49:            // Nothing is needed for this compiler
+50:            #else
+51:            // Set up the interrupt vectors
+52:            void InterruptHandlerHigh();
+53:            void InterruptHandlerLow();
+54:            
+55:            #pragma code InterruptVectorLow = 0x18
+56:            
+57:            void
+58:            InterruptVectorLow(void) {
+59:                _asm
+60:                goto InterruptHandlerLow //jump to interrupt routine
+0018  EF1B     GOTO 0xE36
+001A  F007     NOP
+61:                        _endasm
+62:            }
+001C  0012     RETURN 0
+63:            
+64:            #pragma code InterruptVectorHigh = 0x08
+65:            
+66:            void
+67:            InterruptVectorHigh(void) {
+68:                _asm
+69:                goto InterruptHandlerHigh //jump to interrupt routine
+0008  EFBE     GOTO 0xD7C
+000A  F006     NOP
+70:                        _endasm
+71:            }
+000C  0012     RETURN 0
+72:            #endif
+73:            //----------------------------------------------------------------------------
+74:            // High priority interrupt routine
+75:            // this parcels out interrupts to individual handlers
+76:            
+77:            #ifdef __XC8
+78:            interrupt
+79:            #else
+80:            #pragma code
+81:            #pragma interrupt InterruptHandlerHigh
+82:            #endif
+83:            void InterruptHandlerHigh() {
+0D7C  CFDA     MOVFF FSR2H, PREINC1
+0D7E  FFE4     NOP
+0D80  CFE2     MOVFF FSR1H, FSR2H
+0D82  FFDA     NOP
+0D84  CFE9     MOVFF FSR0L, PREINC1
+0D86  FFE4     NOP
+0D88  CFEA     MOVFF FSR0H, PREINC1
+0D8A  FFE4     NOP
+0D8C  CFD9     MOVFF FSR2L, PREINC1
+0D8E  FFE4     NOP
+0D90  CFDA     MOVFF FSR2H, PREINC1
+0D92  FFE4     NOP
+0D94  C041     MOVFF 0x41, PREINC1
+0D96  FFE4     NOP
+0D98  C042     MOVFF 0x42, PREINC1
+0D9A  FFE4     NOP
+0D9C  C043     MOVFF 0x43, PREINC1
+0D9E  FFE4     NOP
+0DA0  C044     MOVFF 0x44, PREINC1
+0DA2  FFE4     NOP
+0DA4  CFF6     MOVFF TBLPTRL, PREINC1
+0DA6  FFE4     NOP
+0DA8  CFF7     MOVFF TBLPTRH, PREINC1
+0DAA  FFE4     NOP
+0DAC  CFF5     MOVFF TABLAT, PREINC1
+0DAE  FFE4     NOP
+0DB0  CFF3     MOVFF PRODL, PREINC1
+0DB2  FFE4     NOP
+0DB4  CFF4     MOVFF PRODH, PREINC1
+0DB6  FFE4     NOP
+0DB8  CFFA     MOVFF PCLATH, PREINC1
+0DBA  FFE4     NOP
+0DBC  EE00     LFSR 0, 0x45
+0DBE  F045     NOP
+0DC0  0E04     MOVLW 0x4
+0DC2  04E8     DECF WREG, W, ACCESS
+0DC4  E303     BNC 0xDCC
+0DC6  CFEE     MOVFF POSTINC0, PREINC1
+0DC8  FFE4     NOP
+0DCA  D7FB     BRA 0xDC2
+0DCC  52E6     MOVF POSTINC1, F, ACCESS
+84:                // We need to check the interrupt flag of each enabled high-priority interrupt to
+85:                // see which device generated this interrupt.  Then we can call the correct handler.
+86:            
+87:                // check to see if we have an I2C interrupt
+88:                if (PIR1bits.SSPIF) {
+0DCE  A69E     BTFSS PIR1, 3, ACCESS
+0DD0  D003     BRA 0xDD8
+89:                    // clear the interrupt flag
+90:                    PIR1bits.SSPIF = 0;
+0DD2  969E     BCF PIR1, 3, ACCESS
+91:                    // call the handler
+92:                    i2c_int_handler();
+0DD4  ECF7     CALL 0x1EE, 0
+0DD6  F000     NOP
+93:                }
+94:            
+95:                // check to see if we have an interrupt on timer 0
+96:                if (INTCONbits.TMR0IF) {
+0DD8  A4F2     BTFSS INTCON, 2, ACCESS
+0DDA  D003     BRA 0xDE2
+97:                    INTCONbits.TMR0IF = 0; // clear this interrupt flag
+0DDC  94F2     BCF INTCON, 2, ACCESS
+98:                    // call whatever handler you want (this is "user" defined)
+99:                    timer0_int_handler();
+0DDE  ECE8     CALL 0x11D0, 0
+0DE0  F008     NOP
+100:               }
+101:           
+102:               // here is where you would check other interrupt flags.
+103:           
+104:               // The *last* thing I do here is check to see if we can
+105:               // allow the processor to go to sleep
+106:               // This code *DEPENDS* on the code in messages.c being
+107:               // initialized using "init_queues()" -- if you aren't using
+108:               // this, then you shouldn't have this call here
+109:               SleepIfOkay();
+0DE2  EC05     CALL 0xC0A, 0
+0DE4  F006     NOP
+110:           }
+0DE6  52E5     MOVF POSTDEC1, F, ACCESS
+0DE8  EE00     LFSR 0, 0x48
+0DEA  F048     NOP
+0DEC  0E04     MOVLW 0x4
+0DEE  04E8     DECF WREG, W, ACCESS
+0DF0  E303     BNC 0xDF8
+0DF2  CFE5     MOVFF POSTDEC1, POSTDEC0
+0DF4  FFED     NOP
+0DF6  D7FB     BRA 0xDEE
+0DF8  CFE5     MOVFF POSTDEC1, PCLATH
+0DFA  FFFA     NOP
+0DFC  CFE5     MOVFF POSTDEC1, PRODH
+0DFE  FFF4     NOP
+0E00  CFE5     MOVFF POSTDEC1, PRODL
+0E02  FFF3     NOP
+0E04  CFE5     MOVFF POSTDEC1, TABLAT
+0E06  FFF5     NOP
+0E08  CFE5     MOVFF POSTDEC1, TBLPTRH
+0E0A  FFF7     NOP
+0E0C  CFE5     MOVFF POSTDEC1, TBLPTRL
+0E0E  FFF6     NOP
+0E10  CFE5     MOVFF POSTDEC1, 0x44
+0E12  F044     NOP
+0E14  CFE5     MOVFF POSTDEC1, 0x43
+0E16  F043     NOP
+0E18  CFE5     MOVFF POSTDEC1, 0x42
+0E1A  F042     NOP
+0E1C  CFE5     MOVFF POSTDEC1, 0x41
+0E1E  F041     NOP
+0E20  CFE5     MOVFF POSTDEC1, FSR2H
+0E22  FFDA     NOP
+0E24  CFE5     MOVFF POSTDEC1, FSR2L
+0E26  FFD9     NOP
+0E28  CFE5     MOVFF POSTDEC1, FSR0H
+0E2A  FFEA     NOP
+0E2C  CFE5     MOVFF POSTDEC1, FSR0L
+0E2E  FFE9     NOP
+0E30  CFE5     MOVFF POSTDEC1, FSR2H
+0E32  FFDA     NOP
+0E34  0011     RETFIE 1
+111:           
+112:           //----------------------------------------------------------------------------
+113:           // Low priority interrupt routine
+114:           // this parcels out interrupts to individual handlers
+115:           // This works the same way as the "High" interrupt handler
+116:           #ifdef __XC8
+117:           interrupt low_priority
+118:           #else
+119:           #pragma code
+120:           #pragma interruptlow InterruptHandlerLow
+121:           #endif
+122:           void InterruptHandlerLow() {
+0E36  CFD8     MOVFF STATUS, PREINC1
+0E38  FFE4     NOP
+0E3A  CFE0     MOVFF BSR, PREINC1
+0E3C  FFE4     NOP
+0E3E  6EE4     MOVWF PREINC1, ACCESS
+0E40  CFDA     MOVFF FSR2H, PREINC1
+0E42  FFE4     NOP
+0E44  CFE2     MOVFF FSR1H, FSR2H
+0E46  FFDA     NOP
+0E48  CFE9     MOVFF FSR0L, PREINC1
+0E4A  FFE4     NOP
+0E4C  CFEA     MOVFF FSR0H, PREINC1
+0E4E  FFE4     NOP
+0E50  CFD9     MOVFF FSR2L, PREINC1
+0E52  FFE4     NOP
+0E54  CFDA     MOVFF FSR2H, PREINC1
+0E56  FFE4     NOP
+0E58  C041     MOVFF 0x41, PREINC1
+0E5A  FFE4     NOP
+0E5C  C042     MOVFF 0x42, PREINC1
+0E5E  FFE4     NOP
+0E60  C043     MOVFF 0x43, PREINC1
+0E62  FFE4     NOP
+0E64  C044     MOVFF 0x44, PREINC1
+0E66  FFE4     NOP
+0E68  CFF6     MOVFF TBLPTRL, PREINC1
+0E6A  FFE4     NOP
+0E6C  CFF7     MOVFF TBLPTRH, PREINC1
+0E6E  FFE4     NOP
+0E70  CFF5     MOVFF TABLAT, PREINC1
+0E72  FFE4     NOP
+0E74  CFF3     MOVFF PRODL, PREINC1
+0E76  FFE4     NOP
+0E78  CFF4     MOVFF PRODH, PREINC1
+0E7A  FFE4     NOP
+0E7C  CFFA     MOVFF PCLATH, PREINC1
+0E7E  FFE4     NOP
+0E80  EE00     LFSR 0, 0x45
+0E82  F045     NOP
+0E84  0E04     MOVLW 0x4
+0E86  04E8     DECF WREG, W, ACCESS
+0E88  E303     BNC 0xE90
+0E8A  CFEE     MOVFF POSTINC0, PREINC1
+0E8C  FFE4     NOP
+0E8E  D7FB     BRA 0xE86
+0E90  52E6     MOVF POSTINC1, F, ACCESS
+123:               // check to see if we have an interrupt on timer 1
+124:               if (PIR1bits.TMR1IF) {
+0E92  A09E     BTFSS PIR1, 0, ACCESS
+0E94  D003     BRA 0xE9C
+125:                   PIR1bits.TMR1IF = 0; //clear interrupt flag
+0E96  909E     BCF PIR1, 0, ACCESS
+126:                   timer1_int_handler();
+0E98  EC1D     CALL 0x123A, 0
+0E9A  F009     NOP
+127:               }
+128:           
+129:               // check to see if we have an interrupt on USART RX
+130:               if (PIR1bits.RCIF) {
+0E9C  AA9E     BTFSS PIR1, 5, ACCESS
+0E9E  D003     BRA 0xEA6
+131:                   PIR1bits.RCIF = 0; //clear interrupt flag
+0EA0  9A9E     BCF PIR1, 5, ACCESS
+132:                   uart_recv_int_handler();
+0EA2  EC75     CALL 0x10EA, 0
+0EA4  F008     NOP
+133:               }
+134:           }
+0EA6  52E5     MOVF POSTDEC1, F, ACCESS
+0EA8  EE00     LFSR 0, 0x48
+0EAA  F048     NOP
+0EAC  0E04     MOVLW 0x4
+0EAE  04E8     DECF WREG, W, ACCESS
+0EB0  E303     BNC 0xEB8
+0EB2  CFE5     MOVFF POSTDEC1, POSTDEC0
+0EB4  FFED     NOP
+0EB6  D7FB     BRA 0xEAE
+0EB8  CFE5     MOVFF POSTDEC1, PCLATH
+0EBA  FFFA     NOP
+0EBC  CFE5     MOVFF POSTDEC1, PRODH
+0EBE  FFF4     NOP
+0EC0  CFE5     MOVFF POSTDEC1, PRODL
+0EC2  FFF3     NOP
+0EC4  CFE5     MOVFF POSTDEC1, TABLAT
+0EC6  FFF5     NOP
+0EC8  CFE5     MOVFF POSTDEC1, TBLPTRH
+0ECA  FFF7     NOP
+0ECC  CFE5     MOVFF POSTDEC1, TBLPTRL
+0ECE  FFF6     NOP
+0ED0  CFE5     MOVFF POSTDEC1, 0x44
+0ED2  F044     NOP
+0ED4  CFE5     MOVFF POSTDEC1, 0x43
+0ED6  F043     NOP
+0ED8  CFE5     MOVFF POSTDEC1, 0x42
+0EDA  F042     NOP
+0EDC  CFE5     MOVFF POSTDEC1, 0x41
+0EDE  F041     NOP
+0EE0  CFE5     MOVFF POSTDEC1, FSR2H
+0EE2  FFDA     NOP
+0EE4  CFE5     MOVFF POSTDEC1, FSR2L
+0EE6  FFD9     NOP
+0EE8  CFE5     MOVFF POSTDEC1, FSR0H
+0EEA  FFEA     NOP
+0EEC  CFE5     MOVFF POSTDEC1, FSR0L
+0EEE  FFE9     NOP
+0EF0  CFE5     MOVFF POSTDEC1, FSR2H
+0EF2  FFDA     NOP
+0EF4  50E5     MOVF POSTDEC1, W, ACCESS
+0EF6  CFE5     MOVFF POSTDEC1, BSR
+0EF8  FFE0     NOP
+0EFA  CFE5     MOVFF POSTDEC1, STATUS
+0EFC  FFD8     NOP
+0EFE  0010     RETFIE 0
+135:           
