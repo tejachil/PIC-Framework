@@ -4,10 +4,12 @@
 #include <usart.h>
 #include <i2c.h>
 #include <timers.h>
+#include <adc.h>
 #else
 #include <plib/usart.h>
 #include <plib/i2c.h>
 #include <plib/timers.h>
+#include <plib/adc.h>
 #endif
 #include "interrupts.h"
 #include "messages.h"
@@ -16,6 +18,10 @@
 #include "uart_thread.h"
 #include "timer1_thread.h"
 #include "timer0_thread.h"
+#include "my_gpio.h"
+#ifdef USE_ADC_TEST
+#include "my_adc.h"
+#endif //ifdef USE_ADC_TEST
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -115,6 +121,7 @@
 // CONFIG4H
 #pragma config WPDIS = OFF      // Write Protect Disable bit (WPFP<5:0>/WPEND region ignored)
 #else
+
 Something is messed up
 #endif
 #endif
@@ -163,11 +170,8 @@ void main(void) {
     // initialize message queues before enabling any interrupts
     init_queues();
 
-#ifndef __USE18F26J50
-    // set direction for PORTB to output
-    TRISB = 0x0;
-    LATB = 0x0;
-#endif
+    // Setup PORTB as output
+    gpio_init_portb_output();
 
     // how to set up PORTA for input (for the V4 board with the PIC2680)
     /*
@@ -182,10 +186,16 @@ void main(void) {
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
 #ifdef __USE18F26J50
     // MTJ added second argument for OpenTimer1()
-    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_8 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF,0x0);
+    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_8 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
 #else
     OpenTimer1(TIMER_INT_ON & T1_PS_1_8 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
 #endif
+
+#ifdef USE_ADC_TEST
+    // Configure ADC for a read on channel 0
+    OpenADC(ADC_FOSC_8 & ADC_RIGHT_JUST & ADC_0_TAD, ADC_CH0 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
+    SetChanADC(ADC_CH0);
+#endif //ifdef USE_ADC_TEST
 
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
@@ -195,6 +205,10 @@ void main(void) {
     IPR1bits.RCIP = 0;
     // I2C interrupt
     IPR1bits.SSPIP = 1;
+#ifdef USE_ADC_TEST
+    // ADC interrupt
+    IPR1bits.ADIP = 1;
+#endif //ifdef USE_ADC_TEST
 
     // configure the hardware i2c device as a slave (0x9E -> 0x4F) or (0x9A -> 0x4D)
 #if 1
@@ -223,7 +237,7 @@ void main(void) {
     // configure the hardware USART device
 #ifdef __USE18F26J50
     Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-        USART_CONT_RX & USART_BRGH_LOW, 0x19);
+            USART_CONT_RX & USART_BRGH_LOW, 0x19);
 #else
     OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
             USART_CONT_RX & USART_BRGH_LOW, 0x19);
@@ -244,7 +258,6 @@ void main(void) {
     // on the PIC and then you must hook something up to that to view it.
     // It is also slow and is blocking, so it will perturb your code's operation
     // Here is how it looks: printf("Hello\r\n");
-
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
@@ -344,6 +357,11 @@ void main(void) {
                     uart_lthread(&uthread_data, msgtype, length, msgbuffer);
                     break;
                 };
+                case MSGT_ADC:
+                {
+                    adc_lthread(msgtype, length, msgbuffer);
+                    break;
+                }
                 default:
                 {
                     // Your code should handle this error

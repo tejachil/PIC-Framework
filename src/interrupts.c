@@ -101,6 +101,17 @@ void InterruptHandlerHigh() {
 
     // here is where you would check other interrupt flags.
 
+#ifdef USE_ADC_TEST
+    // Check to see if we have an ADC interrupt
+    if (PIR1bits.ADIF)
+    {
+        // Clear the interrupt flag
+        PIR1bits.ADIF = 0;
+        // Call the ADC interrupt handler
+        adc_int_handler();
+    }
+#endif //ifdef USE_ADC_TEST
+
     // The *last* thing I do here is check to see if we can
     // allow the processor to go to sleep
     // This code *DEPENDS* on the code in messages.c being

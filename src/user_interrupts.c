@@ -4,8 +4,10 @@
 #include "maindefs.h"
 #ifndef __XC8
 #include <timers.h>
+#include "adc.h"
 #else
 #include <plib/timers.h>
+#include <plib/adc.h>
 #endif
 #include "user_interrupts.h"
 #include "messages.h"
@@ -47,3 +49,21 @@ void timer1_int_handler() {
     // reset the timer
     WriteTimer1(0);
 }
+
+#ifdef USE_ADC_TEST
+// ADC conversion complete interrupt handler definition
+void adc_int_handler()
+{
+    int adc_value;
+    unsigned char adc_bytes[2];
+    
+    // Read the conversion value
+    adc_value = ReadADC();
+    
+    // Store each byte into the byte array, to make sure that the order is
+    // as expected: high byte in index 0
+    adc_bytes[0] = (adc_value & 0xFF00) >> 8;
+    adc_bytes[1] = adc_value & 0x00FF;
+    ToMainLow_sendmsg(2, MSGT_ADC, (void *) adc_bytes);
+}
+#endif //ifdef USE_ADC_TEST
