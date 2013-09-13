@@ -215,12 +215,12 @@ void main(void) {
     // They *are* changed in the timer interrupt handlers if those timers are
     //   enabled.  They are just there to make the lights blink and can be
     //   disabled.
-    i2c_configure_slave(0x9E);
+    i2c_configure_slave(0x4F);
 #else
     // If I want to test the temperature sensor from the ARM, I just make
     // sure this PIC does not have the same address and configure the
     // temperature sensor address bits and then just stay in an infinite loop
-    i2c_configure_slave(0x9A);
+    i2c_configure_slave(0x4F);
 #ifdef __USE18F2680
     LATBbits.LATB1 = 1;
     LATBbits.LATB0 = 1;
