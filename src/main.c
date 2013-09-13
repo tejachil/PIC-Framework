@@ -208,26 +208,9 @@ void main(void) {
     IPR1bits.ADIP = 1;
 #endif //ifdef USE_ADC_TEST
 
-    // configure the hardware i2c device as a slave (0x9E -> 0x4F) or (0x9A -> 0x4D)
-#if 1
-    // Note that the temperature sensor Address bits (A0, A1, A2) are also the
-    // least significant bits of LATB -- take care when changing them
-    // They *are* changed in the timer interrupt handlers if those timers are
-    //   enabled.  They are just there to make the lights blink and can be
-    //   disabled.
-    i2c_configure_slave(0x4F);
-#else
-    // If I want to test the temperature sensor from the ARM, I just make
-    // sure this PIC does not have the same address and configure the
-    // temperature sensor address bits and then just stay in an infinite loop
-    i2c_configure_slave(0x4F);
-#ifdef __USE18F2680
-    LATBbits.LATB1 = 1;
-    LATBbits.LATB0 = 1;
-    LATBbits.LATB2 = 1;
-#endif
-    for (;;);
-#endif
+    // configure the hardware i2c device as a slave (0x9E becomes address 0x4F
+    // because the lowest bit is the read/write bit)
+    i2c_configure_slave(0x9E);
 
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
