@@ -192,9 +192,7 @@ void main(void) {
 #endif
 
 #ifdef USE_ADC_TEST
-    // Configure ADC for a read on channel 0
-    OpenADC(ADC_FOSC_8 & ADC_RIGHT_JUST & ADC_0_TAD, ADC_CH0 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
-    SetChanADC(ADC_CH0);
+    adc_init();
 #endif //ifdef USE_ADC_TEST
 
     // Decide on the priority of the enabled peripheral interrupts
@@ -359,7 +357,9 @@ void main(void) {
                 };
                 case MSGT_ADC:
                 {
+#ifdef USE_ADC_TEST
                     adc_lthread(msgtype, length, msgbuffer);
+#endif //ifdef USE_ADC_TEST
                     break;
                 }
                 default:
