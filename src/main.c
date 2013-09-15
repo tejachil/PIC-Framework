@@ -307,11 +307,11 @@ void main(void) {
                             break;
                         }
 #ifdef USE_ADC_TEST
-                        // ADC data register - 16 bit value
+                            // ADC data register - 16 bit value
                         case ADC_DATA_REGISTER:
                         {
                             // Get the latest ADC reading
-                            int adc_val = ReadADC();
+                            int adc_val = adc_read();
                             length = 2;
                             // Place the low byte in the first msg byte
                             msgbuffer[0] = adc_val & 0x00FF;
