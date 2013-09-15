@@ -306,6 +306,20 @@ void main(void) {
                             msgbuffer[0] = 0xA3;
                             break;
                         }
+#ifdef USE_ADC_TEST
+                        // ADC data register - 16 bit value
+                        case ADC_DATA_REGISTER:
+                        {
+                            // Get the latest ADC reading
+                            int adc_val = ReadADC();
+                            length = 2;
+                            // Place the low byte in the first msg byte
+                            msgbuffer[0] = adc_val & 0x00FF;
+                            // Place the high byte in the second msg byte
+                            msgbuffer[1] = (adc_val & 0xFF00) >> 8;
+                            break;
+                        }
+#endif //ifdef USE_ADC_TEST
                     };
                     start_i2c_slave_reply(length, msgbuffer);
                     break;
