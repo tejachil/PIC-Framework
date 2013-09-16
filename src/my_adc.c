@@ -25,6 +25,14 @@ void adc_init() {
 }
 
 /*
+ * Start ADC conversions.  Must be called after interrupts are enabled so that
+ * the conversion complete interrupt will be properly handled.
+ */
+void adc_start() {
+    ConvertADC();
+}
+
+/*
  * ADC thread method.  Writes the lower byte of the ADC value to PORTB
  */
 void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
@@ -33,9 +41,12 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
         {
             // Message must contain only the ADC value, 16 bits
             if (2 == length) {
+                // Save the ADC value
                 unsigned char adc_val_high = msgbuffer[0];
                 unsigned char adc_val_low = msgbuffer[1];
                 adc_val = adc_val_low + (((int) adc_val_high) << 8);
+                // Start a new conversion
+                ConvertADC();
             } else {
                 // This is an error - incorrect message length
 #warning "Unhandled error condition"

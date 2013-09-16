@@ -191,10 +191,6 @@ void main(void) {
     OpenTimer1(TIMER_INT_ON & T1_PS_1_8 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
 #endif
 
-#ifdef USE_ADC_TEST
-    adc_init();
-#endif //ifdef USE_ADC_TEST
-
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
     // Timer1 interrupt
@@ -227,6 +223,12 @@ void main(void) {
     // Peripheral interrupts can have their priority set to high or low
     // enable high-priority interrupts and low-priority interrupts
     enable_interrupts();
+
+#ifdef USE_ADC_TEST
+    // Initialize and start the ADC driver
+    adc_init();
+    adc_start();
+#endif //ifdef USE_ADC_TEST
 
     /* Junk to force an I2C interrupt in the simulator (if you wanted to)
     PIR1bits.SSPIF = 1;

@@ -17,11 +17,6 @@ void init_timer1_lthread(timer1_thread_struct *tptr) {
 // of execution on the PIC because we are not using an RTOS.
 
 int timer1_lthread(timer1_thread_struct *tptr, int msgtype, int length, unsigned char *msgbuffer) {
-    signed char retval;
-
-#ifdef USE_ADC_TEST
-    // Start an ADC conversion.  Once the conversion is complete, the ADC
-    // interrupt will be generated.
-    ConvertADC();
-#endif //ifdef USE_ADC_TEST
+    // Nothing to do
+    return 0;
 }
