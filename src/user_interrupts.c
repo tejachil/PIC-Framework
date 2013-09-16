@@ -49,11 +49,15 @@ void timer1_int_handler() {
 }
 
 #ifdef USE_ADC_TEST
-// ADC conversion complete interrupt handler definition
+// ADC conversion complete interrupt handler
 void adc_int_handler()
 {
     int adc_value;
     unsigned char adc_bytes[2];
+
+#warning REMOVE
+    // Conversion complete, clear RB0
+    LATBbits.LATB0 = 0;
     
     // Read the conversion value
     adc_value = ReadADC();

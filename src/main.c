@@ -310,15 +310,38 @@ void main(void) {
                         }
 #ifdef USE_ADC_TEST
                             // ADC data register - 16 bit value
-                        case ADC_DATA_REGISTER:
+                        case ADC_FULL_DATA_REGISTER:
                         {
                             // Get the latest ADC reading
-                            int adc_val = adc_read();
+                            const int adc_val = adc_read();
                             length = 2;
                             // Place the low byte in the first msg byte
                             msgbuffer[0] = adc_val & 0x00FF;
                             // Place the high byte in the second msg byte
                             msgbuffer[1] = (adc_val & 0xFF00) >> 8;
+
+                            break;
+                        }
+                        // ADC low byte register
+                        case ADC_LOW_DATA_REGISTER:
+                        {
+                            // Get the latest ADC reading
+                            const int adc_val = adc_read();
+                            length = 1;
+                            // Place the low byte in the first msg byte
+                            msgbuffer[0] = adc_val & 0x00FF;
+
+                            break;
+                        }
+                        // ADC low byte register
+                        case ADC_HIGH_DATA_REGISTER:
+                        {
+                            // Get the latest ADC reading
+                            const int adc_val = adc_read();
+                            length = 1;
+                            // Place the high byte in the first msg byte
+                            msgbuffer[0] = (adc_val & 0xFF00) >> 8;
+
                             break;
                         }
 #endif //ifdef USE_ADC_TEST
