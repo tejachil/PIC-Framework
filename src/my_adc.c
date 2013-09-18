@@ -49,10 +49,6 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 // Start a new conversion
                 ConvertADC();
 
-#warning REMOVE
-                // Conversion started, set RB0
-                LATBbits.LATB0 = 1;
-
             } else {
                 // This is an error - incorrect message length
 #warning "Unhandled error condition"
