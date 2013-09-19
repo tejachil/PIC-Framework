@@ -5,3 +5,4 @@
 *.hex
 *.cof
 Framework.X/report.txt
+*.bash
