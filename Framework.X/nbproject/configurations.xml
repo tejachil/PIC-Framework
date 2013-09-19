@@ -31,6 +31,7 @@
       <itemPath>../src/timer1_thread.c</itemPath>
       <itemPath>../src/uart_thread.c</itemPath>
       <itemPath>../src/user_interrupts.c</itemPath>
+      <itemPath>../src/my_adc.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
