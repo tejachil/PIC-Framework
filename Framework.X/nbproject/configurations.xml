@@ -142,7 +142,7 @@
     <conf name="UseC18" type="2">
       <toolsSet>
         <developmentServer>localhost</developmentServer>
-        <targetDevice>PIC18F26J50</targetDevice>
+        <targetDevice>PIC18F45J10</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit2PlatformTool</platformTool>
