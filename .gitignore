@@ -2,3 +2,6 @@
 *.d
 *.mk
 *.err
+*.hex
+*.cof
+Framework.X/report.txt
