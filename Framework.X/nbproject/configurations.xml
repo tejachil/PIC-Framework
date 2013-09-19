@@ -143,7 +143,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>PICkit2PlatformTool</platformTool>
         <languageToolchain>C18</languageToolchain>
-        <languageToolchainVersion>3.40</languageToolchainVersion>
+        <languageToolchainVersion>3.45</languageToolchainVersion>
         <platform>4</platform>
       </toolsSet>
       <compileType>
