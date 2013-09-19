@@ -13,6 +13,7 @@
       <itemPath>../src/timer1_thread.h</itemPath>
       <itemPath>../src/uart_thread.h</itemPath>
       <itemPath>../src/user_interrupts.h</itemPath>
+      <itemPath>../src/my_adc.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
