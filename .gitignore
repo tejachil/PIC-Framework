@@ -6,3 +6,4 @@
 *.cof
 Framework.X/report.txt
 *.bash
+Framework.X/nbproject/private/
