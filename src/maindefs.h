@@ -46,7 +46,9 @@
 
 // Functionality enable/disable definitions
 // Define USE_ADC_TEST to enable reporting ADC readings over I2C
-#define USE_ADC_TEST
+//#define USE_ADC_TEST
+// Define USE_UART_TEST to enable sending a character over UART periodically
+#define USE_UART_TEST
 
 #endif
 
