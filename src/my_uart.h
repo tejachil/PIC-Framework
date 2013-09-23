@@ -14,5 +14,8 @@ typedef struct __uart_comm {
 
 void init_uart_recv(uart_comm *);
 void uart_recv_int_handler(void);
+#ifdef USE_UART_TEST
+void uart_tx_int_handler(void);
+#endif //ifdef USE_UART_TEST
 
 #endif

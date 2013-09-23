@@ -142,5 +142,15 @@ void InterruptHandlerLow() {
         PIR1bits.RCIF = 0; //clear interrupt flag
         uart_recv_int_handler();
     }
+
+#ifdef USE_UART_TEST
+    // check if we have a USART Tx interrupt
+    if (PIE1bits.TXIE && PIR1bits.TXIF) {
+        // The TXIF flag cannot be cleared in software, instead the Tx interrupt
+        // must be disabled when the last byte has been sent.
+        // So just call the handler.
+        uart_tx_int_handler();
+    }
+#endif //ifdef USE_UART_TEST
 }
 
