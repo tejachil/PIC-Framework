@@ -185,10 +185,17 @@ void main(void) {
     // initialize Timers
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
 #ifdef __USE18F26J50
+#error "Timer1 not setup for 26J50"
     // MTJ added second argument for OpenTimer1()
     OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_8 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
 #else
-    OpenTimer1(TIMER_INT_ON & T1_PS_1_8 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
+    // Setup Timer1 for 10ms period
+    // Timer1 clock is Fosc / 4, so 12 MHz / 4 = 3MHz
+    // Prescaler of 2 sets timer count freq to 1.5MHz
+    // 1.5MHz / 100 Hz = 15000 counts needed for 10ms period
+    // (2^16 - 1) - 15000 = 50535, this is the timer count initial value
+    WriteTimer1(50535);
+    OpenTimer1(TIMER_INT_ON & T1_PS_1_2 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
 #endif
 
     // Decide on the priority of the enabled peripheral interrupts
