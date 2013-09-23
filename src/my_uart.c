@@ -40,7 +40,6 @@ void uart_recv_int_handler() {
 void uart_tx_int_handler() {
     // Disable UART Tx interrupt so it doesn't trigger repeatedly
     PIE1bits.TXIE = 0;
-    LATBbits.LATB0 ^= 1;
 }
 
 void init_uart_recv(uart_comm *uc) {

@@ -1,7 +1,7 @@
 #ifndef __XC8
-#include <adc.h>
+#include <usart.h>
 #else
-#include <plib/adc.h>
+#include <plib/usart.h>
 #endif
 #include "maindefs.h"
 #include <stdio.h>
@@ -20,7 +20,12 @@ int timer1_lthread(timer1_thread_struct *tptr, int msgtype, int length, unsigned
 #ifdef USE_UART_TEST
     // Send an incrementing byte over UART
     static unsigned char uart_byte = 0;
-    WriteUSART(uart_byte++);
+#ifdef __USE18F26J50
+    Write1USART(uart_byte);
+#else
+    WriteUSART(uart_byte);
+#endif
+    uart_byte++;
 #endif //ifdef USE_UART_TEST
 
     return 0;

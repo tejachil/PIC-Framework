@@ -1,4 +1,5 @@
 #include "maindefs.h"
+#include "my_gpio.h"
 #include <stdio.h>
 #include "uart_thread.h"
 
@@ -9,9 +10,9 @@
 int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
     if (msgtype == MSGT_OVERRUN) {
     } else if (msgtype == MSGT_UART_DATA) {
-        // print the message (this assumes that the message
-        // 		was a printable string)
-        msgbuffer[length] = '\0'; // null-terminate the array as a string
-        // Now we would do something with it
+        if (length > 0) {
+            unsigned char uart_rx_byte = *msgbuffer;
+            gpio_write_portb(uart_rx_byte);
+        }
     }
 }

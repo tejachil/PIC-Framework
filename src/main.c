@@ -185,9 +185,8 @@ void main(void) {
     // initialize Timers
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
 #ifdef __USE18F26J50
-#error "Timer1 not setup for 26J50"
     // MTJ added second argument for OpenTimer1()
-    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_8 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
+    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_2 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
 #else
     // Setup Timer1 for 10ms period
     // Timer1 clock is Fosc / 4, so 12 MHz / 4 = 3MHz
@@ -223,15 +222,13 @@ void main(void) {
     PIE1bits.SSPIE = 1;
 
 #ifdef USE_UART_TEST
-    // configure the hardware USART device
-#ifdef __USE18F26J50
-#error "26J50 UART configuration not completed"
-    Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_LOW, 0x19);
-#else
     // With a system clock of 12 MHz and the following formula for baud rate
     // generation (high-speed):
     // Fosc / (16 * (spbrg + 1))
+#ifdef __USE18F26J50
+    Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
+            USART_CONT_RX & USART_BRGH_HIGH, 155);
+#else
     // Using spbrg = 38 provides the closest approximation for 19200:
     // 12,000,000 / (16 * (38 + 1)) = 19230.76923077
     OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
