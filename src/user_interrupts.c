@@ -41,8 +41,6 @@ void timer1_int_handler() {
     LATBbits.LATB1 = !LATBbits.LATB1;
 #endif
 
-    LATBbits.LATB1 ^= 1;
-
     // Send the timer update message to main
     ToMainLow_sendmsg(0, MSGT_TIMER1, (void *) 0);
 

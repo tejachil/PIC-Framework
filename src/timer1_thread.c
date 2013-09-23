@@ -17,6 +17,11 @@ void init_timer1_lthread(timer1_thread_struct *tptr) {
 // of execution on the PIC because we are not using an RTOS.
 
 int timer1_lthread(timer1_thread_struct *tptr, int msgtype, int length, unsigned char *msgbuffer) {
-    // Nothing to do
+#ifdef USE_UART_TEST
+    // Send an incrementing byte over UART
+    static unsigned char uart_byte = 0;
+    WriteUSART(uart_byte++);
+#endif //ifdef USE_UART_TEST
+
     return 0;
 }
