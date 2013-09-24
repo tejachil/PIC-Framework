@@ -13,11 +13,18 @@ void uart_init_rx(uart_comm *);
 void uart_init_tx(void);
 
 void uart_init(uart_comm * uc) {
-    // initialize uart recv handling code
-    uart_init_rx(uc);
-
     // initialize uart tx
     uart_init_tx();
+
+    // Initialize UART data struct
+    uc_ptr = uc;
+    uc_ptr->rx_count = 0;
+    uc_ptr->tx_count = 0;
+    uc_ptr->tx_cur_byte = 0;
+}
+
+UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int const count) {
+    return UART_ERR_DATA_SIZE;
 }
 
 void uart_rx_int_handler() {
@@ -52,11 +59,6 @@ void uart_rx_int_handler() {
 void uart_tx_int_handler() {
     // Disable UART Tx interrupt so it doesn't trigger repeatedly
     PIE1bits.TXIE = 0;
-}
-
-void uart_init_rx(uart_comm *uc) {
-    uc_ptr = uc;
-    uc_ptr->rx_count = 0;
 }
 
 void uart_init_tx() {
