@@ -3,17 +3,20 @@
 
 #include "messages.h"
 
-#define MAXUARTBUF 1
-#if (MAXUARTBUF > MSGLEN)
-#define MAXUARTBUF MSGLEN
+#define UART_MAX_RX_BUF 1
+
+#if (UART_MAX_RX_BUF > MSGLEN)
+#warning "UART Rx buffer larger than message length"
 #endif
+
 typedef struct __uart_comm {
-	unsigned char buffer[MAXUARTBUF];
-	unsigned char	buflen;
+    // Buffer to hold received bytes
+    unsigned char rx_buffer[UART_MAX_RX_BUF];
+    // Number of bytes currently in the rx_buffer
+    unsigned char rx_count;
 } uart_comm;
 
-void init_uart_rx(uart_comm *);
-void init_uart_tx(void);
+void init_uart(uart_comm *);
 void uart_rx_int_handler(void);
 #ifdef USE_UART_TEST
 void uart_tx_int_handler(void);

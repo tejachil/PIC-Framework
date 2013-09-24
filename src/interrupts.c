@@ -140,7 +140,7 @@ void InterruptHandlerLow() {
     // check to see if we have an interrupt on USART RX
     if (PIR1bits.RCIF) {
         PIR1bits.RCIF = 0; //clear interrupt flag
-        uart_recv_int_handler();
+        uart_rx_int_handler();
     }
 
 #ifdef USE_UART_TEST

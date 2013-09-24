@@ -158,8 +158,8 @@ void main(void) {
 #endif
 #endif
 
-    // initialize my uart recv handling code
-    init_uart_rx(&uc);
+    // Initialize UART driver (Rx and Tx)
+    uart_init(&uc);
 
     // initialize the i2c code
     init_i2c(&ic);
@@ -220,21 +220,6 @@ void main(void) {
 
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
-
-#ifdef USE_UART_TEST
-    // With a system clock of 12 MHz and the following formula for baud rate
-    // generation (high-speed):
-    // Fosc / (16 * (spbrg + 1))
-#ifdef __USE18F26J50
-    Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 155);
-#else
-    // Using spbrg = 38 provides the closest approximation for 19200:
-    // 12,000,000 / (16 * (38 + 1)) = 19230.76923077
-    OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 38);
-#endif
-#endif //ifdef USE_UART_TEST
 
     // Peripheral interrupts can have their priority set to high or low
     // enable high-priority interrupts and low-priority interrupts
