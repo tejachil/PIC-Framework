@@ -8,7 +8,7 @@
 
 static uart_comm *uc_ptr;
 
-void uart_recv_int_handler() {
+void uart_rx_int_handler() {
 #ifdef __USE18F26J50
     if (DataRdy1USART()) {
         uc_ptr->buffer[uc_ptr->buflen] = Read1USART();
@@ -42,7 +42,7 @@ void uart_tx_int_handler() {
     PIE1bits.TXIE = 0;
 }
 
-void init_uart_recv(uart_comm *uc) {
+void init_uart_rx(uart_comm *uc) {
     uc_ptr = uc;
     uc_ptr->buflen = 0;
 }

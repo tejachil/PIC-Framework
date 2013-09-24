@@ -159,7 +159,7 @@ void main(void) {
 #endif
 
     // initialize my uart recv handling code
-    init_uart_recv(&uc);
+    init_uart_rx(&uc);
 
     // initialize the i2c code
     init_i2c(&ic);
