@@ -13,16 +13,16 @@
 #endif
 
 typedef struct __uart_comm {
-    // Buffer to hold received bytes
+    /** Buffer to hold received bytes */
     unsigned char rx_buffer[UART_MAX_RX_BUF];
-    // Number of bytes currently in the rx_buffer
+    /** Number of bytes currently in the rx_buffer */
     unsigned char rx_count;
 
-    // Buffer to hold bytes to be transmitted
+    /** Buffer to hold bytes to be transmitted */
     unsigned char tx_buffer[UART_MAX_TX_BUF];
-    // Number of bytes to be transmitted
+    /** Number of bytes remaining to be transmitted */
     unsigned int tx_count;
-    // Index of current byte being transmitted
+    /** Index of current byte being transmitted */
     unsigned int tx_cur_byte;
 } uart_comm;
 
@@ -40,7 +40,7 @@ typedef enum {
  * Initializes the UART driver for transmitting and receiving.
  * @param uc The UART driver data structure to be used internally.
  */
-void init_uart(uart_comm * uc);
+void uart_init(uart_comm * uc);
 
 /**
  * Send a series of bytes over UART.
