@@ -80,6 +80,7 @@ interrupt
 #pragma code
 #pragma interrupt InterruptHandlerHigh
 #endif
+
 void InterruptHandlerHigh() {
     // We need to check the interrupt flag of each enabled high-priority interrupt to
     // see which device generated this interrupt.  Then we can call the correct handler.
@@ -103,8 +104,7 @@ void InterruptHandlerHigh() {
 
 #ifdef USE_ADC_TEST
     // Check to see if we have an ADC interrupt
-    if (PIR1bits.ADIF)
-    {
+    if (PIR1bits.ADIF) {
         // Clear the interrupt flag
         PIR1bits.ADIF = 0;
         // Call the ADC interrupt handler
@@ -130,6 +130,7 @@ interrupt low_priority
 #pragma code
 #pragma interruptlow InterruptHandlerLow
 #endif
+
 void InterruptHandlerLow() {
     // check to see if we have an interrupt on timer 1
     if (PIR1bits.TMR1IF) {
@@ -143,14 +144,17 @@ void InterruptHandlerLow() {
         uart_rx_int_handler();
     }
 
-#ifdef USE_UART_TEST
-    // check if we have a USART Tx interrupt
-    if (PIE1bits.TXIE && PIR1bits.TXIF) {
-        // The TXIF flag cannot be cleared in software, instead the Tx interrupt
-        // must be disabled when the last byte has been sent.
-        // So just call the handler.
+    // Check if we have a USART Tx interrupt (TXIF will remain set as long as
+    // the peripheral is ready to transmit, so we must also check if the
+    // interrupt is enabled).
+    if (UART_TX_INT_ENABLED() && PIR1bits.TXIF) {
+        // The TXIF flag cannot be cleared in software, so the interrupt must be
+        // disabled so it doesn't trigger repeatedly.  It's reenabled once a new
+        // byte has been started so that the interrupt will trigger when that
+        // new byte is done.
+        UART_DISABLE_TX_INT();
+        // Call the handler
         uart_tx_int_handler();
     }
-#endif //ifdef USE_UART_TEST
 }
 

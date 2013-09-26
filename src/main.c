@@ -209,10 +209,8 @@ void main(void) {
     // ADC interrupt
     IPR1bits.ADIP = 1;
 #endif //ifdef USE_ADC_TEST
-#ifdef USE_UART_TEST
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
-#endif //ifdef USE_UART_TEST
 
     // configure the hardware i2c device as a slave (0x9E becomes address 0x4F
     // because the lowest bit is the read/write bit)

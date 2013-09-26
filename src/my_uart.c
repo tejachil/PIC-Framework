@@ -5,12 +5,16 @@
 #include <plib/usart.h>
 #endif
 #include "my_uart.h"
+#include <string.h> // for memcpy
 
 static uart_comm *uc_ptr;
 
 // Private function prototypes
-void uart_init_rx(uart_comm *);
-void uart_init_tx(void);
+/**
+ * Initializes the UART peripheral for transmitting and receiving.
+ * @author amosolgo
+ */
+static void uart_init_tx(void);
 
 void uart_init(uart_comm * uc) {
     // initialize uart tx
@@ -24,7 +28,40 @@ void uart_init(uart_comm * uc) {
 }
 
 UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int const count) {
-    return UART_ERR_DATA_SIZE;
+    UART_error_code ret_code = UART_ERR_NONE;
+
+    // Make sure there is data to send and that it is within the buffer size
+    if ((count > 0) && (count <= UART_MAX_TX_BUF)) {
+        // Make sure there is not a transmission in progress
+        if (!uart_tx_busy()) {
+            // Copy the data into the transmit buffer
+            memcpy(uc_ptr->tx_buffer, data, count);
+            // Set the number of bytes to be sent
+            uc_ptr->tx_count = count;
+            // Reset the current byte index
+            uc_ptr->tx_cur_byte = 0;
+            // Enable the Tx interrupt.  This kicks off the interrupt-driven
+            // transmission sequence.
+            UART_ENABLE_TX_INT();
+        }// If there is a transmission in progress, return an error
+        else {
+            ret_code = UART_ERR_BUSY;
+        }
+
+    }// If there is no data or too much data, return an error
+    else {
+        ret_code = UART_ERR_DATA_SIZE;
+    }
+
+    return ret_code;
+}
+
+UART_error_code uart_tx_busy() {
+    if (uc_ptr->tx_count != 0) {
+        return UART_ERR_BUSY;
+    } else {
+        return UART_ERR_NONE;
+    }
 }
 
 void uart_rx_int_handler() {
@@ -50,6 +87,7 @@ void uart_rx_int_handler() {
 #endif
         // we've overrun the USART and must reset
         // send an error message for this
+
         RCSTAbits.CREN = 0;
         RCSTAbits.CREN = 1;
         ToMainLow_sendmsg(0, MSGT_OVERRUN, (void *) 0);
@@ -57,8 +95,26 @@ void uart_rx_int_handler() {
 }
 
 void uart_tx_int_handler() {
-    // Disable UART Tx interrupt so it doesn't trigger repeatedly
-    PIE1bits.TXIE = 0;
+    // Start the next byte
+    uart_send_next_byte();
+}
+
+void uart_send_next_byte() {
+    // Make sure there is a byte to send (otherwise do nothing)
+    if (uc_ptr->tx_count > 0) {
+        // Get the next byte to be sent
+        const unsigned char next_byte = uc_ptr->tx_buffer[uc_ptr->tx_cur_byte];
+        // Send it over UART
+        WriteUSART(next_byte);
+        // Reenable the Tx interrupt so that it will fire when the byte has
+        // been sent
+        UART_ENABLE_TX_INT();
+
+        // Move the byte index to the next byte
+        uc_ptr->tx_cur_byte++;
+        // Decrement the number of bytes remaining
+        uc_ptr->tx_count--;
+    }
 }
 
 void uart_init_tx() {
