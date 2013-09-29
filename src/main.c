@@ -173,15 +173,6 @@ void main(void) {
     // Setup PORTB as output
     gpio_init_portb_output();
 
-    // how to set up PORTA for input (for the V4 board with the PIC2680)
-    /*
-            PORTA = 0x0;	// clear the port
-            LATA = 0x0;		// clear the output latch
-            ADCON1 = 0x0F;	// turn off the A2D function on these pins
-            // Only for 40-pin version of this chip CMCON = 0x07;	// turn the comparator off
-            TRISA = 0x0F;	// set RA3-RA0 to inputs
-     */
-
     // initialize Timers
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
 #ifdef __USE18F26J50
@@ -228,18 +219,6 @@ void main(void) {
     adc_init();
     adc_start();
 #endif //ifdef USE_ADC_TEST
-
-    /* Junk to force an I2C interrupt in the simulator (if you wanted to)
-    PIR1bits.SSPIF = 1;
-    _asm
-    goto 0x08
-    _endasm;
-     */
-
-    // printf() is available, but is not advisable.  It goes to the UART pin
-    // on the PIC and then you must hook something up to that to view it.
-    // It is also slow and is blocking, so it will perturb your code's operation
-    // Here is how it looks: printf("Hello\r\n");
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines

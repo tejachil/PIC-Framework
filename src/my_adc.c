@@ -33,7 +33,7 @@ void adc_start() {
 }
 
 /*
- * ADC thread method.  Writes the lower byte of the ADC value to PORTB
+ * ADC thread method.  Saves the latest reading and starts a new conversion.
  */
 void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     switch (msgtype) {
@@ -49,11 +49,7 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 // Start a new conversion
                 ConvertADC();
 
-            } else {
-                // This is an error - incorrect message length
-#warning "Unhandled error condition"
             }
-
             break;
         }
         default:
