@@ -3,6 +3,13 @@
 
 #include "messages.h"
 
+// Ensure the device isn't expecting to be both master and slave (or neither)
+#if (defined(I2C_MASTER) && defined(I2C_SLAVE))
+#error "Cannot be both I2C Master and Slave"
+#elif (!defined(I2C_MASTER) && !defined(I2C_SLAVE))
+#error "Must select either I2C Master or Slave"
+#endif
+
 #define MAXI2CBUF MSGLEN
 typedef struct __i2c_comm {
 	unsigned char buffer[MAXI2CBUF];

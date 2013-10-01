@@ -8,9 +8,38 @@
 
 static i2c_comm *ic_ptr;
 
+/**
+ * I2C Slave mode interrupt handler.
+ */
+void i2c_slave_handler(void);
+/**
+ * I2C Master mode interrupt handler.
+ */
+void i2c_master_handler(void);
+
+// set up the data structures for this i2c code
+// should be called once before any i2c routines are called
+void init_i2c(i2c_comm *ic) {
+    ic_ptr = ic;
+    ic_ptr->buflen = 0;
+    ic_ptr->event_count = 0;
+    ic_ptr->status = I2C_IDLE;
+    ic_ptr->error_count = 0;
+}
+
+void i2c_int_handler() {
+#if defined(I2C_SLAVE)
+    i2c_slave_handler();
+#elif defined(I2C_MASTER)
+    i2c_master_handler();
+#endif
+}
+
+// PLACE ALL MASTER FUCTIONS INSIDE THIS IFDEF
+#ifdef I2C_MASTER
+
 // Configure for I2C Master mode -- the variable "slave_addr" should be stored in
 //   i2c_comm (as pointed to by ic_ptr) for later use.
-
 void i2c_configure_master(unsigned char slave_addr) {
     // Your code goes here
 }
@@ -26,7 +55,6 @@ void i2c_configure_master(unsigned char slave_addr) {
 //   will have a length of 0.
 // The subroutine must copy the msg to be sent from the "msg" parameter below into
 //   the structure to which ic_ptr points [there is already a suitable buffer there].
-
 unsigned char i2c_master_send(unsigned char length, unsigned char *msg) {
     // Your code goes here
     return(0);
@@ -44,11 +72,19 @@ unsigned char i2c_master_send(unsigned char length, unsigned char *msg) {
 //   internal_message will contain the message that was received [where the length
 //   is determined by the parameter passed to i2c_master_recv()].
 // The interrupt handler will be responsible for copying the message received into
-
 unsigned char i2c_master_recv(unsigned char length) {
     // Your code goes here
     return(0);
 }
+
+void i2c_master_handler() {
+#warning "Unimplemented handler"
+}
+
+#endif //ifdef I2C_MASTER
+
+// PLACE ALL SLAVE FUCTIONS INSIDE THIS IFDEF
+#ifdef I2C_SLAVE
 
 void start_i2c_slave_reply(unsigned char length, unsigned char *msg) {
 
@@ -67,7 +103,6 @@ void start_i2c_slave_reply(unsigned char length, unsigned char *msg) {
 }
 
 // an internal subroutine used in the slave version of the i2c_int_handler
-
 void handle_start(unsigned char data_read) {
     ic_ptr->event_count = 1;
     ic_ptr->buflen = 0;
@@ -91,13 +126,50 @@ void handle_start(unsigned char data_read) {
     }
 }
 
-// this is the interrupt handler for i2c -- it is currently built for slave mode
-// -- to add master mode, you should determine (at the top of the interrupt handler)
-//    which mode you are in and call the appropriate subroutine.  The existing code
-//    below should be moved into its own "i2c_slave_handler()" routine and the new
-//    master code should be in a subroutine called "i2c_master_handler()"
+// setup the PIC to operate as a slave
+// the address must include the R/W bit
+void i2c_configure_slave(unsigned char addr) {
 
-void i2c_int_handler() {
+    // ensure the two lines are set for input (we are a slave)
+#ifdef __USE18F26J50
+    PORTBbits.SCL1 = 1;
+    PORTBbits.SDA1 = 1;
+#else
+    TRISCbits.TRISC3 = 1;
+    TRISCbits.TRISC4 = 1;
+#endif
+
+    // set the address
+    SSPADD = addr;
+    //OpenI2C(SLAVE_7,SLEW_OFF); // replaced w/ code below
+    SSPSTAT = 0x0;
+    SSPCON1 = 0x0;
+    SSPCON2 = 0x0;
+    SSPCON1 |= 0x0E; // enable Slave 7-bit w/ start/stop interrupts
+    SSPSTAT |= SLEW_OFF;
+#ifdef I2C_V3
+    I2C1_SCL = 1;
+    I2C1_SDA = 1;
+#else
+#ifdef I2C_V1
+    I2C_SCL = 1;
+    I2C_SDA = 1;
+#else
+#ifdef __USE18F26J50
+    PORTBbits.SCL1 = 1;
+    PORTBbits.SDA1 = 1;
+#else
+    __dummyXY=35;// Something is messed up with the #ifdefs; this line is designed to invoke a compiler error
+#endif
+#endif
+#endif
+    // enable clock-stretching
+    SSPCON2bits.SEN = 1;
+    SSPCON1 |= SSPENB;
+    // end of i2c configure
+}
+
+void i2c_slave_handler() {
     unsigned char i2c_data;
     unsigned char data_read = 0;
     unsigned char data_written = 0;
@@ -262,57 +334,4 @@ void i2c_int_handler() {
     }
 }
 
-// set up the data structures for this i2c code
-// should be called once before any i2c routines are called
-
-void init_i2c(i2c_comm *ic) {
-    ic_ptr = ic;
-    ic_ptr->buflen = 0;
-    ic_ptr->event_count = 0;
-    ic_ptr->status = I2C_IDLE;
-    ic_ptr->error_count = 0;
-}
-
-// setup the PIC to operate as a slave
-// the address must include the R/W bit
-
-void i2c_configure_slave(unsigned char addr) {
-
-    // ensure the two lines are set for input (we are a slave)
-#ifdef __USE18F26J50
-    PORTBbits.SCL1 = 1;
-    PORTBbits.SDA1 = 1;
-#else
-    TRISCbits.TRISC3 = 1;
-    TRISCbits.TRISC4 = 1;
-#endif
-
-    // set the address
-    SSPADD = addr;
-    //OpenI2C(SLAVE_7,SLEW_OFF); // replaced w/ code below
-    SSPSTAT = 0x0;
-    SSPCON1 = 0x0;
-    SSPCON2 = 0x0;
-    SSPCON1 |= 0x0E; // enable Slave 7-bit w/ start/stop interrupts
-    SSPSTAT |= SLEW_OFF;
-#ifdef I2C_V3
-    I2C1_SCL = 1;
-    I2C1_SDA = 1;
-#else 
-#ifdef I2C_V1
-    I2C_SCL = 1;
-    I2C_SDA = 1;
-#else
-#ifdef __USE18F26J50
-    PORTBbits.SCL1 = 1;
-    PORTBbits.SDA1 = 1;
-#else
-    __dummyXY=35;// Something is messed up with the #ifdefs; this line is designed to invoke a compiler error
-#endif
-#endif
-#endif
-    // enable clock-stretching
-    SSPCON2bits.SEN = 1;
-    SSPCON1 |= SSPENB;
-    // end of i2c configure
-}
+#endif //ifdef I2C_SLAVE

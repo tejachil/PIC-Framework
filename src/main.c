@@ -203,9 +203,14 @@ void main(void) {
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
 
+#if defined(I2C_SLAVE)
     // configure the hardware i2c device as a slave (0x9E becomes address 0x4F
     // because the lowest bit is the read/write bit)
     i2c_configure_slave(0x9E);
+#elif defined(I2C_MASTER)
+    // Configure the hardware I2C device as a master
+#warning "No master configuration implemented"
+#endif
 
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
@@ -257,6 +262,7 @@ void main(void) {
                     last_reg_recvd = msgbuffer[0];
                     break;
                 };
+#ifdef I2C_SLAVE
                 case MSGT_I2C_RQST:
                 {
                     // Generally, this is *NOT* how I recommend you handle an I2C slave request
@@ -327,6 +333,7 @@ void main(void) {
                     start_i2c_slave_reply(length, msgbuffer);
                     break;
                 };
+#endif //ifdef I2C_SLAVE
                 default:
                 {
                     // Your code should handle this error
