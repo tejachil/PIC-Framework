@@ -26,7 +26,7 @@
 #define UART_DISABLE_TX_INT() (PIE1bits.TXIE = 0)
 
 // Number of bytes received over UART before a MSGT_UART_DATA message is sent
-#define UART_MAX_RX_BUF 1
+#define UART_MAX_RX_BUF 10
 // Maximum number of bytes which may be sent over UART at one time
 #define UART_MAX_TX_BUF 10
 
@@ -35,6 +35,17 @@
 #endif
 
 typedef struct __uart_comm {
+
+     /** Author Tyler Adams **/
+    /** Holds Rx Message Type **/
+    unsigned char rx_MessageType;
+    /** Holds Rx Message Count **/
+    unsigned char rx_MessageCount;
+    /** holds the actual number for the length of the data**/
+    int lengthOfData;
+    /** Holds Rx Length **/
+    unsigned char rx_Length;
+
     /** Buffer to hold received bytes */
     unsigned char rx_buffer[UART_MAX_RX_BUF];
     /** Number of bytes currently in the rx_buffer */

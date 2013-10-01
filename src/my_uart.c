@@ -72,10 +72,24 @@ void uart_rx_int_handler() {
     if (DataRdyUSART()) {
         uc_ptr->rx_buffer[uc_ptr->rx_count] = ReadUSART();
 #endif
+        /** Author Tyler Adams**/
+
+        if(uc_ptr->rx_count == 0){
+            uc_ptr->rx_MessageType = uc_ptr->rx_buffer[uc_ptr->rx_count];
+        }
+
+        if(uc_ptr->rx_count == 1){
+            uc_ptr->rx_MessageCount = uc_ptr->rx_buffer[uc_ptr->rx_count];
+        }
+
+        if(uc_ptr->rx_count == 2){
+            uc_ptr->rx_Length = uc_ptr->rx_buffer[uc_ptr->rx_count];
+            uc_ptr->lengthOfData = ((int)(uc_ptr->rx_Length));
+        }
 
         uc_ptr->rx_count++;
         // check if a message should be sent
-        if (uc_ptr->rx_count == UART_MAX_RX_BUF) {
+        if (uc_ptr->rx_count == (uc_ptr->lengthOfData + 3)) {
             ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_buffer);
             uc_ptr->rx_count = 0;
         }
