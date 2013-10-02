@@ -23,9 +23,24 @@ typedef enum {
 
 #else // I2C_MASTER
 
+/**
+ * High-level states for the I2C Master driver.  These do not fully describe the
+ * state of the driver, only which major operation is in progress.
+ */
 typedef enum {
-    I2C_IDLE
+    /** No activity, ready for a new operation to begin */
+    I2C_IDLE,
+    /** A write to a slave is in progress (i2c_master_write() has been called)*/
+    I2C_WRITE,
+    /** A read from a slave is in progress(i2c_master_read() has been called)*/
+    I2C_READ
 } i2c_master_status;
+
+/** Specific status for the current operation. */
+typedef enum {
+    // Just a temporary value so the code will compile
+    I2C_SUBSTATUS_PLACEHOLDER_VALUE
+} i2c_master_substatus;
 #endif // ifdef I2C_SLAVE - else
 
 typedef struct __i2c_comm {
@@ -36,6 +51,7 @@ typedef struct __i2c_comm {
     i2c_slave_status status;
 #else
     i2c_master_status status;
+    i2c_master_substatus substatus;
 #endif
     unsigned char error_code;
     unsigned char error_count;
@@ -99,6 +115,6 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char *data, u
  * @return i2c_error code indicating error status.  Should only return
  *          I2C_ERR_NONE or I2C_ERR_BUSY.
  */
-i2c_error_code i2c_master_initiate_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
+i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
 
 #endif
