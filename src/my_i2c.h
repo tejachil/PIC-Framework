@@ -36,10 +36,31 @@ typedef enum {
     I2C_READ
 } i2c_master_status;
 
-/** Specific status for the current operation. */
+/**
+ * Specific status for the current operation.  Each substate is waiting for an
+ * I2C interrupt to proceed to the next substate.
+ */
 typedef enum {
-    // Just a temporary value so the code will compile
-    I2C_SUBSTATUS_PLACEHOLDER_VALUE
+    /** Substate machine is idle.  Next substate is always START_SENT. */
+    I2C_SUBSTATE_IDLE = 0,
+    /** Start has been sent. */
+    I2C_SUBSTATE_START_SENT,
+    /** Restart has been sent. */
+    I2C_SUBSTATE_RESTART_SENT,
+    /** Slave address and Write bit have been sent. */
+    I2C_SUBSTATE_ADDR_W_SENT,
+    /** Slave address and Read bit have been sent. */
+    I2C_SUBSTATE_ADDR_R_SENT,
+    /** A data byte has been sent. */
+    I2C_SUBSTATE_DATA_SENT,
+    /** I2C has been placed into receive mode and is awaiting a byte. */
+    I2C_SUBSTATE_WAITING_TO_RECEIVE,
+    /** An ACK has been sent. */
+    I2C_SUBSTATE_ACK_SENT,
+    /** A NACK has been sent. */
+    I2C_SUBSTATE_NACK_SENT,
+    /** A STOP has been sent.  Next substate is always IDLE. */
+    I2C_SUBSTATE_STOP_SENT
 } i2c_master_substatus;
 #endif // ifdef I2C_SLAVE - else
 
