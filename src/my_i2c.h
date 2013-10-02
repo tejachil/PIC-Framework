@@ -12,14 +12,28 @@
 
 #define MAXI2CBUF MSGLEN
 
+#ifdef I2C_SLAVE
+typedef enum {
+    I2C_IDLE = 0x5,
+    I2C_STARTED = 0x6,
+    I2C_RCV_DATA = 0x7,
+    I2C_SLAVE_SEND = 0x8
+} i2c_slave_status;
+
+#else // I2C_MASTER
+typedef enum {
+    I2C_IDLE
+} i2c_master_status;
+#endif // ifdef I2C_SLAVE - else
+
 typedef struct __i2c_comm {
     unsigned char buffer[MAXI2CBUF];
     unsigned char buflen;
     unsigned char event_count;
 #ifdef I2C_SLAVE
-    I2CSlaveStatus status;
+    i2c_slave_status status;
 #else
-    I2CMasterStatus status;
+    i2c_master_status status;
 #endif
     unsigned char error_code;
     unsigned char error_count;
@@ -30,22 +44,14 @@ typedef struct __i2c_comm {
 } i2c_comm;
 
 typedef enum {
-    I2C_IDLE = 0x5,
-    I2C_STARTED = 0x6,
-    I2C_RCV_DATA = 0x7,
-    I2C_SLAVE_SEND = 0x8
-} I2CSlaveStatus;
-
-typedef enum {
-    I2C_IDLE
-} I2CMasterStatus;
-
-#define I2C_ERR_THRESHOLD 1
-#define I2C_ERR_OVERRUN 0x4
-#define I2C_ERR_NOADDR 0x5
-#define I2C_ERR_NODATA 0x6
-#define I2C_ERR_MSGTOOLONG 0x7
-#define I2C_ERR_MSG_TRUNC 0x8
+    I2C_ERR_NONE = 0,
+    I2C_ERR_THRESHOLD,
+    I2C_ERR_OVERRUN,
+    I2C_ERR_NOADDR,
+    I2C_ERR_NODATA,
+    I2C_ERR_MSGTOOLONG,
+    I2C_ERR_MSG_TRUNC
+} i2c_error_code;
 
 void init_i2c(i2c_comm *);
 void i2c_int_handler(void);
