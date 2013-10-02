@@ -102,7 +102,11 @@ void start_i2c_slave_reply(unsigned char, unsigned char *);
 void i2c_configure_slave(unsigned char);
 
 // Master functions
-void i2c_configure_master();
+/**
+ * Set up the I2C peripheral as a master.
+ */
+void i2c_configure_master(void);
+
 /**
  * Write data to a given slave.  Once the write is complete, a message will be
  * sent in the low-priority queue: <p>

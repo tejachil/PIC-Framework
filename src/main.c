@@ -209,7 +209,7 @@ void main(void) {
     i2c_configure_slave(0x9E);
 #elif defined(I2C_MASTER)
     // Configure the hardware I2C device as a master
-#warning "No master configuration implemented"
+    i2c_configure_master();
 #endif
 
     // must specifically enable the I2C interrupts
