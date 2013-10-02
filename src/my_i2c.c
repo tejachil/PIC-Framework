@@ -6,6 +6,10 @@
 #endif
 #include "my_i2c.h"
 
+#ifndef __USE18F45J10
+#error "I2C library not implemented for this device"
+#endif
+
 static i2c_comm *ic_ptr;
 
 /**
@@ -39,7 +43,31 @@ void i2c_int_handler() {
 #ifdef I2C_MASTER
 
 void i2c_configure_master() {
-#warning "Master configuration not implemented"
+#warning "Master configuration not tested"
+    // Make sure the pins are set as input
+    TRISCbits.TRISC3 = 1;
+    TRISCbits.TRISC4 = 1;
+
+    // Set the config bits located in the status register
+    SSP1STATbits.SMP = 0;
+    SSP1STATbits.CKE = 0;
+
+    // Reset the control registers (just in case)
+    SSP1CON1 = 0;
+    SSP1CON2 = 0;
+
+    // Set the module for I2C master mode (SSPM field of SSP1CON1)
+    SSP1CON1 |= 0b01000;
+
+    // Set the module for 100kHz operation using the given formula:
+    // Fscl = Fosc / (4*(SSPxADD+1))
+    // Solved for SSPxADD:
+    // SSPxADD = (Fosc / (4*Fscl)) - 1
+    // With Fscl = 100kHz and Fosc = 12MHz,  SSPxADD = 29
+    SSP1ADD = 29;
+
+    // Enable the module
+    SSP1CON1bits.SSPEN = 1;
 }
 
 i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char *data, unsigned char data_length) {
