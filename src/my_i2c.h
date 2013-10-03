@@ -139,8 +139,7 @@ void i2c_configure_master(void);
  *          will indicate no additional data should be sent.
  * @param data_length Number of bytes to send from 'data'.  Providing 0 will
  *          indicate no additional data should be sent.
- * @return i2c_error code indicating error status.  Should only return
- *          I2C_ERR_NONE or I2C_ERR_BUSY.
+ * @return i2c_error code indicating error status.
  */
 i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length);
 
