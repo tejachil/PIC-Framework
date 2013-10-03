@@ -45,11 +45,16 @@
 #define MSGT_ADC 50 // ADC conversion value
 
 // Functionality enable/disable definitions
+
 // Define USE_ADC_TEST to enable reporting ADC readings over I2C.
 //#define USE_ADC_TEST
+
 // Define either I2C_MASTER or I2C_SLAVE (but not both) to select I2C role.
 #define I2C_MASTER
 //#define I2C_SLAVE
+
+// Define I2C_MASTER_IGNORE_NACK to allow limited testing with no slave.
+#define I2C_MASTER_IGNORE_NACK
 
 #endif
 

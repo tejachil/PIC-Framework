@@ -34,7 +34,7 @@ typedef enum {
     I2C_WRITE,
     /** A read from a slave is in progress(i2c_master_read() has been called)*/
     I2C_READ
-} i2c_master_status;
+} i2c_master_state;
 
 /**
  * Specific status for the current operation.  Each substate is waiting for an
@@ -61,37 +61,55 @@ typedef enum {
     I2C_SUBSTATE_NACK_SENT,
     /** A STOP has been sent.  Next substate is always IDLE. */
     I2C_SUBSTATE_STOP_SENT
-} i2c_master_substatus;
+} i2c_master_substate;
 #endif // ifdef I2C_SLAVE - else
 
 typedef struct __i2c_comm {
+#ifdef I2C_SLAVE
     unsigned char buffer[MAXI2CBUF];
     unsigned char buflen;
     unsigned char event_count;
-#ifdef I2C_SLAVE
-    i2c_slave_status status;
-#else
-    i2c_master_status status;
-    i2c_master_substatus substatus;
-#endif
+    i2c_slave_status state;
     unsigned char error_code;
     unsigned char error_count;
+#else
+    /** Main state for I2C master operations. */
+    i2c_master_state state;
+    /** Substate for I2C master operations. */
+    i2c_master_substate substate;
+#endif
+    /** Buffer used for bytes to be sent on I2C. */
     unsigned char outbuffer[MAXI2CBUF];
+    /** Number of bytes buffered in outbuffer. */
     unsigned char outbuflen;
+    /** Index of next byte to use from outbuffer. */
     unsigned char outbufind;
+    /**
+     * I2C_SLAVE: Slave address for this device.
+     * I2C_MASTER: Address of the device currently being communicated with.
+     */
     unsigned char slave_addr;
 } i2c_comm;
 
+/** Maximum number of errors before the I2C slave driver stops functioning. */
+#define I2C_ERR_THRESHOLD (1)
+
+/** Error codes which may be returned by the I2C driver. */
 typedef enum {
+    /** Indicates no error. */
     I2C_ERR_NONE = 0,
-    I2C_ERR_THRESHOLD,
+    /** The bus or the peripheral is busy */
+    I2C_ERR_BUSY,
+    /** The I2C buffer was not read in time, data was lost. */
     I2C_ERR_OVERRUN,
+    /** An address was not available when expected. */
     I2C_ERR_NOADDR,
+    /** I2C data was not available when expected. */
     I2C_ERR_NODATA,
+    /** A provided message or received message is too long. */
     I2C_ERR_MSGTOOLONG,
-    I2C_ERR_MSG_TRUNC,
-    // The bus or the peripheral is busy
-    I2C_ERR_BUSY
+    /** No data was provided to a function which requires data. */
+    I2C_ERR_ZERO_DATA
 } i2c_error_code;
 
 void init_i2c(i2c_comm *);
@@ -122,7 +140,7 @@ void i2c_configure_master(void);
  * @return i2c_error code indicating error status.  Should only return
  *          I2C_ERR_NONE or I2C_ERR_BUSY.
  */
-i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char *data, unsigned char data_length);
+i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length);
 
 /**
  * Read data from a given slave.  First a single byte is written to provide the

@@ -5,6 +5,7 @@
 #include <plib/i2c.h>
 #endif
 #include "my_i2c.h"
+#include <string.h> // for memcpy
 
 #ifndef __USE18F45J10
 #error "I2C library not implemented for this device"
@@ -20,15 +21,22 @@ void i2c_slave_handler(void);
  * I2C Master mode interrupt handler.
  */
 void i2c_master_handler(void);
+/**
+ * Handles an error in the I2C master driver.  Currently a placeholder.
+ */
+void i2c_master_handle_error(void);
 
 // set up the data structures for this i2c code
 // should be called once before any i2c routines are called
+
 void init_i2c(i2c_comm *ic) {
     ic_ptr = ic;
+    ic_ptr->state = I2C_IDLE;
+#ifdef I2C_SLAVE
     ic_ptr->buflen = 0;
     ic_ptr->event_count = 0;
-    ic_ptr->status = I2C_IDLE;
     ic_ptr->error_count = 0;
+#endif
 }
 
 void i2c_int_handler() {
@@ -45,11 +53,11 @@ void i2c_int_handler() {
 void i2c_configure_master() {
 #warning "Master configuration not tested"
     // Make sure the pins are set as input
-    TRISCbits.TRISC3 = 1;
-    TRISCbits.TRISC4 = 1;
+    I2C1_SCL = 1;
+    I2C1_SDA = 1;
 
     // Set the config bits located in the status register
-    SSP1STATbits.SMP = 0;
+    SSP1STATbits.SMP = 1;
     SSP1STATbits.CKE = 0;
 
     // Reset the control registers (just in case)
@@ -70,16 +78,112 @@ void i2c_configure_master() {
     SSP1CON1bits.SSPEN = 1;
 }
 
-i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char *data, unsigned char data_length) {
-#warning "Master write not implemented"
+i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length) {
+#warning "Master write not completed"
+    i2c_error_code ret_code = I2C_ERR_NONE;
+
+    // Check if the driver is busy
+    if (ic_ptr->state != I2C_IDLE) {
+        ret_code = I2C_ERR_BUSY;
+
+    }// Check the length of the provided data against the maximum length
+    else if (data_length > MAXI2CBUF) {
+        ret_code = I2C_ERR_MSGTOOLONG;
+
+    }// Check that there is some data provided
+    else if (0 == data_length) {
+        ret_code = I2C_ERR_ZERO_DATA;
+
+    }// Otherwise proceed
+    else {
+        // Set the main state to indicate a write in progress
+        ic_ptr->state = I2C_WRITE;
+
+        // Copy the provided data to the internal buffer
+        memcpy(ic_ptr->outbuffer, data, data_length);
+
+        // Save the length of the copied data
+        ic_ptr->outbuflen = data_length;
+
+        // Reset the buffer index
+        ic_ptr->outbufind = 0;
+
+        // Save the slave address
+        ic_ptr->slave_addr = slave_addr;
+
+        // Assert a start condition and move to the next substate
+        SSP1CON2bits.SEN = 1;
+        ic_ptr->substate = I2C_SUBSTATE_START_SENT;
+
+    }
+
+    return ret_code;
 }
 
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length) {
 #warning "Master read not implemented"
+    i2c_error_code ret_code;
+    return ret_code;
 }
 
 void i2c_master_handler() {
-#warning "Unimplemented handler"
+#warning "Master handler not completed"
+    // Make sure we are not in an idle state, or else we don't know why this
+    // interrupt triggered.
+    if (ic_ptr->state != I2C_IDLE) {
+        switch (ic_ptr->substate) {
+            case I2C_SUBSTATE_START_SENT:
+            {
+                // The start has completed, send the address and W bit (0)
+                SSPBUF = (ic_ptr->slave_addr << 1);
+
+                // Move to the next substate
+                ic_ptr->substate = I2C_SUBSTATE_ADDR_W_SENT;
+                break;
+            } // End case I2C_SUBSTATE_START_SENT
+
+            case I2C_SUBSTATE_ADDR_W_SENT:
+            {
+                // Sending of the address has completed, check the ACK status
+                // and send some data.
+
+#ifndef I2C_MASTER_IGNORE_NACK
+                // Check for a NACK (ACKSTAT 0 indicates ACK received)
+                if (1 == SSPCON2bits.ACKSTAT) {
+                    // NACK probably means there is no slave with that address
+                    i2c_master_handle_error();
+                } else
+#endif
+                {
+                    // Get the first data byte to send
+                    const unsigned char data_byte =
+                            ic_ptr->outbuffer[ic_ptr->outbufind];
+
+                    // Send the byte
+                    SSPBUF = data_byte;
+
+                    // Move to the next substate
+                    ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
+                }
+                break;
+            } // End case I2C_SUBSTATE_ADDR_W_SENT
+
+            default:
+            {
+                i2c_master_handle_error();
+                break;
+            } // End default case
+        }
+    } else {
+        i2c_master_handle_error();
+    }
+}
+
+void i2c_master_handle_error() {
+#warning "I2C errors not handled!"
+    // Just reset the states (for now)
+    ic_ptr->state = I2C_IDLE;
+    ic_ptr->substate = I2C_SUBSTATE_IDLE;
 }
 
 #endif //ifdef I2C_MASTER
@@ -104,6 +208,7 @@ void start_i2c_slave_reply(unsigned char length, unsigned char *msg) {
 }
 
 // an internal subroutine used in the slave version of the i2c_int_handler
+
 void handle_start(unsigned char data_read) {
     ic_ptr->event_count = 1;
     ic_ptr->buflen = 0;
@@ -112,23 +217,24 @@ void handle_start(unsigned char data_read) {
         if (SSPSTATbits.D_A == 1) {
             // this is bad because we got data and
             // we wanted an address
-            ic_ptr->status = I2C_IDLE;
+            ic_ptr->state = I2C_IDLE;
             ic_ptr->error_count++;
             ic_ptr->error_code = I2C_ERR_NOADDR;
         } else {
             if (SSPSTATbits.R_W == 1) {
-                ic_ptr->status = I2C_SLAVE_SEND;
+                ic_ptr->state = I2C_SLAVE_SEND;
             } else {
-                ic_ptr->status = I2C_RCV_DATA;
+                ic_ptr->state = I2C_RCV_DATA;
             }
         }
     } else {
-        ic_ptr->status = I2C_STARTED;
+        ic_ptr->state = I2C_STARTED;
     }
 }
 
 // setup the PIC to operate as a slave
 // the address must include the R/W bit
+
 void i2c_configure_slave(unsigned char addr) {
 
     // ensure the two lines are set for input (we are a slave)
@@ -160,7 +266,7 @@ void i2c_configure_slave(unsigned char addr) {
     PORTBbits.SCL1 = 1;
     PORTBbits.SDA1 = 1;
 #else
-    __dummyXY=35;// Something is messed up with the #ifdefs; this line is designed to invoke a compiler error
+    __dummyXY = 35; // Something is messed up with the #ifdefs; this line is designed to invoke a compiler error
 #endif
 #endif
 #endif
@@ -185,7 +291,7 @@ void i2c_slave_handler() {
         // we failed to read the buffer in time, so we know we
         // can't properly receive this message, just put us in the
         // a state where we are looking for a new message
-        ic_ptr->status = I2C_IDLE;
+        ic_ptr->state = I2C_IDLE;
         overrun_error = 1;
         ic_ptr->error_count++;
         ic_ptr->error_code = I2C_ERR_OVERRUN;
@@ -197,14 +303,14 @@ void i2c_slave_handler() {
     }
 
     if (!overrun_error) {
-        switch (ic_ptr->status) {
+        switch (ic_ptr->state) {
             case I2C_IDLE:
             {
                 // ignore anything except a start
                 if (SSPSTATbits.S == 1) {
                     handle_start(data_read);
                     // if we see a slave read, then we need to handle it here
-                    if (ic_ptr->status == I2C_SLAVE_SEND) {
+                    if (ic_ptr->state == I2C_SLAVE_SEND) {
                         data_read = 0;
                         msg_to_send = 1;
                     }
@@ -226,21 +332,21 @@ void i2c_slave_handler() {
                             ic_ptr->error_code = I2C_ERR_NODATA;
                         }
                     }
-                    ic_ptr->status = I2C_IDLE;
+                    ic_ptr->state = I2C_IDLE;
                 } else if (data_read) {
                     ic_ptr->event_count++;
                     if (SSPSTATbits.D_A == 0) {
                         if (SSPSTATbits.R_W == 0) { // slave write
-                            ic_ptr->status = I2C_RCV_DATA;
+                            ic_ptr->state = I2C_RCV_DATA;
                         } else { // slave read
-                            ic_ptr->status = I2C_SLAVE_SEND;
+                            ic_ptr->state = I2C_SLAVE_SEND;
                             msg_to_send = 1;
                             // don't let the clock stretching bit be let go
                             data_read = 0;
                         }
                     } else {
                         ic_ptr->error_count++;
-                        ic_ptr->status = I2C_IDLE;
+                        ic_ptr->state = I2C_IDLE;
                         ic_ptr->error_code = I2C_ERR_NODATA;
                     }
                 }
@@ -254,7 +360,7 @@ void i2c_slave_handler() {
                     data_written = 1;
                 } else {
                     // we have nothing left to send
-                    ic_ptr->status = I2C_IDLE;
+                    ic_ptr->state = I2C_IDLE;
                 }
                 break;
             }
@@ -272,12 +378,12 @@ void i2c_slave_handler() {
                         } else {
                             ic_ptr->error_count++;
                             ic_ptr->error_code = I2C_ERR_NODATA;
-                            ic_ptr->status = I2C_IDLE;
+                            ic_ptr->state = I2C_IDLE;
                         }
                     } else {
                         msg_ready = 1;
                     }
-                    ic_ptr->status = I2C_IDLE;
+                    ic_ptr->state = I2C_IDLE;
                 } else if (data_read) {
                     ic_ptr->event_count++;
                     if (SSPSTATbits.D_A == 1) {
@@ -285,7 +391,7 @@ void i2c_slave_handler() {
                         ic_ptr->buflen++;
                     } else /* a restart */ {
                         if (SSPSTATbits.R_W == 1) {
-                            ic_ptr->status = I2C_SLAVE_SEND;
+                            ic_ptr->state = I2C_SLAVE_SEND;
                             msg_ready = 1;
                             msg_to_send = 1;
                             // don't let the clock stretching bit be let go
@@ -293,7 +399,7 @@ void i2c_slave_handler() {
                         } else { /* bad to recv an address again, we aren't ready */
                             ic_ptr->error_count++;
                             ic_ptr->error_code = I2C_ERR_NODATA;
-                            ic_ptr->status = I2C_IDLE;
+                            ic_ptr->state = I2C_IDLE;
                         }
                     }
                 }
@@ -312,7 +418,7 @@ void i2c_slave_handler() {
 
     // must check if the message is too long, if
     if ((ic_ptr->buflen > MAXI2CBUF - 2) && (!msg_ready)) {
-        ic_ptr->status = I2C_IDLE;
+        ic_ptr->state = I2C_IDLE;
         ic_ptr->error_count++;
         ic_ptr->error_code = I2C_ERR_MSGTOOLONG;
     }
