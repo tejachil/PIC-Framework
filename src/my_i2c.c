@@ -111,7 +111,7 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
         // Save the slave address
         ic_ptr->slave_addr = slave_addr;
 
-        // Assert a start condition and move to the next substate
+        // Assert a Start condition and move to the next substate
         SSP1CON2bits.SEN = 1;
         ic_ptr->substate = I2C_SUBSTATE_START_SENT;
 
@@ -155,18 +155,52 @@ void i2c_master_handler() {
                 } else
 #endif
                 {
-                    // Get the first data byte to send
-                    const unsigned char data_byte =
-                            ic_ptr->outbuffer[ic_ptr->outbufind];
-
-                    // Send the byte
-                    SSPBUF = data_byte;
+                    // Send the first byte
+                    SSPBUF = ic_ptr->outbuffer[ic_ptr->outbufind];
 
                     // Move to the next substate
                     ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
                 }
                 break;
             } // End case I2C_SUBSTATE_ADDR_W_SENT
+
+            case I2C_SUBSTATE_DATA_SENT:
+            {
+                // A data byte has completed, send the next one or finish the
+                // write.
+
+#ifndef I2C_MASTER_IGNORE_NACK
+                // Check for a NACK (ACKSTAT 0 indicates ACK received)
+                if (1 == SSPCON2bits.ACKSTAT) {
+                    // NACK probably means there is no slave with that address
+                    i2c_master_handle_error();
+                } else
+#endif
+                {
+                    // Increment the data index
+                    ic_ptr->outbufind++;
+
+                    // Check if there is more data to send
+                    if (ic_ptr->outbufind < ic_ptr->outbuflen) {
+                        // Send the next byte
+                        SSPBUF = ic_ptr->outbuffer[ic_ptr->outbufind];
+
+                        // Stay in the same substate (we just sent data)
+                        ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
+                        
+                    }// Otherwise there is no more data
+                    else {
+                        // Assert a Stop condition (the write is complete)
+                        SSPCON2bits.PEN = 1;
+
+                        // Move to the next substate
+                        ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+                    }
+
+                } // End ACK check - else
+
+                break;
+            } // End case I2C_SUBSTATE_DATA_SENT
 
             default:
             {
