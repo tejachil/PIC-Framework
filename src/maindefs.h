@@ -46,7 +46,7 @@
 
 // Functionality enable/disable definitions
 // Define USE_ADC_TEST to enable reporting ADC readings over I2C
-//#define USE_ADC_TEST
+#define USE_ADC_TEST
 
 #endif
 

@@ -15,6 +15,7 @@
       <itemPath>../src/user_interrupts.h</itemPath>
       <itemPath>../src/my_adc.h</itemPath>
       <itemPath>../src/my_gpio.h</itemPath>
+      <itemPath>../src/my_lcd.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -34,6 +35,7 @@
       <itemPath>../src/user_interrupts.c</itemPath>
       <itemPath>../src/my_adc.c</itemPath>
       <itemPath>../src/my_gpio.c</itemPath>
+      <itemPath>../src/my_lcd.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -52,7 +54,7 @@
         <targetDevice>PIC18F45J10</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>PICkit2PlatformTool</platformTool>
+        <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>C18</languageToolchain>
         <languageToolchainVersion>3.45</languageToolchainVersion>
         <platform>3</platform>

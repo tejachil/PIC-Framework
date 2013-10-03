@@ -5,6 +5,7 @@
 #include <i2c.h>
 #include <timers.h>
 #include <adc.h>
+#include <math.h>
 #else
 #include <plib/usart.h>
 #include <plib/i2c.h>
@@ -15,6 +16,7 @@
 #include "messages.h"
 #include "my_uart.h"
 #include "my_i2c.h"
+#include "my_lcd.h"
 #include "uart_thread.h"
 #include "timer1_thread.h"
 #include "timer0_thread.h"
@@ -135,6 +137,7 @@ void main(void) {
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
+    char lcdBuf[10] = {0};
     unsigned char i;
     uart_thread_struct uthread_data; // info for uart_lthread
     timer1_thread_struct t1thread_data; // info for timer1_lthread
@@ -172,6 +175,15 @@ void main(void) {
 
     // Setup PORTB as output
     gpio_init_portb_output();
+
+    // how to set up PORTA for input (for the V4 board with the PIC2680)
+    /*
+            PORTA = 0x0;	// clear the port
+            LATA = 0x0;		// clear the output latch
+            ADCON1 = 0x0F;	// turn off the A2D function on these pins
+            // Only for 40-pin version of this chip CMCON = 0x07;	// turn the comparator off
+            TRISA = 0x0F;	// set RA3-RA0 to inputs
+     */
 
     // initialize Timers
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
@@ -220,17 +232,29 @@ void main(void) {
     adc_start();
 #endif //ifdef USE_ADC_TEST
 
+    /* Junk to force an I2C interrupt in the simulator (if you wanted to)
+    PIR1bits.SSPIF = 1;
+    _asm
+    goto 0x08
+    _endasm;
+     */
+
+    // printf() is available, but is not advisable.  It goes to the UART pin
+    // on the PIC and then you must hook something up to that to view it.
+    // It is also slow and is blocking, so it will perturb your code's operation
+    // Here is how it looks: printf("Hello\r\n");
+
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
     // that should get them.  Although the subroutines are not threads, but
     // they can be equated with the tasks in your task diagram if you
     // structure them properly.
+
     while (1) {
         // Call a routine that blocks until either on the incoming
         // messages queues has a message (this may put the processor into
         // an idle mode)
         block_on_To_msgqueues();
-
         // At this point, one or both of the queues has a message.  It
         // makes sense to check the high-priority messages first -- in fact,
         // you may only want to check the low-priority messages when there
@@ -291,7 +315,7 @@ void main(void) {
                         case ADC_FULL_DATA_REGISTER:
                         {
                             // Get the latest ADC reading
-                            const int adc_val = adc_read();
+                            const int adc_val = adc_read(0);
                             length = 2;
                             // Place the low byte in the first msg byte
                             msgbuffer[0] = adc_val & 0x00FF;
@@ -304,7 +328,7 @@ void main(void) {
                         case ADC_LOW_DATA_REGISTER:
                         {
                             // Get the latest ADC reading
-                            const int adc_val = adc_read();
+                            const int adc_val = adc_read(0);
                             length = 1;
                             // Place the low byte in the first msg byte
                             msgbuffer[0] = adc_val & 0x00FF;
@@ -315,11 +339,16 @@ void main(void) {
                         case ADC_HIGH_DATA_REGISTER:
                         {
                             // Get the latest ADC reading
-                            const int adc_val = adc_read();
+                            const int adc_val = adc_read(0);
                             length = 1;
                             // Place the high byte in the first msg byte
                             msgbuffer[0] = (adc_val & 0xFF00) >> 8;
-
+                            //int voltage = (3.3/1024)*adc_read(0);
+                            //int x = pow(voltage, -1.15);
+                           // int adc = 1000 * 12.21 * pow(voltage, -1.15);
+                            sprintf(lcdBuf, "IR: %d$   " , (adc_read(0)) );
+                            //uart_send_bytes(lcdBuf, 1);
+                            printLCD(lcdBuf,10);
                             break;
                         }
 #endif //ifdef USE_ADC_TEST
