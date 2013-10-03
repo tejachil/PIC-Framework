@@ -202,17 +202,30 @@ void i2c_master_handler() {
                 break;
             } // End case I2C_SUBSTATE_DATA_SENT
 
+            case I2C_SUBSTATE_ERROR:
             case I2C_SUBSTATE_STOP_SENT:
             {
-                // The Stop has completed, return to idle and send a success
-                // message
+                // The Stop has completed, return to idle and send a message to
+                // main if appropriate
+
+                // Send a success message to main only if this point was reached
+                // through normal operation.
+                if (ic_ptr->substate != I2C_SUBSTATE_ERROR) {
+                    ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
+
+                }// Otherwise send the appropriate error message to main
+                else {
+                    // Send an error message to main
+                    if (I2C_WRITE == ic_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_FAILED, NULL);
+                    } else if (I2C_READ == ic_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_FAILED, NULL);
+                    }
+                }
 
                 // Return to idle states
                 ic_ptr->state = I2C_IDLE;
                 ic_ptr->substate = I2C_SUBSTATE_IDLE;
-
-                // Send a success message to main
-                ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
 
                 break;
             } // End case I2C_SUBSTATE_STOP_SENT
@@ -230,16 +243,11 @@ void i2c_master_handler() {
 
 void i2c_master_handle_error() {
 #warning "I2C errors not handled completely"
-    // Send an error message to main
-    if (I2C_WRITE == ic_ptr->state) {
-        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_FAILED, NULL);
-    } else if (I2C_READ == ic_ptr->state) {
-        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_FAILED, NULL);
-    }
-    
-    // Reset the states to idle
-    ic_ptr->state = I2C_IDLE;
-    ic_ptr->substate = I2C_SUBSTATE_IDLE;
+    // Assert a Stop condition to reset the bus
+    SSPCON2bits.PEN = 1;
+
+    // Move to the error substate
+    ic_ptr->substate = I2C_SUBSTATE_ERROR;
 }
 
 #endif //ifdef I2C_MASTER

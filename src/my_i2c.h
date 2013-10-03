@@ -60,7 +60,9 @@ typedef enum {
     /** A NACK has been sent. */
     I2C_SUBSTATE_NACK_SENT,
     /** A STOP has been sent.  Next substate is always IDLE. */
-    I2C_SUBSTATE_STOP_SENT
+    I2C_SUBSTATE_STOP_SENT,
+    /** An error has occurred and a STOP has been sent to free the bus. */
+    I2C_SUBSTATE_ERROR
 } i2c_master_substate;
 #endif // ifdef I2C_SLAVE - else
 
