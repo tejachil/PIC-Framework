@@ -127,7 +127,7 @@ void i2c_configure_master(void);
 
 /**
  * Write data to a given slave.  Once the write is complete, a message will be
- * sent in the low-priority queue: <p>
+ * sent in the high-priority queue: <p>
  * MSGT_MASTER_SEND_COMPLETE, length 0: The write was successful.
  * MSGT_MASTER_SEND_FAILED, length 0:  The write failed due to an error such as
  * a NACK from the slave.
@@ -146,7 +146,7 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
  * Read data from a given slave.  First a single byte is written to provide the
  * slave with information about what data is being requested.  Then the given
  * number of bytes are read from the slave.  Once the read is complete, a
- * message will be sent in the low-priority queue: <p>
+ * message will be sent in the high-priority queue: <p>
  * MSGT_MASTER_RECV_COMPLETE, length varies: The read was successful.  The
  * message will include the data received from the slave.
  * MSGT_MASTER_RECV_FAILED, length 0: The read failed.

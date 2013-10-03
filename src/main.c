@@ -333,7 +333,23 @@ void main(void) {
                     start_i2c_slave_reply(length, msgbuffer);
                     break;
                 };
-#endif //ifdef I2C_SLAVE
+#else //ifdef I2C_SLAVE
+
+                case MSGT_I2C_MASTER_SEND_COMPLETE:
+                {
+                    LATBbits.LATB2 ^= 1;
+
+                    break;
+                } // End case MSGT_I2C_MASTER_SEND_COMPLETE
+
+                case MSGT_I2C_MASTER_SEND_FAILED:
+                {
+                    LATBbits.LATB1 ^= 1;
+
+                    break;
+                } // End case MSGT_I2C_MASTER_SEND_FAILED
+#endif //ifdef I2C_SLAVE - else
+
                 default:
                 {
                     // Your code should handle this error

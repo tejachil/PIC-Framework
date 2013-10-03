@@ -134,7 +134,7 @@ void i2c_master_handler() {
         switch (ic_ptr->substate) {
             case I2C_SUBSTATE_START_SENT:
             {
-                // The start has completed, send the address and W bit (0)
+                // The Start has completed, send the address and W bit (0)
                 SSPBUF = (ic_ptr->slave_addr << 1);
 
                 // Move to the next substate
@@ -202,6 +202,21 @@ void i2c_master_handler() {
                 break;
             } // End case I2C_SUBSTATE_DATA_SENT
 
+            case I2C_SUBSTATE_STOP_SENT:
+            {
+                // The Stop has completed, return to idle and send a success
+                // message
+
+                // Return to idle states
+                ic_ptr->state = I2C_IDLE;
+                ic_ptr->substate = I2C_SUBSTATE_IDLE;
+
+                // Send a success message to main
+                ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
+
+                break;
+            } // End case I2C_SUBSTATE_STOP_SENT
+
             default:
             {
                 i2c_master_handle_error();
@@ -214,8 +229,15 @@ void i2c_master_handler() {
 }
 
 void i2c_master_handle_error() {
-#warning "I2C errors not handled!"
-    // Just reset the states (for now)
+#warning "I2C errors not handled completely"
+    // Send an error message to main
+    if (I2C_WRITE == ic_ptr->state) {
+        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_FAILED, NULL);
+    } else if (I2C_READ == ic_ptr->state) {
+        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_FAILED, NULL);
+    }
+    
+    // Reset the states to idle
     ic_ptr->state = I2C_IDLE;
     ic_ptr->substate = I2C_SUBSTATE_IDLE;
 }
