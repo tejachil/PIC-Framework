@@ -157,8 +157,7 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
  * @param reg The data byte (usually a register address) to write before the
  *          read is started.
  * @param data_length The number of byte to read from the slave.
- * @return i2c_error code indicating error status.  Should only return
- *          I2C_ERR_NONE or I2C_ERR_BUSY.
+ * @return i2c_error code indicating error status.
  */
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
 
