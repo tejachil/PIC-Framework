@@ -167,5 +167,6 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
  * @return i2c_error code indicating error status.
  */
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
+#warning "TODO: add i2c_master_busy() check to see if driver is IDLE or not"
 
 #endif

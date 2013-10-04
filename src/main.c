@@ -333,18 +333,32 @@ void main(void) {
                     start_i2c_slave_reply(length, msgbuffer);
                     break;
                 };
-#else //ifdef I2C_SLAVE
+#else //this means I2C_MASTER
 
                 case MSGT_I2C_MASTER_SEND_COMPLETE:
                 {
-                    LATBbits.LATB2 ^= 1;
+                    LATBbits.LATB1 ^= 1;
 
                     break;
                 } // End case MSGT_I2C_MASTER_SEND_COMPLETE
 
                 case MSGT_I2C_MASTER_SEND_FAILED:
                 {
-                    LATBbits.LATB1 ^= 1;
+                    LATBbits.LATB2 ^= 1;
+
+                    break;
+                } // End case MSGT_I2C_MASTER_SEND_FAILED
+
+                case MSGT_I2C_MASTER_RECV_COMPLETE:
+                {
+                    LATBbits.LATB3 ^= 1;
+
+                    break;
+                } // End case MSGT_I2C_MASTER_SEND_COMPLETE
+
+                case MSGT_I2C_MASTER_RECV_FAILED:
+                {
+                    LATBbits.LATB4 ^= 1;
 
                     break;
                 } // End case MSGT_I2C_MASTER_SEND_FAILED

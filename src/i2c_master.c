@@ -21,7 +21,6 @@ extern i2c_comm *ic_ptr;
 void i2c_master_handle_error(void);
 
 void i2c_configure_master() {
-#warning "Master configuration not tested"
     // Make sure the pins are set as input
     I2C1_SCL = 1;
     I2C1_SDA = 1;
@@ -131,7 +130,6 @@ i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsi
 }
 
 void i2c_master_handler() {
-#warning "Master handler not completed"
     // Make sure we are not in an idle state, or else we don't know why this
     // interrupt triggered.
     if (ic_ptr->state != I2C_IDLE) {
@@ -227,15 +225,21 @@ void i2c_master_handler() {
             } // End case I2C_SUBSTATE_DATA_SENT
 
             case I2C_SUBSTATE_ERROR:
+                // Both substates indicate a stop has completed
             case I2C_SUBSTATE_STOP_SENT:
             {
                 // The Stop has completed, return to idle and send a message to
-                // main if appropriate
+                // main as appropriate
 
                 // Send a success message to main only if this point was reached
                 // through normal operation.
                 if (ic_ptr->substate != I2C_SUBSTATE_ERROR) {
-                    ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
+                    // Send a success message to main
+                    if (I2C_WRITE == ic_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
+                    } else if (I2C_READ == ic_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_COMPLETE, NULL);
+                    }
 
                 }// Otherwise send the appropriate error message to main
                 else {
@@ -265,6 +269,85 @@ void i2c_master_handler() {
                 break;
             } // End case I2C_SUBSTATE_RESTART_SENT
 
+            case I2C_SUBSTATE_ADDR_R_SENT:
+            {
+                // Sending of the address has completed, check the ACK status
+                // and prepare to receive data.
+
+#ifndef I2C_MASTER_IGNORE_NACK
+                // Check for a NACK (ACKSTAT 0 indicates ACK received)
+                if (1 == SSPCON2bits.ACKSTAT) {
+                    // NACK probably means there is no slave with that address
+                    i2c_master_handle_error();
+                } else
+#endif
+                {
+                    // Prepare to receive a byte
+                    SSPCON2bits.RCEN = 1;
+
+                    // Move to the next substate
+                    ic_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
+                }
+
+                break;
+            } // End cases I2C_SUBSTATE_ADDR_R_SENT and I2C_SUBSTATE_ACK_SENT
+
+            case I2C_SUBSTATE_WAITING_TO_RECEIVE:
+            {
+                // A byte has been received, ACK or NACK it as appropriate.
+
+                // Save the byte
+                ic_ptr->buffer[ic_ptr->buffer_index] = SSPBUF;
+
+                // Increment the index (received byte counter)
+                ic_ptr->buffer_index++;
+
+                // Check if all requested bytes have been received
+                if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
+                    // Prepare to ACK the byte
+                    SSPCON2bits.ACKDT = 0;
+
+                    // Move to the next substate
+                    ic_ptr->substate = I2C_SUBSTATE_ACK_SENT;
+
+                }// Otherwise no more data is needed from the slave
+                else {
+                    // Prepare to NACK the byte
+                    SSPCON2bits.ACKDT = 1;
+
+                    // Move to the next substate
+                    ic_ptr->substate = I2C_SUBSTATE_NACK_SENT;
+                }
+
+                // Send the ACK/NACK as configured above
+                SSPCON2bits.ACKEN = 1;
+
+                break;
+            } // End case I2C_SUBSTATE_WAITING_TO_RECEIVE
+
+            case I2C_SUBSTATE_ACK_SENT:
+            {
+                // Sending of the ACK has completed, prepare to receive a byte
+                SSPCON2bits.RCEN = 1;
+
+                // Move to the next substate
+                ic_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
+
+                break;
+            } // End case I2C_SUBSTATE_ACK_SENT
+
+            case I2C_SUBSTATE_NACK_SENT:
+            {
+                // Sending of the NACK has completed, assert a Stop to complete
+                // the read.
+                SSPCON2bits.PEN = 1;
+
+                // Move to the next substate
+                ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+
+                break;
+            } // End case I2C_SUBSTATE_NACK_SENT
+
             default:
             {
                 i2c_master_handle_error();
@@ -277,7 +360,6 @@ void i2c_master_handler() {
 }
 
 void i2c_master_handle_error() {
-#warning "I2C errors not handled completely"
     // Assert a Stop condition to reset the bus
     SSPCON2bits.PEN = 1;
 
