@@ -47,6 +47,14 @@ void i2c_configure_master() {
     SSP1CON1bits.SSPEN = 1;
 }
 
+i2c_error_code i2c_master_busy() {
+    if (ic_ptr->state != I2C_IDLE) {
+        return I2C_ERR_BUSY;
+    } else {
+        return I2C_ERR_NONE;
+    }
+}
+
 i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length) {
     i2c_error_code ret_code = I2C_ERR_NONE;
 

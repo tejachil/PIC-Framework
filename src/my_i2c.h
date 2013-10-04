@@ -167,6 +167,15 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
  * @return i2c_error code indicating error status.
  */
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
-#warning "TODO: add i2c_master_busy() check to see if driver is IDLE or not"
+
+/**
+ * Check if the I2C Master driver is busy.  Because I2C_ERR_NONE is zero, this
+ * method may be used in a boolean expression [i.e. if(i2c_master_busy())].
+ * @return i2c_error_code indicating driver status.  May only return: <br>
+ *          <b>I2C_ERR_NONE</b>: Driver is not busy and is ready to begin an
+ *              operation.
+ *          <b>I2C_ERR_BUSY</b>: Driver is busy, no new operations may begin.
+ */
+i2c_error_code i2c_master_busy(void);
 
 #endif
