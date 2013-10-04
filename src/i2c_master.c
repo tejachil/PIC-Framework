@@ -49,7 +49,6 @@ void i2c_configure_master() {
 }
 
 i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length) {
-#warning "Master write not completed"
     i2c_error_code ret_code = I2C_ERR_NONE;
 
     // Check if the driver is busy
@@ -91,8 +90,43 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
 }
 
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length) {
-#warning "Master read not implemented"
-    i2c_error_code ret_code;
+    i2c_error_code ret_code = I2C_ERR_NONE;
+
+    // Check if the driver is busy
+    if (ic_ptr->state != I2C_IDLE) {
+        ret_code = I2C_ERR_BUSY;
+
+    }// Check the requested data length against the maximum length
+    else if (data_length > MAXI2CBUF) {
+        ret_code = I2C_ERR_MSGTOOLONG;
+
+    }// Check that there is some data requested
+    else if (0 == data_length) {
+        ret_code = I2C_ERR_ZERO_DATA;
+
+    }// Otherwise proceed
+    else {
+        // Set the main state to indicate a read in progress
+        ic_ptr->state = I2C_READ;
+
+        // Save the requested data length
+        ic_ptr->buffer_length = data_length;
+
+        // Reset the buffer index
+        ic_ptr->buffer_index = 0;
+
+        // Save the slave address
+        ic_ptr->slave_addr = slave_addr;
+
+        // Save the register
+        ic_ptr->register_byte = reg;
+
+        // Assert a Start condition and move to the next substate
+        SSP1CON2bits.SEN = 1;
+        ic_ptr->substate = I2C_SUBSTATE_START_SENT;
+
+    }
+
     return ret_code;
 }
 
@@ -126,8 +160,17 @@ void i2c_master_handler() {
                 } else
 #endif
                 {
+                    unsigned char first_byte;
+
+                    // The first byte differs for reads and writes
+                    if (I2C_WRITE == ic_ptr->state) {
+                        first_byte = ic_ptr->buffer[ic_ptr->buffer_index];
+                    } else if (I2C_READ == ic_ptr->state) {
+                        first_byte = ic_ptr->register_byte;
+                    }
+
                     // Send the first byte
-                    SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
+                    SSPBUF = first_byte;
 
                     // Move to the next substate
                     ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
@@ -148,24 +191,34 @@ void i2c_master_handler() {
                 } else
 #endif
                 {
-                    // Increment the data index
-                    ic_ptr->buffer_index++;
+                    // The path differs for reads and writes
+                    if (I2C_WRITE == ic_ptr->state) {
+                        // Increment the data index
+                        ic_ptr->buffer_index++;
 
-                    // Check if there is more data to send
-                    if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
-                        // Send the next byte
-                        SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
+                        // Check if there is more data to send
+                        if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
+                            // Send the next byte
+                            SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
 
-                        // Stay in the same substate (we just sent data)
-                        ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
+                            // Stay in the same substate (we just sent data)
+                            ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
 
-                    }// Otherwise there is no more data
-                    else {
-                        // Assert a Stop condition (the write is complete)
-                        SSPCON2bits.PEN = 1;
+                        }// Otherwise there is no more data
+                        else {
+                            // Assert a Stop condition (the write is complete)
+                            SSPCON2bits.PEN = 1;
+
+                            // Move to the next substate
+                            ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+                        }
+                    }
+                    else if (I2C_READ == ic_ptr->state) {
+                        // Assert a Restart condition
+                        SSPCON2bits.RSEN = 1;
 
                         // Move to the next substate
-                        ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+                        ic_ptr->substate = I2C_SUBSTATE_RESTART_SENT;
                     }
 
                 } // End ACK check - else

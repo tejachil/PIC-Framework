@@ -91,6 +91,8 @@ typedef struct __i2c_comm {
     unsigned char buffer_length;
     /** Index of next byte to use in 'buffer'. */
     unsigned char buffer_index;
+    /** "Register address" being read from slave. */
+    unsigned char register_byte;
 #endif
     /**
      * I2C_SLAVE: Slave address for this device.
@@ -161,7 +163,7 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
  *          shifted to account for the R/W bit (it will be shifted internally).
  * @param reg The data byte (usually a register address) to write before the
  *          read is started.
- * @param data_length The number of byte to read from the slave.
+ * @param data_length The maximum number of bytes to read from the slave.
  * @return i2c_error code indicating error status.
  */
 i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length);
