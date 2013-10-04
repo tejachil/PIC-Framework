@@ -254,6 +254,17 @@ void i2c_master_handler() {
                 break;
             } // End case I2C_SUBSTATE_STOP_SENT
 
+            case I2C_SUBSTATE_RESTART_SENT:
+            {
+                // The restart has completed, send the address and R bit (1)
+                SSPBUF = (ic_ptr->slave_addr << 1) | 0x01;
+
+                // Move to the next substate
+                ic_ptr->substate = I2C_SUBSTATE_ADDR_R_SENT;
+
+                break;
+            } // End case I2C_SUBSTATE_RESTART_SENT
+
             default:
             {
                 i2c_master_handle_error();
