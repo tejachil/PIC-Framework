@@ -34,7 +34,7 @@ void start_i2c_slave_reply(unsigned char length, unsigned char *msg) {
 
 void handle_start(unsigned char data_read) {
     ic_ptr->event_count = 1;
-    ic_ptr->buflen = 0;
+    ic_ptr->inbuflen = 0;
     // check to see if we also got the address
     if (data_read) {
         if (SSPSTATbits.D_A == 1) {
@@ -195,8 +195,8 @@ void i2c_slave_handler() {
                     ic_ptr->event_count++;
                     if (data_read) {
                         if (SSPSTATbits.D_A == 1) {
-                            ic_ptr->buffer[ic_ptr->buflen] = i2c_data;
-                            ic_ptr->buflen++;
+                            ic_ptr->inbuffer[ic_ptr->inbuflen] = i2c_data;
+                            ic_ptr->inbuflen++;
                             msg_ready = 1;
                         } else {
                             ic_ptr->error_count++;
@@ -210,8 +210,8 @@ void i2c_slave_handler() {
                 } else if (data_read) {
                     ic_ptr->event_count++;
                     if (SSPSTATbits.D_A == 1) {
-                        ic_ptr->buffer[ic_ptr->buflen] = i2c_data;
-                        ic_ptr->buflen++;
+                        ic_ptr->inbuffer[ic_ptr->inbuflen] = i2c_data;
+                        ic_ptr->inbuflen++;
                     } else /* a restart */ {
                         if (SSPSTATbits.R_W == 1) {
                             ic_ptr->state = I2C_SLAVE_SEND;
@@ -240,16 +240,16 @@ void i2c_slave_handler() {
     }
 
     // must check if the message is too long, if
-    if ((ic_ptr->buflen > MAXI2CBUF - 2) && (!msg_ready)) {
+    if ((ic_ptr->inbuflen > MAXI2CBUF - 2) && (!msg_ready)) {
         ic_ptr->state = I2C_IDLE;
         ic_ptr->error_count++;
         ic_ptr->error_code = I2C_ERR_MSGTOOLONG;
     }
 
     if (msg_ready) {
-        ic_ptr->buffer[ic_ptr->buflen] = ic_ptr->event_count;
-        ToMainHigh_sendmsg(ic_ptr->buflen + 1, MSGT_I2C_DATA, (void *) ic_ptr->buffer);
-        ic_ptr->buflen = 0;
+        ic_ptr->inbuffer[ic_ptr->inbuflen] = ic_ptr->event_count;
+        ToMainHigh_sendmsg(ic_ptr->inbuflen + 1, MSGT_I2C_DATA, (void *) ic_ptr->inbuffer);
+        ic_ptr->inbuflen = 0;
     } else if (ic_ptr->error_count >= I2C_ERR_THRESHOLD) {
         error_buf[0] = ic_ptr->error_count;
         error_buf[1] = ic_ptr->error_code;
@@ -259,7 +259,7 @@ void i2c_slave_handler() {
     }
     if (msg_to_send) {
         // send to the queue to *ask* for the data to be sent out
-        ToMainHigh_sendmsg(0, MSGT_I2C_RQST, (void *) ic_ptr->buffer);
+        ToMainHigh_sendmsg(0, MSGT_I2C_RQST, (void *) ic_ptr->inbuffer);
         msg_to_send = 0;
     }
 }

@@ -23,7 +23,7 @@ void init_i2c(i2c_comm *ic) {
     ic_ptr = ic;
     ic_ptr->state = I2C_IDLE;
 #ifdef I2C_SLAVE
-    ic_ptr->buflen = 0;
+    ic_ptr->inbuflen = 0;
     ic_ptr->event_count = 0;
     ic_ptr->error_count = 0;
 #endif

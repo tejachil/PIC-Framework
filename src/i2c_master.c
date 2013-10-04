@@ -70,13 +70,13 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
         ic_ptr->state = I2C_WRITE;
 
         // Copy the provided data to the internal buffer
-        memcpy(ic_ptr->outbuffer, data, data_length);
+        memcpy(ic_ptr->buffer, data, data_length);
 
         // Save the length of the copied data
-        ic_ptr->outbuflen = data_length;
+        ic_ptr->buffer_length = data_length;
 
         // Reset the buffer index
-        ic_ptr->outbufind = 0;
+        ic_ptr->buffer_index = 0;
 
         // Save the slave address
         ic_ptr->slave_addr = slave_addr;
@@ -109,6 +109,7 @@ void i2c_master_handler() {
 
                 // Move to the next substate
                 ic_ptr->substate = I2C_SUBSTATE_ADDR_W_SENT;
+
                 break;
             } // End case I2C_SUBSTATE_START_SENT
 
@@ -126,7 +127,7 @@ void i2c_master_handler() {
 #endif
                 {
                     // Send the first byte
-                    SSPBUF = ic_ptr->outbuffer[ic_ptr->outbufind];
+                    SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
 
                     // Move to the next substate
                     ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
@@ -148,12 +149,12 @@ void i2c_master_handler() {
 #endif
                 {
                     // Increment the data index
-                    ic_ptr->outbufind++;
+                    ic_ptr->buffer_index++;
 
                     // Check if there is more data to send
-                    if (ic_ptr->outbufind < ic_ptr->outbuflen) {
+                    if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
                         // Send the next byte
-                        SSPBUF = ic_ptr->outbuffer[ic_ptr->outbufind];
+                        SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
 
                         // Stay in the same substate (we just sent data)
                         ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;

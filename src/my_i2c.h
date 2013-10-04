@@ -68,24 +68,30 @@ typedef enum {
 
 typedef struct __i2c_comm {
 #ifdef I2C_SLAVE
-    unsigned char buffer[MAXI2CBUF];
-    unsigned char buflen;
+    unsigned char inbuffer[MAXI2CBUF];
+    unsigned char inbuflen;
     unsigned char event_count;
     i2c_slave_status state;
     unsigned char error_code;
     unsigned char error_count;
-#else
-    /** Main state for I2C master operations. */
-    i2c_master_state state;
-    /** Substate for I2C master operations. */
-    i2c_master_substate substate;
-#endif
     /** Buffer used for bytes to be sent on I2C. */
     unsigned char outbuffer[MAXI2CBUF];
     /** Number of bytes buffered in outbuffer. */
     unsigned char outbuflen;
     /** Index of next byte to use from outbuffer. */
     unsigned char outbufind;
+#else
+    /** Main state for I2C master operations. */
+    i2c_master_state state;
+    /** Substate for I2C master operations. */
+    i2c_master_substate substate;
+    /** Buffer used for bytes to be sent or bytes received on I2C */
+    unsigned char buffer[MAXI2CBUF];
+    /** Number of bytes buffered or to be buffered in 'buffer'. */
+    unsigned char buffer_length;
+    /** Index of next byte to use in 'buffer'. */
+    unsigned char buffer_index;
+#endif
     /**
      * I2C_SLAVE: Slave address for this device.
      * I2C_MASTER: Address of the device currently being communicated with.
