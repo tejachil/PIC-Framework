@@ -15,6 +15,7 @@
       <itemPath>../src/user_interrupts.h</itemPath>
       <itemPath>../src/my_adc.h</itemPath>
       <itemPath>../src/my_gpio.h</itemPath>
+      <itemPath>../src/public_messages.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
