@@ -1,7 +1,7 @@
 #ifndef __my_uart_h
 #define __my_uart_h
 
-#include "messages.h"
+#include "public_messages.h"
 
 // This driver does not work on PICs with 2 UARTs
 #ifdef __USE18F26J50
@@ -26,13 +26,9 @@
 #define UART_DISABLE_TX_INT() (PIE1bits.TXIE = 0)
 
 // Number of bytes received over UART before a MSGT_UART_DATA message is sent
-#define UART_MAX_RX_BUF 10
+#define UART_MAX_RX_BUF (PUB_MSG_MAX_SIZE)
 // Maximum number of bytes which may be sent over UART at one time
-#define UART_MAX_TX_BUF 10
-
-#if (UART_MAX_RX_BUF > MSGLEN)
-#warning "UART Rx buffer larger than message length"
-#endif
+#define UART_MAX_TX_BUF (PUB_MSG_MAX_SIZE)
 
 typedef struct __uart_comm {
 

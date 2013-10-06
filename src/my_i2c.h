@@ -1,7 +1,7 @@
 #ifndef __my_i2c_h
 #define __my_i2c_h
 
-#include "messages.h"
+#include "public_messages.h"
 
 // Ensure the device isn't expecting to be both master and slave (or neither)
 #if (defined(I2C_MASTER) && defined(I2C_SLAVE))
@@ -10,7 +10,7 @@
 #error "Must select either I2C Master or Slave"
 #endif
 
-#define MAXI2CBUF MSGLEN
+#define MAXI2CBUF (PUB_MSG_MAX_SIZE)
 
 #ifdef I2C_SLAVE
 

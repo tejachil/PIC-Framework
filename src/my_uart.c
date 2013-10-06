@@ -5,6 +5,7 @@
 #include <plib/usart.h>
 #endif
 #include "my_uart.h"
+#include "messages.h"
 #include <string.h> // for memcpy
 
 static uart_comm *uc_ptr;

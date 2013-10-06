@@ -9,6 +9,7 @@
 #include <plib/i2c.h>
 #endif
 #include "my_i2c.h"
+#include "messages.h"
 #include <string.h> // for memcpy
 
 extern i2c_comm *ic_ptr;
