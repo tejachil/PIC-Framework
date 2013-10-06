@@ -54,7 +54,7 @@
 //#define I2C_SLAVE
 
 // Define I2C_MASTER_IGNORE_NACK to allow limited testing with no slave.
-#define I2C_MASTER_IGNORE_NACK
+//#define I2C_MASTER_IGNORE_NACK
 
 #endif
 
