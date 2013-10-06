@@ -246,7 +246,7 @@ void i2c_master_handler() {
                     if (I2C_WRITE == ic_ptr->state) {
                         ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
                     } else if (I2C_READ == ic_ptr->state) {
-                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_COMPLETE, NULL);
+                        ToMainHigh_sendmsg(ic_ptr->buffer_index, MSGT_I2C_MASTER_RECV_COMPLETE, ic_ptr->buffer);
                     }
 
                 }// Otherwise send the appropriate error message to main
