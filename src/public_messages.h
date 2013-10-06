@@ -29,22 +29,20 @@ typedef enum {
     NUM_PUB_MSG_T
 } public_message_type_t;
 
-/**
- * Max number of bytes of data allowed to be attached to a public message.
- * Defined as the maximum internal message length minus 3 bytes for the message
- * type, count, and length.
- */
-#define PUB_MSG_MAX_DATA (10 - 3)
-
 /** Minimum size of a public message (with data length 0). */
 #define PUB_MSG_MIN_SIZE (3)
+/** Maximum size of a public message (including data). */
+#define PUB_MSG_MAX_SIZE (10)
+
+/** Max number of bytes of data allowed to be attached to a public message. */
+#define PUB_MSG_MAX_DATA_SIZE (PUB_MSG_MAX_SIZE - PUB_MSG_MIN_SIZE)
 
 /** Structure of public messages. */
 typedef struct {
     public_message_type_t message_type;
     unsigned char message_count;
     unsigned char data_length;
-    unsigned char data[PUB_MSG_MAX_DATA];
+    unsigned char data[PUB_MSG_MAX_DATA_SIZE];
 } public_message_t;
 
 #endif	/* PUBLIC_MESSAGES_H */
