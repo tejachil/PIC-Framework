@@ -22,6 +22,7 @@
 #ifdef USE_ADC_TEST
 #include "my_adc.h"
 #endif //ifdef USE_ADC_TEST
+#include "public_messages.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -204,9 +205,12 @@ void main(void) {
     IPR1bits.TXIP = 0;
 
 #if defined(I2C_SLAVE)
-    // configure the hardware i2c device as a slave (0x9E becomes address 0x4F
-    // because the lowest bit is the read/write bit)
-    i2c_configure_slave(0x9E);
+#if defined(MOTOR_PIC)
+    i2c_configure_slave(MOTOR_PIC_ADDR << 1);
+#elif defined(SENSOR_PIC)
+    i2c_configure_slave(SENSOR_PIC_ADDR << 1);
+#endif
+    
 #elif defined(I2C_MASTER)
     // Configure the hardware I2C device as a master
     i2c_configure_master();

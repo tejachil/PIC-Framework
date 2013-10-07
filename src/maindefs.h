@@ -44,17 +44,32 @@
 #define MSGT_I2C_MASTER_RECV_FAILED 46
 #define MSGT_ADC 50 // ADC conversion value
 
+// Main device ID definitions
+
+/** Define MASTER_PIC to compile for the Master PIC. */
+#define MASTER_PIC
+/** Define MOTOR_PIC to compile for the Motor Controller PIC. */
+//#define MOTOR_PIC
+/** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
+//#define SENSOR_PIC
+
+#if (!defined(MASTER_PIC) && !defined(MOTOR_PIC) && !defined(SENSOR_PIC))
+#error "Compiling without a defined target device"
+#endif
+
 // Functionality enable/disable definitions
 
 // Define USE_ADC_TEST to enable reporting ADC readings over I2C.
 //#define USE_ADC_TEST
 
 // Define either I2C_MASTER or I2C_SLAVE (but not both) to select I2C role.
+#if defined(MASTER_PIC)
 #define I2C_MASTER
-//#define I2C_SLAVE
-
 // Define I2C_MASTER_IGNORE_NACK to allow limited testing with no slave.
-//#define I2C_MASTER_IGNORE_NACK
+#define I2C_MASTER_IGNORE_NACK
+#else
+#define I2C_SLAVE
+#endif
 
 #endif
 

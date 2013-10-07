@@ -6,16 +6,15 @@
 #include "public_messages.h"
 #include "my_uart.h"
 
-// Probably need to add a macro in maindefs to identify what type of PIC is
-// being compiled for (i.e. MASTER_PIC, MOTOR_PIC, etc).
-#warning "TODO: Make UART thread work/compile on I2C slaves as well"
-
 // May need to create a new queue to hold pending messages
 #warning "TODO: Handle busy i2c peripheral"
 
 int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
     if (msgtype == MSGT_OVERRUN) {
+
     } else if (msgtype == MSGT_UART_DATA) {
+
+#if defined(MASTER_PIC)
         // Check if this is a valid message
         if (length >= PUB_MSG_MIN_SIZE) {
             // Cast the msgbuffer data to the public message type
@@ -58,6 +57,7 @@ int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned cha
             } // End switch message_type
 
         } // End if(length >= PUB_MSG_MIN_SIZE)
+#endif // defined(MASTER_PIC)
 
     } // End if(msgtype == MSGT_UART_DATA)
 }
