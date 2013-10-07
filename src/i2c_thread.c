@@ -1,5 +1,6 @@
 #include "i2c_thread.h"
 #include "my_i2c.h"
+#include "my_adc.h"
 #include "maindefs.h"
 #include "public_messages.h"
 
@@ -143,13 +144,13 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // SENS_DIST is a request for sensor data
         case PUB_MSG_T_SENS_DIST:
         {
+			int i = 0;
             // Fill in the data field with the next sensor reading
             // Something like proximity_sensors_get_next_reading(response.data);
 
             // Placeholder to put some data in the message
-            response.data[0] = 0x11;
-            response.data[1] = 0x22;
-            response.data[2] = 0x33;
+			for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
+				response.data[i] = adc_read(i);
 
             break;
         } // End case SENS_DIST

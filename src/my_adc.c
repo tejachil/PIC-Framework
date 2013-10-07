@@ -10,7 +10,7 @@
 #include "my_adc.h"
 #include "my_gpio.h"
 
-#define NUMBER_OF_CHANNELS 2
+#define NUMBER_OF_CHANNELS 6
 // Most recent ADC conversion value
 static int adc_val[NUMBER_OF_CHANNELS];
 //this variable keeps track of which ADC channel is selected
@@ -20,13 +20,15 @@ static int currentChannel;
  * ADC initializer.  Sets up ADC channel 0,1 for conversions with an interrupt.
  */
 void adc_init() {
+	// counter for loop
+	int i = 0;
     // Configure ADC for a read on channel 0,1
     OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
     SetChanADC(ADC_CH0);
     currentChannel = 0;
-    // Initialize adc_val to 0
-    adc_val[0] = 0;
-    adc_val[1] = 0;
+    // Initialize all channels to 0
+	for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
+		adc_val[i] = 0;
 }
 
 /*
@@ -81,6 +83,5 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 int adc_read(int channel) {
     if(channel < NUMBER_OF_CHANNELS)
         return adc_val[channel];
-    else
-        return 0;
+    return 0;
 }
