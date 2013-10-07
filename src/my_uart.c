@@ -141,9 +141,9 @@ void uart_init_tx() {
     Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
             USART_CONT_RX & USART_BRGH_HIGH, 155);
 #else
-    // Using spbrg = 38 provides the closest approximation for 19200:
-    // 12,000,000 / (16 * (38 + 1)) = 19230.76923077
+    // Using spbrg = 77 provides the closest approximation for 9600:
+    // 12,000,000 / (16 * (77 + 1)) = 9615.38
     OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 38);
+            USART_CONT_RX & USART_BRGH_HIGH, 77);
 #endif
 }

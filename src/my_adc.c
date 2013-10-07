@@ -10,18 +10,23 @@
 #include "my_adc.h"
 #include "my_gpio.h"
 
+#define NUMBER_OF_CHANNELS 2
 // Most recent ADC conversion value
-static int adc_val;
+static int adc_val[NUMBER_OF_CHANNELS];
+//this variable keeps track of which ADC channel is selected
+static int currentChannel;
 
 /*
- * ADC initializer.  Sets up ADC channel 0 for conversions with an interrupt.
+ * ADC initializer.  Sets up ADC channel 0,1 for conversions with an interrupt.
  */
 void adc_init() {
-    // Configure ADC for a read on channel 0
-    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
+    // Configure ADC for a read on channel 0,1
+    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
     SetChanADC(ADC_CH0);
+    currentChannel = 0;
     // Initialize adc_val to 0
-    adc_val = 0;
+    adc_val[0] = 0;
+    adc_val[1] = 0;
 }
 
 /*
@@ -44,10 +49,20 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 // Save the ADC value
                 unsigned char adc_val_high = msgbuffer[0];
                 unsigned char adc_val_low = msgbuffer[1];
-                adc_val = adc_val_low + (((int) adc_val_high) << 8);
+                adc_val[currentChannel] = adc_val_low + (((int) adc_val_high) << 8);
 
-                // Start a new conversion
+                // toggle between channels to read them sequentially
+                if(currentChannel == 0){
+                    SetChanADC(ADC_CH1);
+                    currentChannel = 1;
+                }
+                else if(currentChannel == 1){
+                    SetChanADC(ADC_CH0);
+                    currentChannel = 0;
+                }
+                // Start a new conversion of the selected channel
                 ConvertADC();
+
 
             }
             break;
@@ -63,6 +78,9 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 /*
  * Retrieve most recent ADC value.
  */
-int adc_read() {
-    return adc_val;
+int adc_read(int channel) {
+    if(channel < NUMBER_OF_CHANNELS)
+        return adc_val[channel];
+    else
+        return 0;
 }
