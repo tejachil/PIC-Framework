@@ -17,7 +17,7 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer);
  * Compose and send a response to a data request.
  * @param type The message type being requested.
  */
-void i2c_lthread_send_response(const public_message_type_t type);
+void i2c_lthread_send_slave_response(const public_message_type_t type);
 
 void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     switch (msgtype) {
@@ -27,10 +27,8 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // DATA indicates a write to this slave device
         case MSGT_I2C_DATA:
         {
-            last_message_request = *msgbuffer;
-
             // Handle the write
-            //i2c_lthread_handle_slave_write(length, msgbuffer);
+            i2c_lthread_handle_slave_write(length, msgbuffer);
 
             break;
         } // End case DATA
@@ -39,7 +37,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
         case MSGT_I2C_RQST:
         {
             // Respond to the request
-            i2c_lthread_send_response(last_message_request);
+            i2c_lthread_send_slave_response(last_message_request);
 
             break;
         } // End case RQST
@@ -82,7 +80,55 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     } // End switch(msgtype)
 }
 
-void i2c_lthread_send_response(const public_message_type_t type) {
+#if defined(I2C_SLAVE)
+
+void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
+    // Check the length to determine if this is a complete message or just a
+    // message request
+    if (length >= PUB_MSG_MIN_SIZE) {
+        // Cast the received data as a public message
+        public_message_t *msg = (public_message_t *) msgbuffer;
+
+        // Check the message type to determine what to do with it
+        switch (msg->message_type) {
+
+#if defined(SENSOR_PIC)
+            // Any messages which may be written to the Proximity Sensors PIC
+            // should be added here.
+#elif defined(MOTOR_PIC)
+
+            case PUB_MSG_T_MOV_CMD:
+            {
+                // Handle the MOV_CMD here
+                LATBbits.LATB0 ^= 1;
+
+                break;
+            } // End case MOV_CMD
+
+            case PUB_MSG_T_TURN_CMD:
+            {
+                // Handle the TURN_CMD here
+                LATBbits.LATB1 ^= 1;
+
+                break;
+            } // End case TURN_CMD
+
+#endif // SENSOR_PIC / MOTOR_PIC
+
+            default:
+            {
+#warning "Unhandled error case"
+            } // End default case
+
+        } // End switch(msg->message_type)
+
+    } else if (length == 1) {
+        // Simply save the requested message type ("register address")
+        last_message_request = *msgbuffer;
+    }
+}
+
+void i2c_lthread_send_slave_response(const public_message_type_t type) {
     // Message structure for the response
     public_message_t response;
 
@@ -133,3 +179,5 @@ void i2c_lthread_send_response(const public_message_type_t type) {
         start_i2c_slave_reply(response.data_length + PUB_MSG_MIN_SIZE, response.raw_message_bytes);
     }
 }
+
+#endif // defined(I2C_SLAVE)
