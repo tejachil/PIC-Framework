@@ -3,6 +3,7 @@
 #include "my_adc.h"
 #include "maindefs.h"
 #include "public_messages.h"
+#include "my_uart.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -28,6 +29,10 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // DATA indicates a write to this slave device
         case MSGT_I2C_DATA:
         {
+            // Not worried about the event count that comes at the end of this
+            // message type, just decrement the length to ignore it
+            length--;
+            
             // Handle the write
             i2c_lthread_handle_slave_write(length, msgbuffer);
 
@@ -45,33 +50,28 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 
 #elif defined(I2C_MASTER)
 
-            // SEND_COMPLETE indicates a completed write from this master device
-        case MSGT_I2C_MASTER_SEND_COMPLETE:
-        {
-            break;
-        } // End case SEND_COMPLETE
-
-            // SEND_FAILED indicates a failed write from this master device
-        case MSGT_I2C_MASTER_SEND_FAILED:
-        {
-            break;
-        } // End case SEND_FAILED
-
             // RECV_COMPLETE indicates a completed read by this master device
         case MSGT_I2C_MASTER_RECV_COMPLETE:
         {
+            // Make sure the message is long enough to be valid
+            if (length >= PUB_MSG_MIN_SIZE) {
+                // Send the message directly to UART
+                uart_send_bytes(msgbuffer, length);
+            }
+
             break;
         } // End case RECV_COMPLETE
 
+            // SEND_COMPLETE indicates a completed write from this master device
+        case MSGT_I2C_MASTER_SEND_COMPLETE:
+            // SEND_FAILED indicates a failed write from this master device
+        case MSGT_I2C_MASTER_SEND_FAILED:
             // RECV_FAILED indicates a failed read by this master device
         case MSGT_I2C_MASTER_RECV_FAILED:
-        {
-            break;
-        } // End case RECV_FAILED
 
 #endif // I2C_SLAVE / I2C_MASTER
 
-            // The following cases indicate an error
+            // The following cases (and the cases above) indicate an error
         case MSGT_I2C_DBG:
         default:
         {
@@ -149,8 +149,8 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // Fill in the message data
             for (i = 0; i < NUMBER_OF_CHANNELS; ++i) {
                 int adc_val = adc_read(i);
-                response.data[i] = (adc_val & 0xFF00) >> 8;
-                response.data[(2*i) + 1] = adc_val & 0x00FF;
+                response.data[2*i] = (adc_val & 0xFF00) >> 8;
+                response.data[(2 * i) + 1] = adc_val & 0x00FF;
             }
 
             break;
