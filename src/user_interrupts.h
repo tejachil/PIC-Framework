@@ -17,9 +17,9 @@ void timer1_int_handler(void);
 // include the i2c interrupt handler definitions
 #include "my_i2c.h"
 
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
 // Include ADC interrupt handler definitions
 #include "my_adc.h"
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
 
 #endif

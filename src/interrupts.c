@@ -102,7 +102,7 @@ void InterruptHandlerHigh() {
 
     // here is where you would check other interrupt flags.
 
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
     // Check to see if we have an ADC interrupt
     if (PIR1bits.ADIF) {
         // Clear the interrupt flag
@@ -110,7 +110,7 @@ void InterruptHandlerHigh() {
         // Call the ADC interrupt handler
         adc_int_handler();
     }
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
 
     // The *last* thing I do here is check to see if we can
     // allow the processor to go to sleep

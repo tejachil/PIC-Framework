@@ -48,7 +48,7 @@ void timer1_int_handler() {
     WriteTimer1(50535);
 }
 
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
 // ADC conversion complete interrupt handler
 void adc_int_handler()
 {
@@ -64,4 +64,4 @@ void adc_int_handler()
     adc_bytes[1] = adc_value & 0x00FF;
     ToMainLow_sendmsg(2, MSGT_ADC, (void *) adc_bytes);
 }
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
