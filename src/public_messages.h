@@ -56,11 +56,8 @@ extern const unsigned char public_message_data_size[NUM_PUB_MSG_T];
 /** Max number of bytes of data allowed to be attached to a public message. */
 #define PUB_MSG_MAX_DATA_SIZE (PUB_MSG_MAX_SIZE - PUB_MSG_MIN_SIZE)
 
-/** 
- * Structure of public messages.  This union causes the struct and the
- * message_bytes array to occupy the same memory space so that they will both
- * read/write the same location.
- */
+// Javadoc for this union placed below so that it will appear in MPLAB X
+// autocomplete info window.
 typedef union {
 
     /** Message structure gives access to individual named fields. */
@@ -75,7 +72,13 @@ typedef union {
      * named fields.
      */
     unsigned char raw_message_bytes[PUB_MSG_MAX_SIZE];
-} public_message_t;
+}
+/**
+ * Structure of public messages.  This union causes the struct and the
+ * message_bytes array to occupy the same memory space so that they will both
+ * read/write the same location.
+ */
+public_message_t;
 
 /**
  * Shortcut macro to get the offset (i.e. byte index) of a field in the
@@ -84,6 +87,14 @@ typedef union {
 // Note: cannot put parentheses around __field because it causes an error in
 // the offsetof macro.
 #define PUB_MSG_FIELD_OFFSET(__field) (offsetof(public_message_t, __field))
+
+/**
+ * Retrieve the next message count value for a given message type.  The counter
+ * is incremented internally.
+ * @param type Message type whose count is being requested.
+ * @return Count value to be sent
+ */
+unsigned char public_message_get_count(const public_message_type_t type);
 
 #endif	/* PUBLIC_MESSAGES_H */
 

@@ -23,6 +23,7 @@
 #include "my_adc.h"
 #endif //ifdef USE_ADC_TEST
 #include "public_messages.h"
+#include "i2c_thread.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -132,7 +133,6 @@ void main(void) {
     char c;
     signed char length;
     unsigned char msgtype;
-    unsigned char last_reg_recvd;
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
@@ -210,7 +210,7 @@ void main(void) {
 #elif defined(SENSOR_PIC)
     i2c_configure_slave(SENSOR_PIC_ADDR << 1);
 #endif
-    
+
 #elif defined(I2C_MASTER)
     // Configure the hardware I2C device as a master
     i2c_configure_master();
@@ -258,115 +258,18 @@ void main(void) {
                     timer0_lthread(&t0thread_data, msgtype, length, msgbuffer);
                     break;
                 };
+                
                 case MSGT_I2C_DATA:
                 case MSGT_I2C_DBG:
-                {
-                    // Here is where you could handle debugging, if you wanted
-                    // keep track of the first byte received for later use (if desired)
-                    last_reg_recvd = msgbuffer[0];
-                    break;
-                };
-#ifdef I2C_SLAVE
                 case MSGT_I2C_RQST:
-                {
-                    // Generally, this is *NOT* how I recommend you handle an I2C slave request
-                    // I recommend that you handle it completely inside the i2c interrupt handler
-                    // by reading the data from a queue (i.e., you would not send a message, as is done
-                    // now, from the i2c interrupt handler to main to ask for data).
-                    //
-                    // The last byte received is the "register" that is trying to be read
-                    // The response is dependent on the register.
-                    switch (last_reg_recvd) {
-                        case 0xaa:
-                        {
-                            length = 2;
-                            msgbuffer[0] = 0x55;
-                            msgbuffer[1] = 0xAA;
-                            break;
-                        }
-                        case 0xa8:
-                        {
-                            length = 1;
-                            msgbuffer[0] = 0x3A;
-                            break;
-                        }
-                        case 0xa9:
-                        {
-                            length = 1;
-                            msgbuffer[0] = 0xA3;
-                            break;
-                        }
-#ifdef USE_ADC_TEST
-                            // ADC data register - 16 bit value
-                        case ADC_FULL_DATA_REGISTER:
-                        {
-                            // Get the latest ADC reading
-                            const int adc_val = adc_read();
-                            length = 2;
-                            // Place the low byte in the first msg byte
-                            msgbuffer[0] = adc_val & 0x00FF;
-                            // Place the high byte in the second msg byte
-                            msgbuffer[1] = (adc_val & 0xFF00) >> 8;
-
-                            break;
-                        }
-                            // ADC low byte register
-                        case ADC_LOW_DATA_REGISTER:
-                        {
-                            // Get the latest ADC reading
-                            const int adc_val = adc_read();
-                            length = 1;
-                            // Place the low byte in the first msg byte
-                            msgbuffer[0] = adc_val & 0x00FF;
-
-                            break;
-                        }
-                            // ADC low byte register
-                        case ADC_HIGH_DATA_REGISTER:
-                        {
-                            // Get the latest ADC reading
-                            const int adc_val = adc_read();
-                            length = 1;
-                            // Place the high byte in the first msg byte
-                            msgbuffer[0] = (adc_val & 0xFF00) >> 8;
-
-                            break;
-                        }
-#endif //ifdef USE_ADC_TEST
-                    };
-                    start_i2c_slave_reply(length, msgbuffer);
-                    break;
-                };
-#else //this means I2C_MASTER
-
                 case MSGT_I2C_MASTER_SEND_COMPLETE:
-                {
-                    LATBbits.LATB1 ^= 1;
-
-                    break;
-                } // End case MSGT_I2C_MASTER_SEND_COMPLETE
-
                 case MSGT_I2C_MASTER_SEND_FAILED:
-                {
-                    LATBbits.LATB2 ^= 1;
-
-                    break;
-                } // End case MSGT_I2C_MASTER_SEND_FAILED
-
                 case MSGT_I2C_MASTER_RECV_COMPLETE:
-                {
-                    LATBbits.LATB3 ^= 1;
-
-                    break;
-                } // End case MSGT_I2C_MASTER_SEND_COMPLETE
-
                 case MSGT_I2C_MASTER_RECV_FAILED:
                 {
-                    LATBbits.LATB4 ^= 1;
-
+                    i2c_lthread(msgtype, length, msgbuffer);
                     break;
-                } // End case MSGT_I2C_MASTER_SEND_FAILED
-#endif //ifdef I2C_SLAVE - else
+                } // End I2C cases
 
                 default:
                 {

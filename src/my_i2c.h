@@ -1,6 +1,7 @@
 #ifndef __my_i2c_h
 #define __my_i2c_h
 
+#include "maindefs.h"
 #include "public_messages.h"
 
 // Ensure the device isn't expecting to be both master and slave (or neither)
