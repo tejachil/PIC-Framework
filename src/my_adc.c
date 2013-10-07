@@ -10,7 +10,6 @@
 #include "my_adc.h"
 #include "my_gpio.h"
 
-#define NUMBER_OF_CHANNELS 6
 // Most recent ADC conversion value
 static int adc_val[NUMBER_OF_CHANNELS];
 //this variable keeps track of which ADC channel is selected

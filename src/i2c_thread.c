@@ -94,8 +94,8 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
         switch (msg->message_type) {
 
 #if defined(SENSOR_PIC)
-            // Any messages which may be written to the Proximity Sensors PIC
-            // should be added here.
+                // Any messages which may be written to the Proximity Sensors PIC
+                // should be added here.
 #elif defined(MOTOR_PIC)
 
             case PUB_MSG_T_MOV_CMD:
@@ -144,13 +144,14 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // SENS_DIST is a request for sensor data
         case PUB_MSG_T_SENS_DIST:
         {
-			int i = 0;
-            // Fill in the data field with the next sensor reading
-            // Something like proximity_sensors_get_next_reading(response.data);
+            int i = 0;
 
-            // Placeholder to put some data in the message
-			for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
-				response.data[i] = adc_read(i);
+            // Fill in the message data
+            for (i = 0; i < NUMBER_OF_CHANNELS; ++i) {
+                int adc_val = adc_read(i);
+                response.data[i] = (adc_val & 0xFF00) >> 8;
+                response.data[(2*i) + 1] = adc_val & 0x00FF;
+            }
 
             break;
         } // End case SENS_DIST

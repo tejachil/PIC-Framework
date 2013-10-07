@@ -4,6 +4,8 @@
 #ifndef MY_ADC_H
 #define	MY_ADC_H
 
+#define NUMBER_OF_CHANNELS 6
+
 // ADC data register number for I2C reads
 #define ADC_FULL_DATA_REGISTER (0x60) // 2-byte full ADC value
 #define ADC_LOW_DATA_REGISTER (0x61) // Low byte of ADC value
