@@ -1,6 +1,17 @@
 #ifndef PUBLIC_MESSAGES_H
 #define	PUBLIC_MESSAGES_H
 
+/**
+ * I2C slave address for the Motor Controller PIC.  This is the 7-bit address
+ * value without any shifting or other considerations for the R/W bit.
+ */
+#define MOTOR_PIC_ADDR (0x25)
+/**
+ * I2C slave address for the Proximity Sensors PIC.  This is the 7-bit address
+ * value without any shifting or other considerations for the R/W bit.
+ */
+#define SENSOR_PIC_ADDR (0x2A)
+
 /** Public message type values. */
 typedef enum {
     /** Distance reading for a given sensor. */
@@ -28,6 +39,14 @@ typedef enum {
     /** Number of defined public message types. */
     NUM_PUB_MSG_T
 } public_message_type_t;
+
+/**
+ * Array containing data sizes for each message type.  Indexed by the message
+ * type as defined in public_message_type_t.  For example, the data size for a
+ * message of type PUB_MSG_T_SENS_DIST should be determined by:
+ * public_message_data_size[PUB_MSG_T_SENS_DIST].
+ */
+extern const unsigned char public_message_data_size[NUM_PUB_MSG_T];
 
 /** Minimum size of a public message (with data length 0). */
 #define PUB_MSG_MIN_SIZE (3)

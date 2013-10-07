@@ -37,6 +37,7 @@
       <itemPath>../src/my_gpio.c</itemPath>
       <itemPath>../src/i2c_master.c</itemPath>
       <itemPath>../src/i2c_slave.c</itemPath>
+      <itemPath>../src/public_messages.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
