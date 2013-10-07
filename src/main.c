@@ -130,16 +130,12 @@ Something is messed up
 #endif
 
 void main(void) {
-    char c;
     signed char length;
     unsigned char msgtype;
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
-    unsigned char i;
     uart_thread_struct uthread_data; // info for uart_lthread
-    timer1_thread_struct t1thread_data; // info for timer1_lthread
-    timer0_thread_struct t0thread_data; // info for timer0_lthread
 
 #ifdef __USE18F2680
     OSCCON = 0xFC; // see datasheet
@@ -164,9 +160,6 @@ void main(void) {
 
     // initialize the i2c code
     init_i2c(&ic);
-
-    // init the timer1 lthread
-    init_timer1_lthread(&t1thread_data);
 
     // initialize message queues before enabling any interrupts
     init_queues();
@@ -255,7 +248,7 @@ void main(void) {
             switch (msgtype) {
                 case MSGT_TIMER0:
                 {
-                    timer0_lthread(&t0thread_data, msgtype, length, msgbuffer);
+                    timer0_lthread(msgtype, length, msgbuffer);
                     break;
                 };
                 
@@ -290,7 +283,7 @@ void main(void) {
             switch (msgtype) {
                 case MSGT_TIMER1:
                 {
-                    timer1_lthread(&t1thread_data, msgtype, length, msgbuffer);
+                    timer1_lthread(msgtype, length, msgbuffer);
                     break;
                 };
                 case MSGT_OVERRUN:

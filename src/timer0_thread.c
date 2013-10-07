@@ -6,7 +6,7 @@
 // It is not a "real" thread because there is only the single main thread
 // of execution on the PIC because we are not using an RTOS.
 
-int timer0_lthread(timer0_thread_struct *tptr, int msgtype, int length, unsigned char *msgbuffer) {
+int timer0_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     unsigned int *msgval;
 
     msgval = (unsigned int *) msgbuffer;
