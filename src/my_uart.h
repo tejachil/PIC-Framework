@@ -31,20 +31,9 @@
 #define UART_MAX_TX_BUF (PUB_MSG_MAX_SIZE)
 
 typedef struct __uart_comm {
-
-     /** Author Tyler Adams **/
-    /** Holds Rx Message Type **/
-    unsigned char rx_MessageType;
-    /** Holds Rx Message Count **/
-    unsigned char rx_MessageCount;
-    /** holds the actual number for the length of the data**/
-    int lengthOfData;
-    /** Holds Rx Length **/
-    unsigned char rx_Length;
-
-    /** Buffer to hold received bytes */
-    unsigned char rx_buffer[UART_MAX_RX_BUF];
-    /** Number of bytes currently in the rx_buffer */
+    /** Structure to hold received message. */
+    public_message_t rx_message;
+    /** Number of byte received. */
     unsigned char rx_count;
 
     /** Buffer to hold bytes to be transmitted */

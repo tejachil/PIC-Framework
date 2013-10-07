@@ -71,27 +71,26 @@ void uart_rx_int_handler() {
         uc_ptr->rx_buffer[uc_ptr->rx_count] = Read1USART();
 #else
     if (DataRdyUSART()) {
-        uc_ptr->rx_buffer[uc_ptr->rx_count] = ReadUSART();
+        const unsigned char rx_byte = ReadUSART();
 #endif
-        /** Author Tyler Adams**/
 
-        if(uc_ptr->rx_count == 0){
-            uc_ptr->rx_MessageType = uc_ptr->rx_buffer[uc_ptr->rx_count];
+        // Place the byte in the appropriate message field
+        if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(message_type)) {
+            uc_ptr->rx_message.message_type = rx_byte;
+        } else if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(message_count)) {
+            uc_ptr->rx_message.message_count = rx_byte;
+        } else if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(data_length)) {
+            uc_ptr->rx_message.data_length = rx_byte;
+        } else {
+            uc_ptr->rx_message.data[uc_ptr->rx_count - PUB_MSG_MIN_SIZE] = rx_byte;
         }
 
-        if(uc_ptr->rx_count == 1){
-            uc_ptr->rx_MessageCount = uc_ptr->rx_buffer[uc_ptr->rx_count];
-        }
-
-        if(uc_ptr->rx_count == 2){
-            uc_ptr->rx_Length = uc_ptr->rx_buffer[uc_ptr->rx_count];
-            uc_ptr->lengthOfData = ((int)(uc_ptr->rx_Length));
-        }
-
+        // Increment received byte counter
         uc_ptr->rx_count++;
-        // check if a message should be sent
-        if (uc_ptr->rx_count == (uc_ptr->lengthOfData + 3)) {
-            ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_buffer);
+
+        // Check if a complete message has been received
+        if ((uc_ptr->rx_message.data_length + PUB_MSG_MIN_SIZE) == uc_ptr->rx_count) {
+            ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_message.raw_message_bytes);
             uc_ptr->rx_count = 0;
         }
     }
