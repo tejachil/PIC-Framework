@@ -51,7 +51,7 @@ extern const unsigned char public_message_data_size[NUM_PUB_MSG_T];
 /** Minimum size of a public message (with data length 0). */
 #define PUB_MSG_MIN_SIZE (3)
 /** Maximum size of a public message (including data). */
-#define PUB_MSG_MAX_SIZE (10)
+#define PUB_MSG_MAX_SIZE (15)
 
 /** Max number of bytes of data allowed to be attached to a public message. */
 #define PUB_MSG_MAX_DATA_SIZE (PUB_MSG_MAX_SIZE - PUB_MSG_MIN_SIZE)

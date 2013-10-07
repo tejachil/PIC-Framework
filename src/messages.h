@@ -1,8 +1,10 @@
 #ifndef __messages
 #define __messages
 
+#include "public_messages.h"
+
 // The maximum length (in bytes) of a message
-#define MSGLEN 10
+#define MSGLEN (PUB_MSG_MAX_SIZE)
 
 // The maximum number of messages in a single queue
 #define MSGQUEUELEN 4

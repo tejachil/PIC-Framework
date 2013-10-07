@@ -1,7 +1,7 @@
 #include "public_messages.h"
 
 const unsigned char public_message_data_size[NUM_PUB_MSG_T] = {
-    3, //SENS_DIST
+    12, //SENS_DIST
     2, //MOV_CMD
     3, //TURN_CMD
     2, //SIDE_ANGLE
