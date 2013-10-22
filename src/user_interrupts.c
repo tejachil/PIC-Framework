@@ -86,16 +86,17 @@ void encoder_interrupt_handler(){
         //uart_send_bytes(encoderD, 1);
         //tickC += encData;
         tickC++;
-        if (tickC == 6000){
-            tickC = 0;
+        if (tickC == 6250){
             i = 0;
             for(i;i < 1; i++){
               if (test == 1){
+                tickC = 0;
                 uart_send_bytes(&char_test, 2);
                 test = 0;
                 break;
             }
             if (test == 0){
+                tickC = 10;
                 uart_send_bytes(&char_test0, 2);
                 test = 1;
                 break;

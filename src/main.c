@@ -131,9 +131,6 @@ void main(void) {
     signed char length;
     unsigned char msgtype;
 
-    unsigned int encData;
-    unsigned int tickCount;
-
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
