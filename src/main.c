@@ -19,7 +19,9 @@
 #include "timer1_thread.h"
 #include "timer0_thread.h"
 #include "my_gpio.h"
+#ifdef USE_ADC_TEST
 #include "my_adc.h"
+#endif //ifdef USE_ADC_TEST
 #include "public_messages.h"
 #include "i2c_thread.h"
 
@@ -188,10 +190,10 @@ void main(void) {
     IPR1bits.RCIP = 0;
     // I2C interrupt
     IPR1bits.SSPIP = 1;
-#ifdef SENSOR_PIC
+#ifdef USE_ADC_TEST
     // ADC interrupt
     IPR1bits.ADIP = 1;
-#endif //ifdef SENSOR_PIC
+#endif //ifdef USE_ADC_TEST
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
 
@@ -214,11 +216,11 @@ void main(void) {
     // enable high-priority interrupts and low-priority interrupts
     enable_interrupts();
 
-#ifdef SENSOR_PIC
+#ifdef USE_ADC_TEST
     // Initialize and start the ADC driver
     adc_init();
     adc_start();
-#endif //ifdef SENSOR_PIC
+#endif //ifdef USE_ADC_TEST
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
@@ -292,9 +294,9 @@ void main(void) {
                 };
                 case MSGT_ADC:
                 {
-#ifdef SENSOR_PIC
+#ifdef USE_ADC_TEST
                     adc_lthread(msgtype, length, msgbuffer);
-#endif //ifdef SENSOR_PIC
+#endif //ifdef USE_ADC_TEST
                     break;
                 }
                 default:
