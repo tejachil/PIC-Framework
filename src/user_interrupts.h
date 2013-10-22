@@ -22,4 +22,6 @@ void timer1_int_handler(void);
 #include "my_adc.h"
 #endif //ifdef SENSOR_PIC
 
+void encoder_interrupt_handler(void);
+
 #endif

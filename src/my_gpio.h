@@ -8,6 +8,7 @@
 
 void gpio_init_portb_output(void);
 void gpio_write_portb(const unsigned char val);
+unsigned int gpio_read_portb(void);
 
 #endif	/* MY_GPIO_H */
 

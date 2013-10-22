@@ -64,4 +64,57 @@ void adc_int_handler()
     adc_bytes[1] = adc_value & 0x00FF;
     ToMainLow_sendmsg(2, MSGT_ADC, (void *) adc_bytes);
 }
+
 #endif //ifdef SENSOR_PIC
+
+unsigned int encData;
+unsigned int tickC = 0;
+unsigned char encoderD;
+int i = 0;
+int test = 1;
+char char_test[] = {0x39, 0xB8};
+char char_test0[] = {0x47, 0xC6};
+
+
+void encoder_interrupt_handler(){
+
+    LATBbits.LATB0 ^= 1;
+    encData = PORTBbits.RB4;
+    INTCONbits.RBIF = 0;
+    //if(test != encData){
+        encoderD = (char)(encData);
+        //uart_send_bytes(encoderD, 1);
+        //tickC += encData;
+        tickC++;
+        if (tickC == 6000){
+            tickC = 0;
+            i = 0;
+            for(i;i < 1; i++){
+              if (test == 1){
+                uart_send_bytes(&char_test, 2);
+                test = 0;
+                break;
+            }
+            if (test == 0){
+                uart_send_bytes(&char_test0, 2);
+                test = 1;
+                break;
+            }
+            }
+            /*if (test == 1){
+                uart_send_bytes(char_test, 1);
+                test = 0;
+            }
+            if (test == 0){
+                uart_send_bytes(char_test0, 1);
+                test = 1;
+            }*/
+        }
+        //uart_send_bytes(encoderD, 1); //THIS WORKS!
+        //ToMainHigh_sendmsg(1, MSGT_ENC, (void *) encoderD);
+        //ToMainHigh_sendmsg(1, MSGT_ENC, encoderD);
+    //}
+    //uart_send_bytes((char)(tickC), 8);
+    //PORTB & 10000000;
+    //encoderData = encoderData >> 7;
+}

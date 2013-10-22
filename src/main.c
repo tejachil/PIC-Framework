@@ -130,6 +130,10 @@ Something is messed up
 void main(void) {
     signed char length;
     unsigned char msgtype;
+
+    unsigned int encData;
+    unsigned int tickCount;
+
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
@@ -220,6 +224,14 @@ void main(void) {
     adc_start();
 #endif //ifdef SENSOR_PIC
 
+    /*if(INTCON & 00000001 == 1){
+        encData = gpio_read_portb();
+        tickCount += encData;
+        uart_send_bytes((char)(tickCount), 8);
+    }*/
+    //{char dummy = 0x30;
+    //uart_send_bytes(&dummy, 1);}
+
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
     // that should get them.  Although the subroutines are not threads, but
@@ -261,6 +273,16 @@ void main(void) {
                     i2c_lthread(msgtype, length, msgbuffer);
                     break;
                 } // End I2C cases
+
+                case MSGT_ENC:
+                {
+                   // if(length == 1){
+                    //uart_send_bytes((char)(msgbuffer[0]), 1); //THIS WORKS!
+                    //}
+                    //this function needs to be implemented for encoders
+                    encoder_lthread(msgtype, length, msgbuffer);
+                    break;
+                }
 
                 default:
                 {

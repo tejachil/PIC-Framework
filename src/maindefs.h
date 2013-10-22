@@ -43,13 +43,14 @@
 #define MSGT_I2C_MASTER_RECV_COMPLETE 45
 #define MSGT_I2C_MASTER_RECV_FAILED 46
 #define MSGT_ADC 50 // ADC conversion value
+#define MSGT_ENC 51
 
 // Main device ID definitions
 
 /** Define MASTER_PIC to compile for the Master PIC. */
-#define MASTER_PIC
+//#define MASTER_PIC
 /** Define MOTOR_PIC to compile for the Motor Controller PIC. */
-//#define MOTOR_PIC
+#define MOTOR_PIC
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
 //#define SENSOR_PIC
 

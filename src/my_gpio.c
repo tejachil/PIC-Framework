@@ -10,8 +10,11 @@
  */
 void gpio_init_portb_output() {
     LATB = 0x0; // clear the output latch
-    ADCON1 = 0x0F; // turn off the A2D
+    ADCON1 = 0xFF; // turn off the A2D
     TRISB = 0x00; // set RB<7:0> to outputs
+    //TRISB = 0xF0 | TRISB; // set RB<7:4> to inputs
+    //INTCONbits.RBIE = 1; // set RBIE to 1 which enables the RB port change interrupt
+   // INTCON2bits.RBIP = 1; // sets the priority to high
 }
 
 /*
@@ -20,4 +23,12 @@ void gpio_init_portb_output() {
  */
 void gpio_write_portb(const unsigned char val) {
     LATB = val;
+}
+
+unsigned int encoderData;
+
+unsigned int gpio_read_portb(){
+    //encoderData = PORTB & 10000000;
+    //encoderData = encoderData >> 7;
+    //return encoderData;
 }

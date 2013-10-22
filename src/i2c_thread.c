@@ -101,7 +101,7 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
             case PUB_MSG_T_MOV_CMD:
             {
                 // Handle the MOV_CMD here
-                LATBbits.LATB0 ^= 1;
+                //LATBbits.LATB0 ^= 1;
 
                 break;
             } // End case MOV_CMD
