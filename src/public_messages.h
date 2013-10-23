@@ -45,6 +45,7 @@ typedef enum {
  * type as defined in public_message_type_t.  For example, the data size for a
  * message of type PUB_MSG_T_SENS_DIST should be determined by:
  * public_message_data_size[PUB_MSG_T_SENS_DIST].
+ * The values are defined in public_messages.c.
  */
 extern const unsigned char public_message_data_size[NUM_PUB_MSG_T];
 
