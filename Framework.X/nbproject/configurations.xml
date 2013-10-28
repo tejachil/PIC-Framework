@@ -10,7 +10,6 @@
       <itemPath>../src/my_i2c.h</itemPath>
       <itemPath>../src/my_uart.h</itemPath>
       <itemPath>../src/timer0_thread.h</itemPath>
-      <itemPath>../src/timer1_thread.h</itemPath>
       <itemPath>../src/uart_thread.h</itemPath>
       <itemPath>../src/user_interrupts.h</itemPath>
       <itemPath>../src/my_adc.h</itemPath>
@@ -32,7 +31,6 @@
       <itemPath>../src/my_i2c.c</itemPath>
       <itemPath>../src/my_uart.c</itemPath>
       <itemPath>../src/timer0_thread.c</itemPath>
-      <itemPath>../src/timer1_thread.c</itemPath>
       <itemPath>../src/uart_thread.c</itemPath>
       <itemPath>../src/user_interrupts.c</itemPath>
       <itemPath>../src/my_adc.c</itemPath>

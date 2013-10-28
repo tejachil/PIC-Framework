@@ -16,7 +16,6 @@
 #include "my_uart.h"
 #include "my_i2c.h"
 #include "uart_thread.h"
-#include "timer1_thread.h"
 #include "timer0_thread.h"
 #include "my_gpio.h"
 #ifdef USE_ADC_TEST
@@ -177,8 +176,6 @@ void main(void) {
 
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
-    // Timer1 interrupt
-    IPR1bits.TMR1IP = 0;
     // USART RX interrupt
     IPR1bits.RCIP = 0;
     // I2C interrupt
@@ -274,11 +271,6 @@ void main(void) {
             }
         } else {
             switch (msgtype) {
-                case MSGT_TIMER1:
-                {
-                    timer1_lthread(msgtype, length, msgbuffer);
-                    break;
-                };
                 case MSGT_OVERRUN:
                 case MSGT_UART_DATA:
                 {

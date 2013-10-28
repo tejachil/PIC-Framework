@@ -174,6 +174,8 @@ void uart_init_tx() {
 }
 
 void uart_timeout_init() {
+    // Set Timer1 interrupt priority
+    IPR1bits.TMR1IP = 0;
     // Setup Timer1 for Rx timeout period
     // DO NOT CHANGE TIMER PARAMETERS WITHOUT CORRECTING THE INITIAL COUNT
     // CALCULATION
