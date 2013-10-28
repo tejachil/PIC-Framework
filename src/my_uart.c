@@ -23,9 +23,7 @@ void uart_init(uart_comm * uc) {
 
     // Initialize UART data struct
     uc_ptr = uc;
-    uc_ptr->rx_count = 0;
-    uc_ptr->tx_count = 0;
-    uc_ptr->tx_cur_byte = 0;
+    memset(uc_ptr, 0, sizeof(uart_comm));
 }
 
 UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int const count) {
