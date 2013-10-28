@@ -258,7 +258,7 @@ void main(void) {
                     timer0_lthread(msgtype, length, msgbuffer);
                     break;
                 };
-                
+
                 case MSGT_I2C_DATA:
                 case MSGT_I2C_DBG:
                 case MSGT_I2C_RQST:
@@ -273,7 +273,7 @@ void main(void) {
 
                 case MSGT_ENC:
                 {
-                   // if(length == 1){
+                    // if(length == 1){
                     //uart_send_bytes((char)(msgbuffer[0]), 1); //THIS WORKS!
                     //}
                     //this function needs to be implemented for encoders

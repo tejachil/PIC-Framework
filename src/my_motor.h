@@ -1,23 +1,10 @@
-/* 
- * File:   my_motor.h
- * Author: TY
- *
- * Created on October 21, 2013, 11:58 AM
- */
-
 #ifndef MY_MOTOR_H
 #define	MY_MOTOR_H
+#include "public_messages.h"
 
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-
-
-
-#ifdef	__cplusplus
-}
-#endif
+void motor_control_thread(public_message_t *msg);
+void motor_forward_both(void);
+void motor_stop_both(void);
 
 #endif	/* MY_MOTOR_H */
 
