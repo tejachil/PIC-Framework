@@ -6,7 +6,18 @@
 #endif
 #include "my_uart.h"
 #include "messages.h"
+#include <timers.h>
 #include <string.h> // for memcpy
+
+/**
+ * Timeout timer count register value.  Calculation is based on the
+ * following:<br>
+ * Timer1 clock is Fosc / 4: 12 MHz / 4 = 3 MHz
+ * Prescaler of 2: 3 MHz / 2 = 1.5 MHz
+ * 1.5 MHz / (Timeout freq) = N counts needed for timeout period
+ * (2^16 - 1) - N = I, the initial count value
+ */
+#define UART_RX_TIMEOUT_INITAL_COUNT (65535 - (1500000 / UART_RX_TIMEOUT_FREQ))
 
 static uart_comm *uc_ptr;
 
@@ -16,6 +27,16 @@ static uart_comm *uc_ptr;
  * @author amosolgo
  */
 static void uart_init_tx(void);
+/** Sends the next byte from the tx_buffer. */
+static void uart_send_next_byte(void);
+/** 
+ * Initializes the UART Rx timeout timer.  The timer is started by this function.
+ */
+static void uart_timeout_init(void);
+/** Restarts the UART Rx timeout. */
+static void uart_timeout_restart(void);
+/** Stops the UART Rx timeout. */
+static void uart_timeout_stop(void);
 
 void uart_init(uart_comm * uc) {
     // initialize uart tx
@@ -24,6 +45,11 @@ void uart_init(uart_comm * uc) {
     // Initialize UART data struct
     uc_ptr = uc;
     memset(uc_ptr, 0, sizeof(uart_comm));
+
+    // Setup timeout timer
+    uart_timeout_init();
+    // Init will start the timer, stop it now
+    uart_timeout_stop();
 }
 
 UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int const count) {
@@ -132,23 +158,37 @@ void uart_send_next_byte() {
 void uart_init_tx() {
     // With a system clock of 12 MHz and the following formula for baud rate
     // generation (high-speed):
-#ifdef __USE18F26J50
-    // Fosc / (4 * (spbrg + 1))
-    // Using sppbrg = 155 proveds the closest approximation for 19200:
-    // 12,000,000 / (4 * (155 + 1)) = 19230.76923077
-    Open1USART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 155);
-#else
-#ifndef USE_LCD
+#if (19200 == UART_BAUD_RATE)
     // Using spbrg = 38 provides the closest approximation for 19200:
     // 12,000,000 / (16 * (38 + 1)) = 19230.76923077
     OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
             USART_CONT_RX & USART_BRGH_HIGH, 38);
-#else
+#elif (9600 == UART_BAUD_RATE)
     // Using spbrg = 77 provides the closest approximation for 9600:
     // 12,000,000 / (16 * (77 + 1)) = 9615.38
     OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
             USART_CONT_RX & USART_BRGH_HIGH, 77);
-#endif // ifndef USE_LCD - else
-#endif
+#else
+#error "UART driver not configured for selected baud rate"
+#endif // UART_BAUD_RATE check
+}
+
+void uart_timeout_init() {
+    // Setup Timer1 for Rx timeout period
+    // DO NOT CHANGE TIMER PARAMETERS WITHOUT CORRECTING THE INITIAL COUNT
+    // CALCULATION
+    WriteTimer1(0);
+    OpenTimer1(TIMER_INT_ON & T1_PS_1_2 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
+}
+
+void uart_timeout_restart() {
+    // Write the timeout initial count to the timer
+    WriteTimer1(UART_RX_TIMEOUT_INITAL_COUNT);
+    // Enable the timer
+    T1CONbits.TMR1ON = 1;
+}
+
+void uart_timeout_stop() {
+    // Disable the timer
+    T1CONbits.TMR1ON = 0;
 }

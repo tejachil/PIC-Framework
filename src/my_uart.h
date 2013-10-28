@@ -8,6 +8,23 @@
 #error "UART driver not completely implemented for 2-UART devices"
 #endif
 
+/** UART baud rate. */
+#ifndef USE_LCD
+#define UART_BAUD_RATE (19200)
+#else
+#define UART_BAUD_RATE (9600)
+#endif
+
+/**
+ * Timeout frequency.  If UART is receiving a message and does not receive a
+ * byte within this timeout, the receive driver will reset and prepare to
+ * receive a new message. <p>
+ * The baud rate is divided by 10 (number of UART bits per data byte) to get the
+ * data byte frequency.  This frequency is again divided by 10 to allow 10 times
+ * the data byte frequency to elapse before timing out.
+ */
+#define UART_RX_TIMEOUT_FREQ (UART_BAUD_RATE / 100)
+
 /**
  * Check if the UART Tx interrupt is enabled.  Use this as a boolean check.
  * @author amosolgo
@@ -81,14 +98,6 @@ UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int c
  * @return UART_ERR_BUSY or UART_ERR_NONE
  */
 UART_error_code uart_tx_busy(void);
-
-/**
- * Sends the next byte from the tx_buffer.  <i>Must</i> only be called when the
- * Tx <b>peripheral</b> is not busy (this is <i>not</i> checked with
- * uart_tx_busy()).  <i>Should</i> only be called after a Tx interrupt.
- * @author amosolgo
- */
-void uart_send_next_byte(void);
 
 void uart_rx_int_handler(void);
 void uart_tx_int_handler(void);
