@@ -10,6 +10,17 @@
 #include <timers.h>
 #include <string.h> // for memcpy
 
+// Create blank pin toggle definitions if they aren't defined
+#ifndef TOGGLE_UART_RX_TIMEOUT_PIN
+#define TOGGLE_UART_RX_TIMEOUT_PIN()
+#endif
+#ifndef TOGGLE_UART_RX_TIMEOUT_STOP_PIN
+#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN()
+#endif
+#ifndef TOGGLE_UART_RX_TIMEOUT_START_PIN
+#define TOGGLE_UART_RX_TIMEOUT_START_PIN()
+#endif
+
 /**
  * Timeout timer count register value.  Calculation is based on the
  * following:<br>
@@ -197,7 +208,7 @@ void uart_timeout_init() {
 
 void uart_timeout_restart() {
     // Toggle the IO pin
-    UART_RX_TIMEOUT_START_PIN ^= 1;
+    TOGGLE_UART_RX_TIMEOUT_START_PIN();
     // Write the timeout initial count to the timer
     WriteTimer1(UART_RX_TIMEOUT_INITAL_COUNT);
     // Enable the timer
@@ -206,14 +217,14 @@ void uart_timeout_restart() {
 
 void uart_timeout_stop() {
     // Toggle the IO pin
-    UART_RX_TIMEOUT_STOP_PIN ^= 1;
+    TOGGLE_UART_RX_TIMEOUT_STOP_PIN();
     // Disable the timer
     T1CONbits.TMR1ON = 0;
 }
 
 void uart_timeout_triggered() {
     // Toggle the IO pin
-    UART_RX_TIMEOUT_PIN ^= 1;
+    TOGGLE_UART_RX_TIMEOUT_PIN();
     // Reset the Rx driver
     uart_rx_reset();
 }
