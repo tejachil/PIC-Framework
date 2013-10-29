@@ -99,6 +99,9 @@ UART_error_code uart_send_bytes(unsigned char const * const data, unsigned int c
  */
 UART_error_code uart_tx_busy(void);
 
+/** Called when the UART Rx timeout expires. */
+void uart_timeout_triggered(void);
+
 void uart_rx_int_handler(void);
 void uart_tx_int_handler(void);
 

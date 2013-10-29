@@ -6,6 +6,7 @@
 #endif
 #include "my_uart.h"
 #include "messages.h"
+#include "my_gpio.h"
 #include <timers.h>
 #include <string.h> // for memcpy
 
@@ -37,6 +38,8 @@ static void uart_timeout_init(void);
 static void uart_timeout_restart(void);
 /** Stops the UART Rx timeout. */
 static void uart_timeout_stop(void);
+/** Resets the UART Rx driver to prepare for a new message. */
+static void uart_rx_reset(void);
 
 void uart_init(uart_comm * uc) {
     // initialize uart tx
@@ -112,10 +115,13 @@ void uart_rx_int_handler() {
         // Increment received byte counter
         uc_ptr->rx_count++;
 
-        // Check if a complete message has been received
+        // If a complete message has been received, send it to main and reset
         if ((uc_ptr->rx_message.data_length + PUB_MSG_MIN_SIZE) == uc_ptr->rx_count) {
             ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_message.raw_message_bytes);
-            uc_ptr->rx_count = 0;
+            uart_rx_reset();
+        }            // Otherwise, restart the timeout in case the next byte doesn't come
+        else {
+            uart_timeout_restart();
         }
     }
 #ifdef __USE18F26J50
@@ -130,6 +136,11 @@ void uart_rx_int_handler() {
         RCSTAbits.CREN = 1;
         ToMainLow_sendmsg(0, MSGT_OVERRUN, (void *) 0);
     }
+}
+
+void uart_rx_reset() {
+    uc_ptr->rx_count = 0;
+    uart_timeout_stop();
 }
 
 void uart_tx_int_handler() {
@@ -156,21 +167,22 @@ void uart_send_next_byte() {
 }
 
 void uart_init_tx() {
+    unsigned baud_value;
     // With a system clock of 12 MHz and the following formula for baud rate
     // generation (high-speed):
 #if (19200 == UART_BAUD_RATE)
     // Using spbrg = 38 provides the closest approximation for 19200:
     // 12,000,000 / (16 * (38 + 1)) = 19230.76923077
-    OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 38);
+    baud_value = 38;
 #elif (9600 == UART_BAUD_RATE)
     // Using spbrg = 77 provides the closest approximation for 9600:
     // 12,000,000 / (16 * (77 + 1)) = 9615.38
-    OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
-            USART_CONT_RX & USART_BRGH_HIGH, 77);
+    baud_value = 77;
 #else
 #error "UART driver not configured for selected baud rate"
 #endif // UART_BAUD_RATE check
+    OpenUSART(USART_TX_INT_OFF & USART_RX_INT_ON & USART_ASYNCH_MODE & USART_EIGHT_BIT &
+            USART_CONT_RX & USART_BRGH_HIGH, baud_value);
 }
 
 void uart_timeout_init() {
@@ -184,6 +196,8 @@ void uart_timeout_init() {
 }
 
 void uart_timeout_restart() {
+    // Toggle the IO pin
+    UART_RX_TIMEOUT_START_PIN ^= 1;
     // Write the timeout initial count to the timer
     WriteTimer1(UART_RX_TIMEOUT_INITAL_COUNT);
     // Enable the timer
@@ -191,6 +205,15 @@ void uart_timeout_restart() {
 }
 
 void uart_timeout_stop() {
+    // Toggle the IO pin
+    UART_RX_TIMEOUT_STOP_PIN ^= 1;
     // Disable the timer
     T1CONbits.TMR1ON = 0;
+}
+
+void uart_timeout_triggered() {
+    // Toggle the IO pin
+    UART_RX_TIMEOUT_PIN ^= 1;
+    // Reset the Rx driver
+    uart_rx_reset();
 }

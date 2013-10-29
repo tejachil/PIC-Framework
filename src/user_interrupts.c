@@ -36,6 +36,8 @@ void timer0_int_handler() {
 // This one does the action I wanted for this program on a timer1 interrupt
 
 void timer1_int_handler() {
+    // Call the UART timeout function
+    uart_timeout_triggered();
 }
 
 #ifdef USE_ADC_TEST

@@ -154,6 +154,9 @@ void main(void) {
 #endif
 #endif
 
+    // Setup PORTB as output
+    gpio_init_portb_output();
+
     // Initialize UART driver (Rx and Tx)
     uart_init(&uc);
 
@@ -162,9 +165,6 @@ void main(void) {
 
     // initialize message queues before enabling any interrupts
     init_queues();
-
-    // Setup PORTB as output
-    gpio_init_portb_output();
 
     // initialize Timers
     OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
