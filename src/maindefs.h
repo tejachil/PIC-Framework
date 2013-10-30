@@ -30,8 +30,6 @@
 #endif
 
 // Message type definitions
-#define MSGT_TIMER0 10
-#define MSGT_TIMER1 11
 #define MSGT_MAIN1 20
 #define	MSGT_OVERRUN 30
 #define MSGT_UART_DATA 31
@@ -60,6 +58,9 @@
 #endif
 
 // Functionality enable/disable definitions
+
+// Define USE_ADC_TEST to enable reporting ADC readings over I2C.
+//#define USE_ADC_TEST
 
 // Define either I2C_MASTER or I2C_SLAVE (but not both) to select I2C role.
 #if defined(MASTER_PIC)
