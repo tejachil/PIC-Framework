@@ -30,8 +30,6 @@
 #endif
 
 // Message type definitions
-#define MSGT_TIMER0 10
-#define MSGT_TIMER1 11
 #define MSGT_MAIN1 20
 #define	MSGT_OVERRUN 30
 #define MSGT_UART_DATA 31
@@ -43,15 +41,13 @@
 #define MSGT_I2C_MASTER_RECV_COMPLETE 45
 #define MSGT_I2C_MASTER_RECV_FAILED 46
 #define MSGT_ADC 50 // ADC conversion value
-#define MSGT_ENC 51
 
 // Main device ID definitions
 
 /** Define MASTER_PIC to compile for the Master PIC. */
-//#define MASTER_PIC
+#define MASTER_PIC
 /** Define MOTOR_PIC to compile for the Motor Controller PIC. */
-#define MOTOR_PIC
-//#define USE_LCD
+//#define MOTOR_PIC
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
 //#define SENSOR_PIC
 
@@ -60,6 +56,9 @@
 #endif
 
 // Functionality enable/disable definitions
+
+// Define USE_ADC_TEST to enable reporting ADC readings over I2C.
+//#define USE_ADC_TEST
 
 // Define either I2C_MASTER or I2C_SLAVE (but not both) to select I2C role.
 #if defined(MASTER_PIC)
