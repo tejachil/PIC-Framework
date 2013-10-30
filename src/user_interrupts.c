@@ -16,20 +16,6 @@
 // This one does the action I wanted for this program on a timer0 interrupt
 
 void timer0_int_handler() {
-    unsigned int val;
-    int length, msgtype;
-
-    // toggle an LED
-#ifdef __USE18F2680
-    LATBbits.LATB0 = !LATBbits.LATB0;
-#endif
-    // reset the timer
-    WriteTimer0(0);
-    // try to receive a message and, if we get one, echo it back
-    length = FromMainHigh_recvmsg(sizeof(val), (unsigned char *)&msgtype, (void *) &val);
-    if (length == sizeof (val)) {
-        ToMainHigh_sendmsg(sizeof (val), MSGT_TIMER0, (void *) &val);
-    }
 }
 
 // A function called by the interrupt handler

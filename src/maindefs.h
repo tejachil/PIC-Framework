@@ -30,7 +30,6 @@
 #endif
 
 // Message type definitions
-#define MSGT_TIMER0 10
 #define MSGT_MAIN1 20
 #define	MSGT_OVERRUN 30
 #define MSGT_UART_DATA 31

@@ -16,7 +16,6 @@
 #include "my_uart.h"
 #include "my_i2c.h"
 #include "uart_thread.h"
-#include "timer0_thread.h"
 #include "my_gpio.h"
 #ifdef USE_ADC_TEST
 #include "my_adc.h"
@@ -157,6 +156,9 @@ void main(void) {
     // Setup PORTB as output
     gpio_init_portb_output();
 
+    // Timer0 is on by default, turn it off
+    CloseTimer0();
+
     // Initialize UART driver (Rx and Tx)
     uart_init(&uc);
 
@@ -165,14 +167,6 @@ void main(void) {
 
     // initialize message queues before enabling any interrupts
     init_queues();
-
-    // initialize Timers
-    OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
-#ifdef __USE18F26J50
-    // MTJ added second argument for OpenTimer1()
-    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_2 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
-#else
-#endif
 
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
@@ -236,12 +230,6 @@ void main(void) {
             }
         } else {
             switch (msgtype) {
-                case MSGT_TIMER0:
-                {
-                    timer0_lthread(msgtype, length, msgbuffer);
-                    break;
-                };
-                
                 case MSGT_I2C_DATA:
                 case MSGT_I2C_DBG:
                 case MSGT_I2C_RQST:
