@@ -16,10 +16,12 @@
 typedef enum {
     /** Distance reading for a given sensor. */
     PUB_MSG_T_SENS_DIST = 0,
-    /** Instruction to move rover forward specified distance. */
+    /** Instruction to move rover forward or stop. */
     PUB_MSG_T_MOV_CMD,
     /** Instruction to rotate rover specified direction and angle. */
     PUB_MSG_T_TURN_CMD,
+    /** Fix parallelism with the side wall*/
+    PUB_MSG_T_FIX_CMD,
     /** Angle of wall to side relative to rover. */
     PUB_MSG_T_SIDE_ANGLE,
     /** Angle of wall in front relative to rover. */
@@ -40,6 +42,22 @@ typedef enum {
     NUM_PUB_MSG_T
 } public_message_type_t;
 
+/** Data byte values for MOV_CMD. */
+typedef enum {
+    /** Command to start moving forward. */
+    MOV_CMD_GO = 0x55,
+    /** Command to stop moving. */
+    MOV_CMD_STOP = 0xAA
+} MOV_CMD_VALUE;
+
+/** Data byte values for FIX_CMD. */
+typedef enum {
+    /** Command to fix to the left*/
+    FIX_CMD_LEFT = 0x5A,
+    /** Command to fix to the right*/
+    FIX_CMD_RIGHT = 0xA5
+} FIX_CMD_VALUE;
+
 /**
  * Array containing data sizes for each message type.  Indexed by the message
  * type as defined in public_message_type_t.  For example, the data size for a
@@ -59,6 +77,7 @@ extern const unsigned char public_message_data_size[NUM_PUB_MSG_T];
 
 // Javadoc for this union placed below so that it will appear in MPLAB X
 // autocomplete info window.
+
 typedef union {
 
     /** Message structure gives access to individual named fields. */
