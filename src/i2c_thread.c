@@ -102,6 +102,7 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
             {
                 // Handle the MOV_CMD here
                 //LATBbits.LATB0 ^= 1;
+                motor_control_thread(msg);
 
                 break;
             } // End case MOV_CMD

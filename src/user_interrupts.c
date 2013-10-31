@@ -11,6 +11,7 @@
 #endif
 #include "user_interrupts.h"
 #include "messages.h"
+#include "my_encoder.h"
 
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer0 interrupt
@@ -26,7 +27,7 @@ void timer0_int_handler() {
     // reset the timer
     WriteTimer0(0);
     // try to receive a message and, if we get one, echo it back
-    length = FromMainHigh_recvmsg(sizeof(val), (unsigned char *)&msgtype, (void *) &val);
+    length = FromMainHigh_recvmsg(sizeof (val), (unsigned char *) &msgtype, (void *) &val);
     if (length == sizeof (val)) {
         ToMainHigh_sendmsg(sizeof (val), MSGT_TIMER0, (void *) &val);
     }
@@ -50,14 +51,14 @@ void timer1_int_handler() {
 
 #ifdef SENSOR_PIC
 // ADC conversion complete interrupt handler
-void adc_int_handler()
-{
+
+void adc_int_handler() {
     int adc_value;
     unsigned char adc_bytes[2];
-    
+
     // Read the conversion value
     adc_value = ReadADC();
-    
+
     // Store each byte into the byte array, to make sure that the order is
     // as expected: high byte in index 0
     adc_bytes[0] = (adc_value & 0xFF00) >> 8;
@@ -69,53 +70,21 @@ void adc_int_handler()
 
 unsigned int encData;
 unsigned int tickC = 0;
-unsigned char encoderD;
-int i = 0;
-int test = 1;
-char char_test[] = {0x39, 0xB8};
-char char_test0[] = {0x47, 0xC6};
+int totalRevolution = 0;
 
+static char f[] = {0x52, 0xAE};
 
-void encoder_interrupt_handler(){
+void encoder_interrupt_handler() {
 
     LATBbits.LATB0 ^= 1;
     encData = PORTBbits.RB4;
     INTCONbits.RBIF = 0;
-    //if(test != encData){
-        encoderD = (char)(encData);
-        //uart_send_bytes(encoderD, 1);
-        //tickC += encData;
-        tickC++;
-        if (tickC == 6250){
-            i = 0;
-            for(i;i < 1; i++){
-              if (test == 1){
-                tickC = 0;
-                //uart_send_bytes(&char_test, 2);
-                test = 0;
-                break;
-            }
-            if (test == 0){
-                tickC = 10;
-                //uart_send_bytes(&char_test0, 2);
-                test = 1;
-                break;
-            }
-            }
-            /*if (test == 1){
-                uart_send_bytes(char_test, 1);
-                test = 0;
-            }
-            if (test == 0){
-                uart_send_bytes(char_test0, 1);
-                test = 1;
-            }*/
-        }
-        //uart_send_bytes(encoderD, 1); //THIS WORKS!
-        //ToMainHigh_sendmsg(1, MSGT_ENC, (void *) encoderD);
-        //ToMainHigh_sendmsg(1, MSGT_ENC, encoderD);
-    //}
-    //uart_send_bytes((char)(tickC), 8);
-    //PORTB & 10000000;
-    //encoderData = encoderData >> 7;
+
+    tickC++;
+    if (tickC == 5250) {
+        totalRevolution += 1;
+        tickC = 0;
+        uart_send_bytes(&f, 2);
+    }
+    encoder_distance_calc(tickC, totalRevolution);
 }

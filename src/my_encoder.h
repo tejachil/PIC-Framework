@@ -11,9 +11,15 @@
 #ifdef	__cplusplus
 extern "C" {
 #endif
+ 
+  
 
+
+void encoder_initialize(encoderDistance *encDistance);
 
 void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer);
+
+void encoder_distance_calc(int tickCount, int totalRevolutions);
 
 #ifdef	__cplusplus
 }
