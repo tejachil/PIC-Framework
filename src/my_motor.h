@@ -8,6 +8,7 @@ void motor_stop_both(void);
 void motor_turn(void);
 void motor_fix_left(void);
 void motor_fix_right(void);
+void timer1_motor_counter(void);
 
 #endif	/* MY_MOTOR_H */
 

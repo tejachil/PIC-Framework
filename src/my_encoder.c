@@ -11,9 +11,9 @@
 
 unsigned char tickCounter = 0;
 
-void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer){
+void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 
-    switch(msgtype) {
+    switch (msgtype) {
         case MSGT_ENC:
         {
             break;
@@ -25,16 +25,16 @@ void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer){
     }
 }
 
-void encoder_distance_calc(int tickCount, int totalRevolutions){
+void encoder_distance_calc(int tickCount, int totalRevolutions) {
     double totalDistance = 0;
     int totalRevolutionsHolder = totalRevolutions;
     int tickCountHolder = tickCount;
-    for(;totalRevolutionsHolder > 0; totalRevolutionsHolder--){
+    for (; totalRevolutionsHolder > 0; totalRevolutionsHolder--) {
         totalDistance += 35.908;
     }
-    totalDistance += (((double) tickCountHolder)/5250)*35.908;
+    totalDistance += (((double) tickCountHolder) / 5250)*35.908;
 
-    if(totalDistance > 37.3447){
+    if (totalDistance > 37.3447) {
         totalDistance = 5;
     }
 }

@@ -36,6 +36,8 @@ void timer0_int_handler() {
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer1 interrupt
 
+int timer1_counter = 0;
+
 void timer1_int_handler() {
     // read the timer and then send an empty message to main()
 #ifdef __USE18F2680
@@ -43,11 +45,15 @@ void timer1_int_handler() {
 #endif
 
     // Send the timer update message to main
-    ToMainLow_sendmsg(0, MSGT_TIMER1, (void *) 0);
+    //ToMainLow_sendmsg(0, MSGT_TIMER1, (void *) 0);
 
     // Reset the timer for 10ms period
-    WriteTimer1(50535);
-
+    //WriteTimer1(50535);
+    //if (timer1_counter == 200) {
+      //  timer1_motor_counter();
+        //timer1_counter =0;
+    //}
+    //timer1_counter++;
 }
 
 #ifdef SENSOR_PIC
