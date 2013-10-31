@@ -87,11 +87,11 @@ void encoder_interrupt_handler() {
     encData = PORTBbits.RB4;
     INTCONbits.RBIF = 0;
 
-    tickC++;
+    /*tickC++;
     if (tickC == 5250) {
         totalRevolution += 1;
         tickC = 0;
         uart_send_bytes(&f, 2);
     }
-    encoder_distance_calc(tickC, totalRevolution);
+    encoder_distance_calc(tickC, totalRevolution);*/
 }
