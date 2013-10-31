@@ -12,10 +12,6 @@
 extern "C" {
 #endif
  
-  
-
-
-void encoder_initialize(encoderDistance *encDistance);
 
 void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer);
 

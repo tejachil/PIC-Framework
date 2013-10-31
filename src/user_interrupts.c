@@ -47,6 +47,7 @@ void timer1_int_handler() {
 
     // Reset the timer for 10ms period
     WriteTimer1(50535);
+
 }
 
 #ifdef SENSOR_PIC

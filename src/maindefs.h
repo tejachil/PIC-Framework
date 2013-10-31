@@ -51,6 +51,7 @@
 //#define MASTER_PIC
 /** Define MOTOR_PIC to compile for the Motor Controller PIC. */
 #define MOTOR_PIC
+//#define USE_LCD
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
 //#define SENSOR_PIC
 
