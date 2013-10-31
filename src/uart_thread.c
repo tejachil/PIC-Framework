@@ -41,6 +41,7 @@ int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned cha
 
                 case PUB_MSG_T_MOV_CMD:
                 case PUB_MSG_T_TURN_CMD:
+                case PUB_MSG_T_FIX_CMD:
                 {
                     // Forward the full message to the slave
                     i2c_master_write(MOTOR_PIC_ADDR, raw_msg, length);
