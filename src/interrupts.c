@@ -101,6 +101,7 @@ void InterruptHandlerHigh() {
     // check to see if we have an interrupt on timer 0
     if (INTCONbits.TMR0IF) {
         INTCONbits.TMR0IF = 0; // clear this interrupt flag
+        // call whatever handler you want (this is "user" defined)
         timer0_int_handler();
     }
 

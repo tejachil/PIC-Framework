@@ -16,10 +16,10 @@
 #include "my_uart.h"
 #include "my_i2c.h"
 #include "uart_thread.h"
+#include "timer1_thread.h"
+#include "timer0_thread.h"
 #include "my_gpio.h"
-#ifdef USE_ADC_TEST
 #include "my_adc.h"
-#endif //ifdef USE_ADC_TEST
 #include "public_messages.h"
 #include "i2c_thread.h"
 
@@ -130,6 +130,7 @@ Something is messed up
 void main(void) {
     signed char length;
     unsigned char msgtype;
+
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
@@ -153,12 +154,6 @@ void main(void) {
 #endif
 #endif
 
-    // Setup PORTB as output
-    gpio_init_portb_output();
-
-    // Timer0 is on by default, turn it off
-    CloseTimer0();
-
     // Initialize UART driver (Rx and Tx)
     uart_init(&uc);
 
@@ -168,16 +163,36 @@ void main(void) {
     // initialize message queues before enabling any interrupts
     init_queues();
 
+    // Setup PORTB as output
+    gpio_init_portb_output();
+
+    // initialize Timers
+    OpenTimer0(TIMER_INT_ON & T0_16BIT & T0_SOURCE_INT & T0_PS_1_128);
+#ifdef __USE18F26J50
+    // MTJ added second argument for OpenTimer1()
+    OpenTimer1(TIMER_INT_ON & T1_SOURCE_FOSC_4 & T1_PS_1_2 & T1_16BIT_RW & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF, 0x0);
+#else
+    // Setup Timer1 for 10ms period
+    // Timer1 clock is Fosc / 4, so 12 MHz / 4 = 3MHz
+    // Prescaler of 2 sets timer count freq to 1.5MHz
+    // 1.5MHz / 100 Hz = 15000 counts needed for 10ms period
+    // (2^16 - 1) - 15000 = 50535, this is the timer count initial value
+    //WriteTimer1(50535);
+    //OpenTimer1(TIMER_INT_ON & T1_PS_1_2 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
+#endif
+
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
+    // Timer1 interrupt
+    IPR1bits.TMR1IP = 0;
     // USART RX interrupt
     IPR1bits.RCIP = 0;
     // I2C interrupt
     IPR1bits.SSPIP = 1;
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
     // ADC interrupt
     IPR1bits.ADIP = 1;
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
 
@@ -200,11 +215,19 @@ void main(void) {
     // enable high-priority interrupts and low-priority interrupts
     enable_interrupts();
 
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
     // Initialize and start the ADC driver
     adc_init();
     adc_start();
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
+
+    /*if(INTCON & 00000001 == 1){
+        encData = gpio_read_portb();
+        tickCount += encData;
+        uart_send_bytes((char)(tickCount), 8);
+    }*/
+    //{char dummy = 0x30;
+    //uart_send_bytes(&dummy, 1);}
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
@@ -230,6 +253,12 @@ void main(void) {
             }
         } else {
             switch (msgtype) {
+                case MSGT_TIMER0:
+                {
+                    timer0_lthread(msgtype, length, msgbuffer);
+                    break;
+                };
+
                 case MSGT_I2C_DATA:
                 case MSGT_I2C_DBG:
                 case MSGT_I2C_RQST:
@@ -241,6 +270,16 @@ void main(void) {
                     i2c_lthread(msgtype, length, msgbuffer);
                     break;
                 } // End I2C cases
+
+                case MSGT_ENC:
+                {
+                    // if(length == 1){
+                    //uart_send_bytes((char)(msgbuffer[0]), 1); //THIS WORKS!
+                    //}
+                    //this function needs to be implemented for encoders
+                    encoder_lthread(msgtype, length, msgbuffer);
+                    break;
+                }
 
                 default:
                 {
@@ -259,6 +298,11 @@ void main(void) {
             }
         } else {
             switch (msgtype) {
+                case MSGT_TIMER1:
+                {
+                    timer1_lthread(msgtype, length, msgbuffer);
+                    break;
+                };
                 case MSGT_OVERRUN:
                 case MSGT_UART_DATA:
                 {
@@ -267,9 +311,9 @@ void main(void) {
                 };
                 case MSGT_ADC:
                 {
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
                     adc_lthread(msgtype, length, msgbuffer);
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
                     break;
                 }
                 default:

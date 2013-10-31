@@ -17,7 +17,7 @@ extern i2c_comm *ic_ptr;
 #ifdef I2C_MASTER
 
 /**
- * Handles an error in the I2C master driver.
+ * Handles an error in the I2C master driver.  Currently a placeholder.
  */
 void i2c_master_handle_error(void);
 
