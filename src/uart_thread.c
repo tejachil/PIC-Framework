@@ -12,6 +12,7 @@
 
 // Create blank GPIO definitions if they aren't defined
 #ifndef SET_UART_MESSAGE_ERROR_PIN
+#warning "Blank GPIO definition"
 #define SET_UART_MESSAGE_ERROR_PIN()
 #endif
 

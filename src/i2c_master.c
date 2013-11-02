@@ -10,6 +10,7 @@
 #endif
 #include "my_i2c.h"
 #include "messages.h"
+#include "my_gpio.h"
 #include <string.h> // for memcpy
 
 extern i2c_comm *ic_ptr;
@@ -364,7 +365,15 @@ void i2c_master_handler() {
             } // End default case
         }
     } else {
-        i2c_master_handle_error();
+        // The only time we should get an interrupt while in IDLE is if a Stop
+        // was asserted after an error.  If that's not what heppened, indicate
+        // an error
+        if (I2C_SUBSTATE_ERROR != ic_ptr->substate) {
+            SET_I2C_ERROR_PIN();
+        }
+
+        ic_ptr->state = I2C_IDLE;
+        ic_ptr->substate = I2C_SUBSTATE_IDLE;
     }
 }
 

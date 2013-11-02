@@ -4,9 +4,11 @@
 #include "maindefs.h"
 #include "public_messages.h"
 #include "my_uart.h"
+#include "my_gpio.h"
 
 // Create blank GPIO definitions if they aren't defined
 #ifndef SET_I2C_ERROR_PIN
+#warning "Blank GPIO definition"
 #define SET_I2C_ERROR_PIN()
 #endif
 

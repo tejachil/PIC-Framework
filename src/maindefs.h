@@ -64,7 +64,7 @@
 #if defined(MASTER_PIC)
 #define I2C_MASTER
 // Define I2C_MASTER_IGNORE_NACK to allow limited testing with no slave.
-#define I2C_MASTER_IGNORE_NACK
+//#define I2C_MASTER_IGNORE_NACK
 #else
 #define I2C_SLAVE
 #endif
