@@ -93,12 +93,6 @@ void InterruptHandlerHigh() {
         i2c_int_handler();
     }
 
-    // check to see if we have an interrupt on timer 0
-    if (INTCONbits.TMR0IF) {
-        INTCONbits.TMR0IF = 0; // clear this interrupt flag
-        timer0_int_handler();
-    }
-
     // here is where you would check other interrupt flags.
 
 #ifdef USE_ADC_TEST
@@ -154,6 +148,12 @@ void InterruptHandlerLow() {
         UART_DISABLE_TX_INT();
         // Call the handler
         uart_tx_int_handler();
+    }
+
+    // check to see if we have an interrupt on timer 0
+    if (INTCONbits.TMR0IF) {
+        INTCONbits.TMR0IF = 0; // clear this interrupt flag
+        timer0_int_handler();
     }
 }
 

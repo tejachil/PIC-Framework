@@ -180,6 +180,8 @@ void main(void) {
 #endif //ifdef USE_ADC_TEST
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
+    // Timer0 interrupt
+    INTCON2bits.TMR0IP = 0;
 
 #if defined(I2C_SLAVE)
 #if defined(MOTOR_PIC)
