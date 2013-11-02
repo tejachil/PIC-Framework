@@ -5,6 +5,11 @@
 #include "public_messages.h"
 #include "my_uart.h"
 
+// Create blank GPIO definitions if they aren't defined
+#ifndef SET_I2C_ERROR_PIN
+#define SET_I2C_ERROR_PIN()
+#endif
+
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
 
@@ -64,6 +69,10 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 
             // SEND_COMPLETE indicates a completed write from this master device
         case MSGT_I2C_MASTER_SEND_COMPLETE:
+        {
+            // Nothing to do
+            break;
+        }
             // SEND_FAILED indicates a failed write from this master device
         case MSGT_I2C_MASTER_SEND_FAILED:
             // RECV_FAILED indicates a failed read by this master device
@@ -75,7 +84,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
         case MSGT_I2C_DBG:
         default:
         {
-#warning "Unhandled error case"
+            SET_I2C_ERROR_PIN();
         } // End cases DBG and default
 
     } // End switch(msgtype)

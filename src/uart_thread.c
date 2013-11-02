@@ -5,9 +5,15 @@
 #include "uart_thread.h"
 #include "public_messages.h"
 #include "my_uart.h"
+#include "my_gpio.h"
 
 // May need to create a new queue to hold pending messages
 #warning "TODO: Handle busy i2c peripheral"
+
+// Create blank GPIO definitions if they aren't defined
+#ifndef SET_UART_MESSAGE_ERROR_PIN
+#define SET_UART_MESSAGE_ERROR_PIN()
+#endif
 
 int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
     if (msgtype == MSGT_OVERRUN) {
@@ -53,7 +59,7 @@ int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned cha
                 {
                     // We shouldn't be receiving any other message types over
                     // UART
-#warning "Unhandled error case"
+                    SET_UART_MESSAGE_ERROR_PIN();
                 }
             } // End switch message_type
 

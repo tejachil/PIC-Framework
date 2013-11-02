@@ -78,7 +78,7 @@ signed char recv_msg(msg_queue *qptr, unsigned char maxlength, unsigned char *ms
         }
         // now actually copy the message
         tlength = qmsg->length;
-        memcpy(data, qmsg->data, tlength);
+        memcpy(data, (void *) qmsg->data, tlength);
         /*
         for (i=0;i<qmsg->length;i++) {
                 ((unsigned char *) data)[i] = qptr->queue[slot].data[i];

@@ -13,6 +13,10 @@
 #define TOGGLE_UART_RX_TIMEOUT_STOP_PIN() (LATBbits.LATB1 ^= 1)
 /** Pin toggled when the UART Rx timeout is started. */
 #define TOGGLE_UART_RX_TIMEOUT_START_PIN() (LATBbits.LATB2 ^= 1)
+/** Pin set when an invalid message type is received on UART. */
+#define SET_UART_MESSAGE_ERROR_PIN() (LATBbits.LATB6 = 1);
+/** Pin set when an I2C error occurs. */
+#define SET_I2C_ERROR_PIN() (LATBbits.LATB7 = 1);
 #endif // MASTER_PIC
 
 void gpio_init_portb_output(void);
