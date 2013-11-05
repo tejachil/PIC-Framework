@@ -26,7 +26,9 @@ int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned cha
             public_message_t * msg = (public_message_t *) msgbuffer;
 
             // Add the message to the queue to be sent on I2C
-            ToI2C_sendmsg(MSGT_I2C_QUEUED_MSG, msg);
+            if (MSGSEND_OKAY != ToI2C_sendmsg(MSGT_I2C_QUEUED_MSG, msg)) {
+                SET_I2C_QUEUE_ERROR_PIN();
+            }
 
         } // End if(length >= PUB_MSG_MIN_SIZE)
 #endif // defined(MASTER_PIC)

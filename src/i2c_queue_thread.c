@@ -22,7 +22,9 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             case PUB_MSG_T_SENS_DIST:
             {
                 // Read the full message from the slave
-                i2c_master_read(SENSOR_PIC_ADDR, type, msg_total_size);
+                if (I2C_ERR_NONE != i2c_master_read(SENSOR_PIC_ADDR, type, msg_total_size)) {
+                    SET_I2C_QUEUE_ERROR_PIN();
+                }
 
                 break;
             } // End requests for Proximity Sensors PIC
@@ -32,7 +34,9 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             case PUB_MSG_T_FIX_CMD:
             {
                 // Forward the full message to the slave
-                i2c_master_write(MOTOR_PIC_ADDR, raw_msg, msg_total_size);
+                if (I2C_ERR_NONE != i2c_master_write(MOTOR_PIC_ADDR, raw_msg, msg_total_size)) {
+                    SET_I2C_QUEUE_ERROR_PIN();
+                }
 
                 break;
             } // End commands for Motor Controller PIC

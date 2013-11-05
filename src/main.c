@@ -305,7 +305,7 @@ void main(void) {
                     }
                     default:
                     {
-                        SET_I2C_ERROR_PIN();
+                        SET_I2C_QUEUE_ERROR_PIN();
                     }
                 }
             }
