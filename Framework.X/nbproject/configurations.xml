@@ -16,6 +16,7 @@
       <itemPath>../src/public_messages.h</itemPath>
       <itemPath>../src/i2c_thread.h</itemPath>
       <itemPath>../src/my_lcd.h</itemPath>
+      <itemPath>../src/i2c_queue_thread.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -38,6 +39,7 @@
       <itemPath>../src/public_messages.c</itemPath>
       <itemPath>../src/i2c_thread.c</itemPath>
       <itemPath>../src/my_lcd.c</itemPath>
+      <itemPath>../src/i2c_queue_thread.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

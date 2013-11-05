@@ -191,12 +191,28 @@ signed char FromMainHigh_recvmsg(unsigned char maxlength, unsigned char *msgtype
 
 static unsigned char MQ_Main_Willing_to_block;
 
+#ifdef MASTER_PIC
+#pragma udata i2cqueue
+static msg_queue toI2C_MQ;
+
+signed char ToI2C_sendmsg(const unsigned char msgtype, const public_message_t * const msg) {
+    return (send_msg(&toI2C_MQ, sizeof (public_message_t), msgtype, (void *) msg));
+}
+
+signed char ToI2C_recvmsg(unsigned char * const msgtype, public_message_t * const msg) {
+    return (recv_msg(&toI2C_MQ, sizeof (public_message_t), msgtype, (void *) msg));
+}
+#endif  //MASTER_PIC
+
 void init_queues() {
     MQ_Main_Willing_to_block = 0;
     init_queue(&ToMainLow_MQ);
     init_queue(&ToMainHigh_MQ);
     init_queue(&FromMainLow_MQ);
     init_queue(&FromMainHigh_MQ);
+#ifdef MASTER_PIC
+    init_queue(&toI2C_MQ);
+#endif
 }
 
 void enter_sleep_mode(void) {

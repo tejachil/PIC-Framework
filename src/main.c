@@ -22,6 +22,7 @@
 #endif //ifdef USE_ADC_TEST
 #include "public_messages.h"
 #include "i2c_thread.h"
+#include "i2c_queue_thread.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -217,7 +218,7 @@ void main(void) {
         // Call a routine that blocks until either on the incoming
         // messages queues has a message (this may put the processor into
         // an idle mode)
-        block_on_To_msgqueues();
+        //block_on_To_msgqueues();
 
         // At this point, one or both of the queues has a message.  It
         // makes sense to check the high-priority messages first -- in fact,
@@ -281,6 +282,30 @@ void main(void) {
                 };
             };
         }
-    }
 
+#ifdef MASTER_PIC
+        // If the I2C peripheral is available, send the next queued message
+        if (!i2c_master_busy()) {
+            length = ToI2C_recvmsg(&msgtype, (public_message_t *) msgbuffer);
+            if (length < 0) {
+                // no message, check the error code to see if it is concern
+                if (length != MSGQUEUE_EMPTY) {
+                    // Your code should handle this situation
+                }
+            } else {
+                switch (msgtype) {
+                    case MSGT_I2C_QUEUED_MSG:
+                    {
+                        i2c_queue_lthread(msgtype, length, msgbuffer);
+                        break;
+                    }
+                    default:
+                    {
+                        SET_I2C_ERROR_PIN();
+                    }
+                }
+            }
+        }
+    }
+#endif // MASTER_PIC
 }

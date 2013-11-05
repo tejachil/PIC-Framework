@@ -79,4 +79,10 @@ signed char	FromMainLow_recvmsg(unsigned char,unsigned char *,void *);
 // in the "main()" thread and the receive from the interrupt handlers.
 signed char	FromMainHigh_sendmsg(unsigned char,unsigned char,void *);
 signed char	FromMainHigh_recvmsg(unsigned char,unsigned char *,void *);
+
+// Queue: for messages that will be sent over I2C.  Writer is uart_lthread() and
+// reader is main().
+signed char ToI2C_sendmsg(const unsigned char, const public_message_t * const);
+signed char ToI2C_recvmsg(unsigned char * const, public_message_t * const);
+
 #endif
