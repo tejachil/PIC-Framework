@@ -8,9 +8,6 @@
 #include "my_gpio.h"
 #include "messages.h"
 
-// May need to create a new queue to hold pending messages
-#warning "TODO: Handle busy i2c peripheral"
-
 // Create blank GPIO definitions if they aren't defined
 #ifndef SET_UART_MESSAGE_ERROR_PIN
 #warning "Blank GPIO definition"
