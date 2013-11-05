@@ -218,7 +218,11 @@ void main(void) {
         // Call a routine that blocks until either on the incoming
         // messages queues has a message (this may put the processor into
         // an idle mode)
-        //block_on_To_msgqueues();
+#ifndef MASTER_PIC
+        // Master PIC needs to constantly check I2C queue so we can't block on
+        // the others.
+        block_on_To_msgqueues();
+#endif
 
         // At this point, one or both of the queues has a message.  It
         // makes sense to check the high-priority messages first -- in fact,
@@ -306,6 +310,6 @@ void main(void) {
                 }
             }
         }
-    }
 #endif // MASTER_PIC
+    }
 }

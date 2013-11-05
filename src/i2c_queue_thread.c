@@ -5,6 +5,7 @@
 
 void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     if (MSGT_I2C_QUEUED_MSG == msgtype) {
+#ifdef MASTER_PIC
         // Cast the msgbuffer data to the public message type
         public_message_t * msg = (public_message_t *) msgbuffer;
 
@@ -43,5 +44,6 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 SET_UART_MESSAGE_ERROR_PIN();
             }
         } // End switch message_type
+#endif
     }
 }
