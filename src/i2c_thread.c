@@ -7,12 +7,6 @@
 #include "my_gpio.h"
 #include "messages.h"
 
-// Create blank GPIO definitions if they aren't defined
-#ifndef SET_I2C_ERROR_PIN
-#warning "Blank GPIO definition"
-#define SET_I2C_ERROR_PIN()
-#endif
-
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
 
@@ -64,7 +58,9 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // Make sure the message is long enough to be valid
             if (length >= PUB_MSG_MIN_SIZE) {
                 // Send the message directly to UART
-                ToUART_sendmsg(MSGT_UART_QUEUED_MSG, length, msgbuffer);
+                if (MSGSEND_OKAY != ToUART_sendmsg(MSGT_UART_QUEUED_MSG, length, msgbuffer)) {
+                    SET_UART_QUEUE_ERROR_PIN();
+                }
             }
 
             break;

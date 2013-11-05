@@ -10,20 +10,6 @@
 #include <timers.h>
 #include <string.h> // for memcpy
 
-// Create blank pin toggle definitions if they aren't defined
-#ifndef TOGGLE_UART_RX_TIMEOUT_PIN
-#warning "Blank GPIO definition"
-#define TOGGLE_UART_RX_TIMEOUT_PIN()
-#endif
-#ifndef TOGGLE_UART_RX_TIMEOUT_STOP_PIN
-#warning "Blank GPIO definition"
-#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN()
-#endif
-#ifndef TOGGLE_UART_RX_TIMEOUT_START_PIN
-#warning "Blank GPIO definition"
-#define TOGGLE_UART_RX_TIMEOUT_START_PIN()
-#endif
-
 /**
  * Timeout timer count register value.  Calculation is based on the
  * following:<br>

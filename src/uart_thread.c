@@ -8,12 +8,6 @@
 #include "my_gpio.h"
 #include "messages.h"
 
-// Create blank GPIO definitions if they aren't defined
-#ifndef SET_UART_MESSAGE_ERROR_PIN
-#warning "Blank GPIO definition"
-#define SET_UART_MESSAGE_ERROR_PIN()
-#endif
-
 int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
     if (msgtype == MSGT_OVERRUN) {
 
