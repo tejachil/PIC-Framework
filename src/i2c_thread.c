@@ -5,6 +5,7 @@
 #include "public_messages.h"
 #include "my_uart.h"
 #include "my_gpio.h"
+#include "messages.h"
 
 // Create blank GPIO definitions if they aren't defined
 #ifndef SET_I2C_ERROR_PIN
@@ -63,7 +64,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // Make sure the message is long enough to be valid
             if (length >= PUB_MSG_MIN_SIZE) {
                 // Send the message directly to UART
-                uart_send_bytes(msgbuffer, length);
+                ToUART_sendmsg(MSGT_UART_QUEUED_MSG, length, msgbuffer);
             }
 
             break;

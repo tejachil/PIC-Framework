@@ -42,6 +42,7 @@
 #define MSGT_I2C_MASTER_RECV_FAILED 46
 #define MSGT_ADC 50 // ADC conversion value
 #define MSGT_I2C_QUEUED_MSG (60)
+#define MSGT_UART_QUEUED_MSG (61)
 
 // Main device ID definitions
 

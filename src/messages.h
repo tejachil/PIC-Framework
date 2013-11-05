@@ -85,4 +85,9 @@ signed char	FromMainHigh_recvmsg(unsigned char,unsigned char *,void *);
 signed char ToI2C_sendmsg(const unsigned char, const public_message_t * const);
 signed char ToI2C_recvmsg(unsigned char * const, public_message_t * const);
 
+// Queue: for messages that will be sent over UART.  Writer is uart_lthread()
+// and reader is main().
+signed char ToUART_sendmsg(unsigned char, unsigned char, void *);
+signed char ToUART_recvmsg(unsigned char, unsigned char *, void *);
+
 #endif
