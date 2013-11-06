@@ -23,6 +23,7 @@
 #include "public_messages.h"
 #include "i2c_thread.h"
 #include "i2c_queue_thread.h"
+#include "uart_queue_thread.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -215,20 +216,7 @@ void main(void) {
     // they can be equated with the tasks in your task diagram if you
     // structure them properly.
     while (1) {
-        // Call a routine that blocks until either on the incoming
-        // messages queues has a message (this may put the processor into
-        // an idle mode)
-#ifndef MASTER_PIC
-        // Master PIC needs to constantly check I2C queue so we can't block on
-        // the others.
-        block_on_To_msgqueues();
-#endif
-
-        // At this point, one or both of the queues has a message.  It
-        // makes sense to check the high-priority messages first -- in fact,
-        // you may only want to check the low-priority messages when there
-        // is not a high priority message.  That is a design decision and
-        // I haven't done it here.
+        // Check the high priority queue
         length = ToMainHigh_recvmsg(MSGLEN, &msgtype, (void *) msgbuffer);
         if (length < 0) {
             // no message, check the error code to see if it is concern
@@ -287,6 +275,30 @@ void main(void) {
             };
         }
 
+        // If the UART Tx peripheral is available, send the next queued message
+        if (!uart_tx_busy()) {
+            length = ToUART_recvmsg(MSGLEN, &msgtype, (void *) msgbuffer);
+            if (length < 0) {
+                // no message, check the error code to see if it is concern
+                if (length != MSGQUEUE_EMPTY) {
+                    // Your code should handle this situation
+                }
+            } else {
+                switch (msgtype) {
+                    case MSGT_UART_QUEUED_MSG:
+                    {
+                        uart_queue_lthread(msgtype, length, msgbuffer);
+                        break;
+                    }
+                    default:
+                    {
+                        SET_UART_QUEUE_ERROR_PIN();
+                        break;
+                    }
+                }
+            }
+        }
+
 #ifdef MASTER_PIC
         // If the I2C peripheral is available, send the next queued message
         if (!i2c_master_busy()) {
@@ -306,6 +318,7 @@ void main(void) {
                     default:
                     {
                         SET_I2C_QUEUE_ERROR_PIN();
+                        break;
                     }
                 }
             }

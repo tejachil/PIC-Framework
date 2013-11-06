@@ -204,6 +204,17 @@ signed char ToI2C_recvmsg(unsigned char * const msgtype, public_message_t * cons
 }
 #endif  //MASTER_PIC
 
+#pragma udata uartqueue
+static msg_queue ToUART_MQ;
+
+signed char ToUART_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
+    return (send_msg(&ToUART_MQ, length, msgtype, data));
+}
+
+signed char ToUART_recvmsg(unsigned char maxlength, unsigned char *msgtype, void *data) {
+    return (recv_msg(&ToUART_MQ, maxlength, msgtype, data));
+}
+
 void init_queues() {
     MQ_Main_Willing_to_block = 0;
     init_queue(&ToMainLow_MQ);
@@ -213,6 +224,7 @@ void init_queues() {
 #ifdef MASTER_PIC
     init_queue(&toI2C_MQ);
 #endif
+    init_queue(&ToUART_MQ);
 }
 
 void enter_sleep_mode(void) {
@@ -220,15 +232,15 @@ void enter_sleep_mode(void) {
     OSCCONbits.IDLEN = 1; // set to idle on sleep
     // now we go into sleep
     // only something like an interrupt will bring us out of this
-    #ifndef __XC8
+#ifndef __XC8
     _asm
-            sleep
-    _endasm
-    #else
-    #asm
+    sleep
+            _endasm
+#else
+#asm
     SLEEP
-    #endasm
-    #endif
+#endasm
+#endif
 }
 
 // check if message available
