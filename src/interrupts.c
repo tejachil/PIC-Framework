@@ -110,7 +110,7 @@ void InterruptHandlerHigh() {
     // This code *DEPENDS* on the code in messages.c being
     // initialized using "init_queues()" -- if you aren't using
     // this, then you shouldn't have this call here
-    SleepIfOkay();
+    //SleepIfOkay();
 }
 
 //----------------------------------------------------------------------------
