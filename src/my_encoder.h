@@ -15,8 +15,6 @@ extern "C" {
 
     void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer);
 
-    void encoder_distance_calc(int tickCount, int totalRevolutions);
-
 #ifdef	__cplusplus
 }
 #endif

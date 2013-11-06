@@ -4,6 +4,7 @@
 #include "maindefs.h"
 #include "public_messages.h"
 #include "my_uart.h"
+#include "my_motor.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -159,7 +160,14 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
 #endif // SENSOR_PIC / MOTOR_PIC
 
             // Invalid message type
-        case NUM_PUB_MSG_T:
+        case PUB_MSG_T_ENCODER_DATA:
+        {
+            response.data[1] = (tickCountReady & 0xFF00) >> 8;
+            response.data[0] = tickCountReady & 0x00FF;
+            response.data[2] = totalRevolutionsReady;
+
+            break;
+        }
         default:
         {
             // Do not send a response

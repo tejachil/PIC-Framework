@@ -7,9 +7,11 @@
 #include "my_adc.h"
 #include "my_gpio.h"
 #include "my_encoder.h"
+#include "my_motor.h"
 
 
 unsigned char tickCounter = 0;
+int delayCount;
 
 void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 
@@ -22,19 +24,5 @@ void encoder_lthread(int msgtype, int length, unsigned char *msgbuffer) {
         {
             break;
         }
-    }
-}
-
-void encoder_distance_calc(int tickCount, int totalRevolutions) {
-    double totalDistance = 0;
-    int totalRevolutionsHolder = totalRevolutions;
-    int tickCountHolder = tickCount;
-    for (; totalRevolutionsHolder > 0; totalRevolutionsHolder--) {
-        totalDistance += 35.908;
-    }
-    totalDistance += (((double) tickCountHolder) / 5250)*35.908;
-
-    if (totalDistance > 37.3447) {
-        totalDistance = 5;
     }
 }

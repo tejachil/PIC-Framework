@@ -12,6 +12,7 @@
 #include "user_interrupts.h"
 #include "messages.h"
 #include "my_encoder.h"
+#include "my_motor.h"
 
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer0 interrupt
@@ -22,8 +23,6 @@ void timer0_int_handler() {
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer1 interrupt
 
-int timer1_counter = 0;
-
 void timer1_int_handler() {
     // read the timer and then send an empty message to main()
 #ifdef __USE18F2680
@@ -32,14 +31,6 @@ void timer1_int_handler() {
 
     // Send the timer update message to main
     //ToMainLow_sendmsg(0, MSGT_TIMER1, (void *) 0);
-
-    // Reset the timer for 10ms period
-    //WriteTimer1(50535);
-    //if (timer1_counter == 200) {
-      //  timer1_motor_counter();
-        //timer1_counter =0;
-    //}
-    //timer1_counter++;
 }
 
 #ifdef SENSOR_PIC
@@ -62,22 +53,15 @@ void adc_int_handler() {
 #endif //ifdef SENSOR_PIC
 
 unsigned int encData;
-unsigned int tickC = 0;
-int totalRevolution = 0;
-
-static char f[] = {0x52, 0xAE};
 
 void encoder_interrupt_handler() {
-
-    LATBbits.LATB0 ^= 1;
     encData = PORTBbits.RB4;
     INTCONbits.RBIF = 0;
-
-    /*tickC++;
-    if (tickC == 5250) {
-        totalRevolution += 1;
-        tickC = 0;
-        uart_send_bytes(&f, 2);
+    if (countFlag == 1) {
+        tickCount++;
+        if (tickCount == 5250) {
+            totalRevolutions += 1;
+            tickCount = 0;
+        }
     }
-    encoder_distance_calc(tickC, totalRevolution);*/
 }

@@ -34,6 +34,8 @@ typedef enum {
     PUB_MSG_T_NEW_CORNER,
     /** Notification for webserver of new enclosure corner. */
     PUB_MSG_T_CORNER_WEB,
+    /** Encoder data for distance. */
+    PUB_MSG_T_ENCODER_DATA,
 
     // ADD ANY NEW MESSAGE TYPES ABOVE THIS LINE
     // So that NUM_PUB_MSG_T will be correct.

@@ -2,22 +2,26 @@
 #include "my_uart.h"
 #include "messages.h"
 #include <timers.h>
+#include "my_encoder.h"
 
 static char forward[] = {0x39, 0xB8};
 static char backward[] = {0x47, 0xC6};
-static char turnRight[] = {0x52, 0xAE};
-static char turnLeft[] = {0x2E, 0xD2};
+static char turnLeft[] = {0x52, 0xAE};
+static char turnRight[] = {0x2E, 0xD2};
 static char stop[] = {0, 0};
+int timer1_counter = 0;
+int tickCount;
+int totalRevolutions;
+int tickCountReady;
+char totalRevolutionsReady;
+int countFlag;
 
-void timer1_motor_counter() {
-    //CloseTimer1();
-    //LATBbits.LATB5 ^= 1;
-    uart_send_bytes(&stop, 2);
-
+void encoders_init() {
+    tickCount = 0;
+    totalRevolutions = 0;
 }
 
 void motor_control_thread(public_message_t *msg) {
-    LATBbits.LATB3 ^= 1;
     switch (msg->message_type) {
         case PUB_MSG_T_MOV_CMD:
         {
@@ -67,10 +71,10 @@ void motor_control_thread(public_message_t *msg) {
             break;
         }
     }
-    LATBbits.LATB3 ^= 1;
 }
 
 void motor_forward_both() {
+    countFlag = 1;
     uart_send_bytes(&forward, 2);
 }
 
@@ -79,15 +83,23 @@ void motor_stop_both() {
 }
 
 void motor_turn() {
+    countFlag = 0;
+
+    //Stores the distance of the length of the wall that needs to be sent to arm
+    tickCountReady = tickCount;
+    totalRevolutionsReady = (char)totalRevolutions;
+
     uart_send_bytes(&turnRight, 2);
+    encoders_init();
+
 }
 
 void motor_fix_left() {
+    countFlag = 0;
     uart_send_bytes(&turnLeft, 2);
-    //WriteTimer1(50535);
-    //OpenTimer1(TIMER_INT_ON & T1_PS_1_2 & T1_16BIT_RW & T1_SOURCE_INT & T1_OSC1EN_OFF & T1_SYNC_EXT_OFF);
 }
 
 void motor_fix_right() {
-
+    countFlag = 0;
+    uart_send_bytes(&turnRight, 2);
 }
