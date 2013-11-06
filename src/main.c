@@ -292,7 +292,7 @@ void main(void) {
                     }
                     default:
                     {
-                        SET_UART_MESSAGE_ERROR_PIN();
+                        SET_UART_QUEUE_ERROR_PIN();
                         break;
                     }
                 }

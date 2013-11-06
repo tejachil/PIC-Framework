@@ -58,7 +58,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // Make sure the message is long enough to be valid
             if (length >= PUB_MSG_MIN_SIZE) {
                 // Send the message directly to UART
-                if (MSGSEND_OKAY != ToUART_sendmsg(MSGT_UART_QUEUED_MSG, length, msgbuffer)) {
+                if (MSGSEND_OKAY != ToUART_sendmsg(length, MSGT_UART_QUEUED_MSG, msgbuffer)) {
                     SET_UART_QUEUE_ERROR_PIN();
                 }
             }
