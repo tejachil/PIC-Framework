@@ -4,8 +4,6 @@
 
 extern int tickCount;
 extern int totalRevolutions;
-extern int tickCountReady;
-extern char totalRevolutionsReady;
 extern int countFlag;
 
 void encoders_init(void);

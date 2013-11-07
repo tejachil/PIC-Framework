@@ -162,9 +162,10 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // Invalid message type
         case PUB_MSG_T_ENCODER_DATA:
         {
-            response.data[1] = (tickCountReady & 0xFF00) >> 8;
-            response.data[0] = tickCountReady & 0x00FF;
-            response.data[2] = totalRevolutionsReady;
+            response.data[1] = (tickCount & 0xFF00) >> 8;
+            response.data[0] = tickCount & 0x00FF;
+            response.data[2] = totalRevolutions;
+            encoders_init();
 
             break;
         }
