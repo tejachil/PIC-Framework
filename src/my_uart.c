@@ -119,9 +119,16 @@ void uart_rx_int_handler() {
         if ((uc_ptr->rx_message.data_length + PUB_MSG_MIN_SIZE) == uc_ptr->rx_count) {
             ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_message.raw_message_bytes);
             uart_rx_reset();
-        }            // Otherwise, restart the timeout in case the next byte doesn't come
+        }// Otherwise, restart the timeout in case the next byte doesn't come
         else {
             uart_timeout_restart();
+
+            // If this byte reached or exceeded the buffer size without
+            // completing a message, the receiver must be reset.
+            if (uc_ptr->rx_count >= PUB_MSG_MAX_SIZE) {
+                TOGGLE_UART_RX_OVERFLOW_PIN();
+                uart_rx_reset();
+            }
         }
     }
 #ifdef __USE18F26J50

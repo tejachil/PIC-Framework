@@ -13,6 +13,8 @@
 #define TOGGLE_UART_RX_TIMEOUT_STOP_PIN() (LATBbits.LATB1 ^= 1)
 /** Pin toggled when the UART Rx timeout is started. */
 #define TOGGLE_UART_RX_TIMEOUT_START_PIN() (LATBbits.LATB2 ^= 1)
+/** Pin toggled when the UART Rx driver resets due to an overflow. */
+#define TOGGLE_UART_RX_OVERFLOW_PIN() (LATBbits.LATB3 ^= 1)
 /** Pin set when an error occurs with the I2C queue. */
 #define SET_I2C_QUEUE_ERROR_PIN() (LATBbits.LATB4 ^= 1)
 /** Pin set when an error occurs with the UART queue. */
@@ -26,6 +28,7 @@
 #define TOGGLE_UART_RX_TIMEOUT_PIN()
 #define TOGGLE_UART_RX_TIMEOUT_STOP_PIN()
 #define TOGGLE_UART_RX_TIMEOUT_START_PIN()
+#define TOGGLE_UART_RX_OVERFLOW_PIN()
 #define SET_I2C_QUEUE_ERROR_PIN()
 #define SET_UART_QUEUE_ERROR_PIN()
 #define SET_UART_MESSAGE_ERROR_PIN()
