@@ -41,6 +41,16 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 break;
             } // End commands for Motor Controller PIC
 
+            case PUB_MSG_T_ENCODER_DATA:
+            {
+                // Read the full message from the slave
+                if (I2C_ERR_NONE != i2c_master_read(MOTOR_PIC_ADDR, type, msg_total_size)) {
+                    SET_I2C_QUEUE_ERROR_PIN();
+                }
+
+                break;
+            } // End requests for Motor Controller PIC
+
             default:
             {
                 // We shouldn't be receiving any other message types over
