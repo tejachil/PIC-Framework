@@ -58,6 +58,6 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 SET_UART_MESSAGE_ERROR_PIN();
             }
         } // End switch message_type
-#endif
+#endif // ifdef MASTER_PIC
     }
 }

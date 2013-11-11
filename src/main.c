@@ -1,25 +1,16 @@
 #include "maindefs.h"
 #include <stdio.h>
-#ifndef __XC8
 #include <usart.h>
 #include <i2c.h>
 #include <timers.h>
 #include <adc.h>
-#else
-#include <plib/usart.h>
-#include <plib/i2c.h>
-#include <plib/timers.h>
-#include <plib/adc.h>
-#endif
 #include "interrupts.h"
 #include "messages.h"
 #include "my_uart.h"
 #include "my_i2c.h"
 #include "uart_thread.h"
 #include "my_gpio.h"
-#ifdef USE_ADC_TEST
 #include "my_adc.h"
-#endif //ifdef USE_ADC_TEST
 #include "public_messages.h"
 #include "i2c_thread.h"
 #include "i2c_queue_thread.h"
@@ -137,7 +128,6 @@ void main(void) {
     uart_comm uc;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
-    uart_thread_struct uthread_data; // info for uart_lthread
 
 #ifdef __USE18F2680
     OSCCON = 0xFC; // see datasheet
@@ -262,7 +252,7 @@ void main(void) {
                 case MSGT_OVERRUN:
                 case MSGT_UART_DATA:
                 {
-                    uart_lthread(&uthread_data, msgtype, length, msgbuffer);
+                    uart_lthread(msgtype, length, msgbuffer);
                     break;
                 };
                 case MSGT_ADC:

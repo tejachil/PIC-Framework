@@ -6,6 +6,8 @@
 #ifndef MY_GPIO_H
 #define	MY_GPIO_H
 
+// Pin definitions for debug output (should probably be unique to each target
+// device)
 #ifdef MASTER_PIC
 /** Pin toggled on UART Rx timeout. */
 #define TOGGLE_UART_RX_TIMEOUT_PIN() (LATBbits.LATB0 ^= 1)

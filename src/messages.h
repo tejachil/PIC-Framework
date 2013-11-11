@@ -10,16 +10,16 @@
 #define MSGQUEUELEN 4
 
 typedef struct __msg {
-	unsigned char	full;
-	unsigned char	length;
-	unsigned char msgtype;
-	unsigned char data[MSGLEN];
+    unsigned char full;
+    unsigned char length;
+    unsigned char msgtype;
+    unsigned char data[MSGLEN];
 } msg;
 
 typedef struct __msg_queue {
-	msg	queue[MSGQUEUELEN];
-	unsigned char	cur_write_ind;
-	unsigned char	cur_read_ind;
+    msg queue[MSGQUEUELEN];
+    unsigned char cur_write_ind;
+    unsigned char cur_read_ind;
 } msg_queue;
 
 // Error Codes
@@ -56,36 +56,36 @@ void block_on_To_msgqueues(void);
 // The "ToMainLow" queue is a message queue from low priority
 // interrupt handlers to the "main()" thread.  The send is called
 // in the interrupt handlers and the receive from "main()"
-signed char	ToMainLow_sendmsg(unsigned char,unsigned char,void *);
-signed char	ToMainLow_recvmsg(unsigned char,unsigned char *,void *);
+signed char ToMainLow_sendmsg(unsigned char, unsigned char, void *);
+signed char ToMainLow_recvmsg(unsigned char, unsigned char *, void *);
 
 // Queue:
 // The "ToMainHigh" queue is a message queue from high priority
 // interrupt handlers to the "main()" thread.  The send is called
 // in the interrupt handlers and the receive from "main()"
-signed char	ToMainHigh_sendmsg(unsigned char,unsigned char,void *);
-signed char	ToMainHigh_recvmsg(unsigned char,unsigned char *,void *);
+signed char ToMainHigh_sendmsg(unsigned char, unsigned char, void *);
+signed char ToMainHigh_recvmsg(unsigned char, unsigned char *, void *);
 
 // Queue:
 // The "FromMainLow" queue is a message queue from the "main()"
 // thread to the low priority interrupt handlers.  The send is called
 // in the "main()" thread and the receive from the interrupt handlers.
-signed char	FromMainLow_sendmsg(unsigned char,unsigned char,void *);
-signed char	FromMainLow_recvmsg(unsigned char,unsigned char *,void *);
+signed char FromMainLow_sendmsg(unsigned char, unsigned char, void *);
+signed char FromMainLow_recvmsg(unsigned char, unsigned char *, void *);
 
 // Queue:
 // The "FromMainHigh" queue is a message queue from the "main()"
 // thread to the high priority interrupt handlers.  The send is called
 // in the "main()" thread and the receive from the interrupt handlers.
-signed char	FromMainHigh_sendmsg(unsigned char,unsigned char,void *);
-signed char	FromMainHigh_recvmsg(unsigned char,unsigned char *,void *);
+signed char FromMainHigh_sendmsg(unsigned char, unsigned char, void *);
+signed char FromMainHigh_recvmsg(unsigned char, unsigned char *, void *);
 
 // Queue: for messages that will be sent over I2C.  Writer is uart_lthread() and
 // reader is main().
 signed char ToI2C_sendmsg(const unsigned char, const public_message_t * const);
 signed char ToI2C_recvmsg(unsigned char * const, public_message_t * const);
 
-// Queue: for messages that will be sent over UART.  Writer is uart_lthread()
+// Queue: for messages that will be sent over UART.  Writer is i2c_lthread()
 // and reader is main().
 signed char ToUART_sendmsg(unsigned char, unsigned char, void *);
 signed char ToUART_recvmsg(unsigned char, unsigned char *, void *);

@@ -1,11 +1,7 @@
 /*
  * ADC Driver implementation
  */
-#ifndef __XC8
 #include <adc.h>
-#else
-#include <plib/adc.h>
-#endif
 #include "maindefs.h"
 #include "my_adc.h"
 #include "my_gpio.h"
@@ -19,15 +15,15 @@ static int currentChannel;
  * ADC initializer.  Sets up ADC channel 0,1 for conversions with an interrupt.
  */
 void adc_init() {
-	// counter for loop
-	int i = 0;
+    // counter for loop
+    int i = 0;
     // Configure ADC for a read on channel 0,1
     OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
     SetChanADC(ADC_CH0);
     currentChannel = 0;
     // Initialize all channels to 0
-	for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
-		adc_val[i] = 0;
+    for (i = 0; i < NUMBER_OF_CHANNELS; ++i)
+        adc_val[i] = 0;
 }
 
 /*
@@ -53,11 +49,10 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 adc_val[currentChannel] = adc_val_low + (((int) adc_val_high) << 8);
 
                 // toggle between channels to read them sequentially
-                if(currentChannel == 0){
+                if (currentChannel == 0) {
                     SetChanADC(ADC_CH1);
                     currentChannel = 1;
-                }
-                else if(currentChannel == 1){
+                } else if (currentChannel == 1) {
                     SetChanADC(ADC_CH0);
                     currentChannel = 0;
                 }
@@ -80,7 +75,7 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
  * Retrieve most recent ADC value.
  */
 int adc_read(int channel) {
-    if(channel < NUMBER_OF_CHANNELS)
+    if (channel < NUMBER_OF_CHANNELS)
         return adc_val[channel];
     return 0;
 }

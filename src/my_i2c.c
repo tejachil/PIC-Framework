@@ -1,10 +1,6 @@
 #include "maindefs.h"
 #include "my_i2c.h"
 
-#ifndef __USE18F45J10
-#error "I2C library not implemented for this device"
-#endif
-
 i2c_comm *ic_ptr;
 
 /**

@@ -8,7 +8,7 @@
 #include "my_gpio.h"
 #include "messages.h"
 
-int uart_lthread(uart_thread_struct *uptr, int msgtype, int length, unsigned char *msgbuffer) {
+int uart_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     if (msgtype == MSGT_OVERRUN) {
 
     } else if (msgtype == MSGT_UART_DATA) {

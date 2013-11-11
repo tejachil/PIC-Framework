@@ -1,9 +1,5 @@
 #include "my_gpio.h"
-#ifndef __XC8
 #include "adc.h"
-#else
-#include <plib/adc.h>
-#endif
 
 /*
  * Initialize PORTB pins as output.
