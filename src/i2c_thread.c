@@ -87,7 +87,6 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
     // Check the length to determine if this is a complete message or just a
     // message request
-    LATBbits.LATB5 ^= 1;
     if (length >= PUB_MSG_MIN_SIZE) {
         // Cast the received data as a public message
         public_message_t *msg = (public_message_t *) msgbuffer;
@@ -125,7 +124,6 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
         // Simply save the requested message type ("register address")
         last_message_request = *msgbuffer;
     }
-    LATBbits.LATB5 ^= 1;
 }
 
 void i2c_lthread_send_slave_response(const public_message_type_t type) {
@@ -156,10 +154,8 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
         } // End case SENS_DIST
 
 #elif defined (MOTOR_PIC)
-            // Any responses from the Motor Controller PIC would be here.
-#endif // SENSOR_PIC / MOTOR_PIC
 
-            // Invalid message type
+            // ENCODER_DATA is a request for encoder readings
         case PUB_MSG_T_ENCODER_DATA:
         {
             response.data[1] = (tickCount & 0xFF00) >> 8;
@@ -169,6 +165,10 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
 
             break;
         }
+
+#endif // SENSOR_PIC / MOTOR_PIC
+
+            // Invalid message type
         default:
         {
             // Do not send a response
