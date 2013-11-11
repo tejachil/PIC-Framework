@@ -7,7 +7,7 @@
 #define MSGLEN (PUB_MSG_MAX_SIZE)
 
 // The maximum number of messages in a single queue
-#define MSGQUEUELEN 4
+#define MSGQUEUELEN (5)
 
 typedef struct __msg {
 	unsigned char	full;

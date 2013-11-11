@@ -94,11 +94,9 @@ signed char recv_msg(msg_queue *qptr, unsigned char maxlength, unsigned char *ms
         return (MSGQUEUE_EMPTY);
     }
 }
-#ifndef __XC8
 #pragma udata msgqueue1
-#endif
-
 static msg_queue ToMainLow_MQ;
+#pragma udata
 
 signed char ToMainLow_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
 #ifdef DEBUG
@@ -117,11 +115,9 @@ signed char ToMainLow_recvmsg(unsigned char maxlength, unsigned char *msgtype, v
 #endif
     return (recv_msg(&ToMainLow_MQ, maxlength, msgtype, data));
 }
-#ifndef __XC8
 #pragma udata msgqueue2
-#endif
-
 static msg_queue ToMainHigh_MQ;
+#pragma udata
 
 signed char ToMainHigh_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
 #ifdef DEBUG
@@ -141,11 +137,9 @@ signed char ToMainHigh_recvmsg(unsigned char maxlength, unsigned char *msgtype, 
     return (recv_msg(&ToMainHigh_MQ, maxlength, msgtype, data));
 }
 
-#ifndef __XC8
 #pragma udata msgqueue3
-#endif
-
 static msg_queue FromMainLow_MQ;
+#pragma udata
 
 signed char FromMainLow_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
 #ifdef DEBUG
@@ -165,11 +159,9 @@ signed char FromMainLow_recvmsg(unsigned char maxlength, unsigned char *msgtype,
     return (recv_msg(&FromMainLow_MQ, maxlength, msgtype, data));
 }
 
-#ifndef __XC8
 #pragma udata msgqueue4
-#endif
-
 static msg_queue FromMainHigh_MQ;
+#pragma udata
 
 signed char FromMainHigh_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
 #ifdef DEBUG
@@ -194,6 +186,7 @@ static unsigned char MQ_Main_Willing_to_block;
 #ifdef MASTER_PIC
 #pragma udata i2cqueue
 static msg_queue toI2C_MQ;
+#pragma udata
 
 signed char ToI2C_sendmsg(const unsigned char msgtype, const public_message_t * const msg) {
     return (send_msg(&toI2C_MQ, sizeof (public_message_t), msgtype, (void *) msg));
@@ -206,6 +199,7 @@ signed char ToI2C_recvmsg(unsigned char * const msgtype, public_message_t * cons
 
 #pragma udata uartqueue
 static msg_queue ToUART_MQ;
+#pragma udata
 
 signed char ToUART_sendmsg(unsigned char length, unsigned char msgtype, void *data) {
     return (send_msg(&ToUART_MQ, length, msgtype, data));

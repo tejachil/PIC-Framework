@@ -129,6 +129,11 @@ Something is messed up
 #endif
 #endif
 
+// See comment in 18lf45j10.lkr line 53
+#pragma udata large_udata
+unsigned char array[0x100];
+#pragma udata
+
 void main(void) {
     signed char length;
     unsigned char msgtype;
