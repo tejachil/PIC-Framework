@@ -5,10 +5,8 @@
 #include "public_messages.h"
 
 // Ensure the device isn't expecting to be both master and slave (or neither)
-#if (defined(I2C_MASTER) && defined(I2C_SLAVE))
-#error "Cannot be both I2C Master and Slave"
-#elif (!defined(I2C_MASTER) && !defined(I2C_SLAVE))
-#error "Must select either I2C Master or Slave"
+#if !(defined(I2C_MASTER) ^ defined(I2C_SLAVE))
+#error "Must select either I2C master or slave (not neither or both)"
 #endif
 
 #define MAXI2CBUF (PUB_MSG_MAX_SIZE)

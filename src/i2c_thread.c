@@ -34,7 +34,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // Not worried about the event count that comes at the end of this
             // message type, just decrement the length to ignore it
             length--;
-            
+
             // Handle the write
             i2c_lthread_handle_slave_write(length, msgbuffer);
 
@@ -157,7 +157,7 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // Fill in the message data
             for (i = 0; i < NUMBER_OF_CHANNELS; ++i) {
                 int adc_val = adc_read(i);
-                response.data[2*i] = (adc_val & 0xFF00) >> 8;
+                response.data[2 * i] = (adc_val & 0xFF00) >> 8;
                 response.data[(2 * i) + 1] = adc_val & 0x00FF;
             }
 

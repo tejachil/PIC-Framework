@@ -2,6 +2,9 @@
 #include "interrupts.h"
 #include "user_interrupts.h"
 #include "messages.h"
+#include "my_uart.h"
+#include "my_i2c.h"
+#include "my_adc.h"
 
 //----------------------------------------------------------------------------
 // Note: This code for processing interrupts is configured to allow for high and
@@ -73,18 +76,10 @@ InterruptVectorHigh(void) {
 //----------------------------------------------------------------------------
 // High priority interrupt routine
 // this parcels out interrupts to individual handlers
-
-#ifdef __XC8
-interrupt
-#else
 #pragma code
 #pragma interrupt InterruptHandlerHigh
-#endif
 
 void InterruptHandlerHigh() {
-    // We need to check the interrupt flag of each enabled high-priority interrupt to
-    // see which device generated this interrupt.  Then we can call the correct handler.
-
     // check to see if we have an I2C interrupt
     if (PIR1bits.SSPIF) {
         // clear the interrupt flag
@@ -92,8 +87,6 @@ void InterruptHandlerHigh() {
         // call the handler
         i2c_int_handler();
     }
-
-    // here is where you would check other interrupt flags.
 
 #ifdef USE_ADC_TEST
     // Check to see if we have an ADC interrupt
@@ -104,25 +97,14 @@ void InterruptHandlerHigh() {
         adc_int_handler();
     }
 #endif //ifdef USE_ADC_TEST
-
-    // The *last* thing I do here is check to see if we can
-    // allow the processor to go to sleep
-    // This code *DEPENDS* on the code in messages.c being
-    // initialized using "init_queues()" -- if you aren't using
-    // this, then you shouldn't have this call here
-    //SleepIfOkay();
 }
 
 //----------------------------------------------------------------------------
 // Low priority interrupt routine
 // this parcels out interrupts to individual handlers
 // This works the same way as the "High" interrupt handler
-#ifdef __XC8
-interrupt low_priority
-#else
 #pragma code
 #pragma interruptlow InterruptHandlerLow
-#endif
 
 void InterruptHandlerLow() {
     // check to see if we have an interrupt on timer 1

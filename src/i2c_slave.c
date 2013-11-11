@@ -3,11 +3,7 @@
  */
 
 #include "maindefs.h"
-#ifndef __XC8
 #include <i2c.h>
-#else
-#include <plib/i2c.h>
-#endif
 #include "my_i2c.h"
 #include "messages.h"
 

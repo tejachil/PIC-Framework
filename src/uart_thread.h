@@ -1,6 +1,6 @@
-typedef struct __uart_thread_struct {
-	// "persistent" data for this "lthread" would go here
-	int	data;
-} uart_thread_struct;
+#ifndef UART_THREAD_H
+#define UART_THREAD_H
 
-int uart_lthread(uart_thread_struct *,int,int,unsigned char*);
+int uart_lthread(int, int, unsigned char*);
+
+#endif // ifndef UART_THREAD_H

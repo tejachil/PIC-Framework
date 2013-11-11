@@ -1,33 +1,13 @@
-#ifndef __maindefs
-#define __maindefs
+#ifndef MAINDEFS_H
+#define MAINDEFS_H
 
-#ifdef __XC8
-#include <xc.h>
-#ifdef _18F45J10
-#define __USE18F45J10 1
-#else
-#ifdef _18F2680
-#define __USE18F2680 1
-#else
-#ifdef _18F26J50
-#define __USE18F26J50 1
-#endif
-#endif
-#endif
-#else
 #ifdef __18F45J10
 #define __USE18F45J10 1
 #else
-#ifdef __18F2680
-#define __USE18F2680 1
-#else
-#ifdef __18F26J50
-#define __USE18F26J50 1
+#error "Only the PIC18F45J10 is supported"
 #endif
-#endif
-#endif
+
 #include <p18cxxx.h>
-#endif
 
 // Message type definitions
 #define MSGT_MAIN1 20
@@ -53,11 +33,7 @@
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
 //#define SENSOR_PIC
 
-#if (!defined(MASTER_PIC) && !defined(MOTOR_PIC) && !defined(SENSOR_PIC))
-#error "Compiling without a defined target device"
-#endif
-
-// Functionality enable/disable definitions
+// Specific functionality enable/disable definitions
 
 // Define USE_ADC_TEST to enable reporting ADC readings over I2C.
 //#define USE_ADC_TEST
@@ -71,5 +47,16 @@
 #define I2C_SLAVE
 #endif
 
+// Check that exactly one target is defined
+#if (!defined(MASTER_PIC) && !defined(MOTOR_PIC) && !defined(SENSOR_PIC))
+#error "Compiling without a defined target device"
+#elif (defined(MASTER_PIC) && defined(MOTOR_PIC))
+#error "Compiling with two or more defined target devices"
+#elif (defined(MASTER_PIC) && defined(SENSOR_PIC))
+#error "Compiling with two or more defined target devices"
+#elif (defined(MOTOR_PIC) && defined(SENSOR_PIC))
+#error "Compiling with two or more defined target devices"
 #endif
+
+#endif // ifndef MAINDEFS_H
 

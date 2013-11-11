@@ -3,11 +3,6 @@
 
 #include "public_messages.h"
 
-// This driver does not work on PICs with 2 UARTs
-#ifdef __USE18F26J50
-#error "UART driver not completely implemented for 2-UART devices"
-#endif
-
 /** UART baud rate. */
 #ifndef USE_LCD
 #define UART_BAUD_RATE (19200)

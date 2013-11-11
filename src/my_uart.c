@@ -1,9 +1,5 @@
 #include "maindefs.h"
-#ifndef __XC8
 #include <usart.h>
-#else
-#include <plib/usart.h>
-#endif
 #include "my_uart.h"
 #include "messages.h"
 #include "my_gpio.h"
