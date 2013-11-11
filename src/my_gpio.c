@@ -10,7 +10,7 @@
  */
 void gpio_init_portb_output() {
     LATB = 0x0; // clear the output latch
-    ADCON1 = 0x0F; // turn off the A2D
+    ADCON1 = 0xFF; // turn off the A2D
     TRISB = 0x00; // set RB<7:0> to outputs
 }
 

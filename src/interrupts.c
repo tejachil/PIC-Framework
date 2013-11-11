@@ -17,6 +17,10 @@ void enable_interrupts() {
     RCONbits.IPEN = 1;
     INTCONbits.GIEH = 1;
     INTCONbits.GIEL = 1;
+    INTCONbits.RBIE = 1;
+    INTCON2bits.RBIP = 1;
+    TRISBbits.RB4 = 1;
+    
 }
 
 int in_high_int() {
@@ -81,6 +85,7 @@ interrupt
 #pragma interrupt InterruptHandlerHigh
 #endif
 
+
 void InterruptHandlerHigh() {
     // We need to check the interrupt flag of each enabled high-priority interrupt to
     // see which device generated this interrupt.  Then we can call the correct handler.
@@ -91,6 +96,11 @@ void InterruptHandlerHigh() {
         PIR1bits.SSPIF = 0;
         // call the handler
         i2c_int_handler();
+    }
+
+    //check to see if there is an interrupt on RBIF for encoders
+    if (INTCONbits.RBIF){
+        encoder_interrupt_handler();
     }
 
     // here is where you would check other interrupt flags.

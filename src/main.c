@@ -24,6 +24,8 @@
 #include "i2c_thread.h"
 #include "i2c_queue_thread.h"
 #include "uart_queue_thread.h"
+#include "my_motor.h"
+#include "user_interrupts.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -169,6 +171,9 @@ void main(void) {
 
     // initialize message queues before enabling any interrupts
     init_queues();
+	
+    // Initialize encoder tick counter and revolution counter
+    encoders_init();
 
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high

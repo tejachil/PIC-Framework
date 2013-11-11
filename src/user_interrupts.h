@@ -6,6 +6,9 @@
 // interrupts.c because it, of course, doesn't know which
 // interrupt handlers you would like to call
 
+static int tickC = 0;
+static int totalRevolution = 0;
+
 //My example program uses these two timer interrupts
 void timer0_int_handler(void);
 
@@ -21,5 +24,8 @@ void timer1_int_handler(void);
 // Include ADC interrupt handler definitions
 #include "my_adc.h"
 #endif //ifdef USE_ADC_TEST
+
+void encoder_interrupt_handler(void);
+
 
 #endif

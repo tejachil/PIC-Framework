@@ -6,6 +6,7 @@
 #include "my_uart.h"
 #include "my_gpio.h"
 #include "messages.h"
+#include "my_motor.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -34,7 +35,7 @@ void i2c_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // Not worried about the event count that comes at the end of this
             // message type, just decrement the length to ignore it
             length--;
-            
+
             // Handle the write
             i2c_lthread_handle_slave_write(length, msgbuffer);
 
@@ -107,20 +108,16 @@ void i2c_lthread_handle_slave_write(int length, unsigned char *msgbuffer) {
 #elif defined(MOTOR_PIC)
 
             case PUB_MSG_T_MOV_CMD:
+            case PUB_MSG_T_FIX_CMD:
+            case PUB_MSG_T_TURN_CMD:
             {
                 // Handle the MOV_CMD here
-                LATBbits.LATB0 ^= 1;
+                //LATBbits.LATB0 ^= 1;
+                motor_control_thread(msg);
 
                 break;
             } // End case MOV_CMD
 
-            case PUB_MSG_T_TURN_CMD:
-            {
-                // Handle the TURN_CMD here
-                LATBbits.LATB1 ^= 1;
-
-                break;
-            } // End case TURN_CMD
 
 #endif // SENSOR_PIC / MOTOR_PIC
 
@@ -157,7 +154,7 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // Fill in the message data
             for (i = 0; i < NUMBER_OF_CHANNELS; ++i) {
                 int adc_val = adc_read(i);
-                response.data[2*i] = (adc_val & 0xFF00) >> 8;
+                response.data[2 * i] = (adc_val & 0xFF00) >> 8;
                 response.data[(2 * i) + 1] = adc_val & 0x00FF;
             }
 
@@ -165,11 +162,21 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
         } // End case SENS_DIST
 
 #elif defined (MOTOR_PIC)
-            // Any responses from the Motor Controller PIC would be here.
+
+            // ENCODER_DATA is a request for encoder readings
+        case PUB_MSG_T_ENCODER_DATA:
+        {
+            response.data[1] = (tickCount & 0xFF00) >> 8;
+            response.data[0] = tickCount & 0x00FF;
+            response.data[2] = totalRevolutions;
+            encoders_init();
+
+            break;
+        }
+
 #endif // SENSOR_PIC / MOTOR_PIC
 
             // Invalid message type
-        case NUM_PUB_MSG_T:
         default:
         {
             // Do not send a response

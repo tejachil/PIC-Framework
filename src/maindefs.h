@@ -43,6 +43,7 @@
 #define MSGT_ADC 50 // ADC conversion value
 #define MSGT_I2C_QUEUED_MSG (60)
 #define MSGT_UART_QUEUED_MSG (61)
+#define MSGT_ENC 51
 
 // Main device ID definitions
 
