@@ -2,7 +2,7 @@
 #include "my_uart.h"
 
 void clearLCD(){
-    char buf[2] = {0xFE, 0x01};
+    unsigned char buf[2] = {0xFE, 0x01};
     uart_send_bytes(buf, 2);
 }
 

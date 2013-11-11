@@ -4,11 +4,11 @@
 #include <timers.h>
 #include "my_encoder.h"
 
-static char forward[] = {0x34, 0xB3};
-static char backward[] = {0x4C, 0xCB};
-static char turnLeft[] = {0x55, 0xAB};
-static char turnRight[] = {0x2B, 0xD5};
-static char stop[] = {0, 0};
+static unsigned char forward[] = {0x34, 0xB3};
+static unsigned char backward[] = {0x4C, 0xCB};
+static unsigned char turnLeft[] = {0x55, 0xAB};
+static unsigned char turnRight[] = {0x2B, 0xD5};
+static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
 int tickCount;
 int totalRevolutions;
@@ -73,24 +73,24 @@ void motor_control_thread(public_message_t *msg) {
 
 void motor_forward_both() {
     countFlag = 1;
-    uart_send_bytes(&forward, 2);
+    uart_send_bytes(forward, 2);
 }
 
 void motor_stop_both() {
-    uart_send_bytes(&stop, 2);
+    uart_send_bytes(stop, 2);
 }
 
 void motor_turn() {
     countFlag = 0;
-    uart_send_bytes(&turnRight, 2);
+    uart_send_bytes(turnRight, 2);
 }
 
 void motor_fix_left() {
     countFlag = 0;
-    uart_send_bytes(&turnLeft, 2);
+    uart_send_bytes(turnLeft, 2);
 }
 
 void motor_fix_right() {
     countFlag = 0;
-    uart_send_bytes(&turnRight, 2);
+    uart_send_bytes(turnRight, 2);
 }
