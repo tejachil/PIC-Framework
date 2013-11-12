@@ -97,16 +97,6 @@ void InterruptHandlerHigh() {
     if (INTCONbits.RBIF){
         encoder_interrupt_handler();
     }
-	
-#ifdef USE_ADC_TEST
-    // Check to see if we have an ADC interrupt
-    if (PIR1bits.ADIF) {
-        // Clear the interrupt flag
-        PIR1bits.ADIF = 0;
-        // Call the ADC interrupt handler
-        adc_int_handler();
-    }
-#endif //ifdef USE_ADC_TEST
 }
 
 //----------------------------------------------------------------------------
@@ -128,6 +118,17 @@ void InterruptHandlerLow() {
         PIR1bits.RCIF = 0; //clear interrupt flag
         uart_rx_int_handler();
     }
+
+
+    #ifdef USE_ADC_TEST
+    // Check to see if we have an ADC interrupt
+    if (PIR1bits.ADIF) {
+        // Clear the interrupt flag
+        PIR1bits.ADIF = 0;
+        // Call the ADC interrupt handler
+        adc_int_handler();
+    }
+    #endif //ifdef USE_ADC_TEST
 
     // Check if we have a USART Tx interrupt (TXIF will remain set as long as
     // the peripheral is ready to transmit, so we must also check if the

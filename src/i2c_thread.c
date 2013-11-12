@@ -154,8 +154,8 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // Fill in the message data
             for (i = 0; i < NUMBER_OF_CHANNELS; ++i) {
                 int adc_val = adc_read(i);
-                response.data[2 * i] = (adc_val & 0xFF00) >> 8;
-                response.data[(2 * i) + 1] = adc_val & 0x00FF;
+                response.data[2*i] = adc_val & 0x00FF; // send lower byte first
+                response.data[(2 * i) + 1] = (adc_val & 0xFF00) >> 8; //then higher byte
             }
 
             break;
