@@ -179,6 +179,8 @@ void main(void) {
     IPR1bits.TXIP = 0;
     // Timer0 interrupt
     INTCON2bits.TMR0IP = 0;
+    // I2C2 interrupt
+    IPR3bits.SSP2IP = 1;
 
 #if defined(I2C_SLAVE)
 #if defined(MOTOR_PIC)
@@ -194,6 +196,9 @@ void main(void) {
 
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
+#ifdef I2C2_MASTER
+    PIE3bits.SSP2IE = 1;
+#endif
 
     // Peripheral interrupts can have their priority set to high or low
     // enable high-priority interrupts and low-priority interrupts

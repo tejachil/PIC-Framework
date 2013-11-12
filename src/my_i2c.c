@@ -17,7 +17,7 @@ extern void i2c_master_handler(void);
 
 void init_i2c(i2c_comm *ic) {
     ic_ptr = ic;
-    ic_ptr->state = I2C_IDLE;
+    ic_ptr->state = I2C_MASTER_IDLE;
 #ifdef I2C_SLAVE
     ic_ptr->inbuflen = 0;
     ic_ptr->event_count = 0;

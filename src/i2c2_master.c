@@ -4,60 +4,58 @@
 
 #include "maindefs.h"
 #include <i2c.h>
-#include "my_i2c.h"
+#include "my_i2c2.h"
 #include "messages.h"
 #include "my_gpio.h"
 #include <string.h> // for memcpy
 
-extern i2c_comm *ic_ptr;
-
-#ifdef I2C_MASTER
+extern i2c2_comm *ic2_ptr;
 
 /**
  * Handles an error in the I2C master driver.
  */
-void i2c_master_handle_error(void);
+void i2c2_master_handle_error(void);
 
-void i2c_configure_master() {
+void i2c2_configure_master() {
     // Make sure the pins are set as input
-    I2C1_SCL = 1;
-    I2C1_SDA = 1;
+    I2C2_SCL = 1;
+    I2C2_SDA = 1;
 
     // Set the config bits located in the status register
-    SSP1STATbits.SMP = 1;
-    SSP1STATbits.CKE = 0;
+    SSP2STATbits.SMP = 1;
+    SSP2STATbits.CKE = 0;
 
     // Reset the control registers (just in case)
-    SSP1CON1 = 0;
-    SSP1CON2 = 0;
+    SSP2CON1 = 0;
+    SSP2CON2 = 0;
 
-    // Set the module for I2C master mode (SSPM field of SSP1CON1)
-    SSP1CON1 |= 0b01000;
+    // Set the module for I2C master mode (SSPM field of SSPxCON1)
+    SSP2CON1 |= 0b01000;
 
     // Set the module for 100kHz operation using the given formula:
     // Fscl = Fosc / (4*(SSPxADD+1))
     // Solved for SSPxADD:
     // SSPxADD = (Fosc / (4*Fscl)) - 1
     // With Fscl = 100kHz and Fosc = 12MHz,  SSPxADD = 29
-    SSP1ADD = 29;
+    SSP2ADD = 29;
 
     // Enable the module
-    SSP1CON1bits.SSPEN = 1;
+    SSP2CON1bits.SSPEN = 1;
 }
 
-i2c_error_code i2c_master_busy() {
-    if (ic_ptr->state != I2C_MASTER_IDLE) {
+i2c_error_code i2c2_master_busy() {
+    if (ic2_ptr->state != I2C_MASTER_IDLE) {
         return I2C_ERR_BUSY;
     } else {
         return I2C_ERR_NONE;
     }
 }
 
-i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length) {
+i2c_error_code i2c2_master_write(unsigned char slave_addr, unsigned char const * const data, unsigned char data_length) {
     i2c_error_code ret_code = I2C_ERR_NONE;
 
     // Check if the driver is busy
-    if (ic_ptr->state != I2C_MASTER_IDLE) {
+    if (ic2_ptr->state != I2C_MASTER_IDLE) {
         ret_code = I2C_ERR_BUSY;
 
     }// Check the length of the provided data against the maximum length
@@ -71,34 +69,34 @@ i2c_error_code i2c_master_write(unsigned char slave_addr, unsigned char const * 
     }// Otherwise proceed
     else {
         // Set the main state to indicate a write in progress
-        ic_ptr->state = I2C_MASTER_WRITE;
+        ic2_ptr->state = I2C_MASTER_WRITE;
 
         // Copy the provided data to the internal buffer
-        memcpy(ic_ptr->buffer, data, data_length);
+        memcpy(ic2_ptr->buffer, data, data_length);
 
         // Save the length of the copied data
-        ic_ptr->buffer_length = data_length;
+        ic2_ptr->buffer_length = data_length;
 
         // Reset the buffer index
-        ic_ptr->buffer_index = 0;
+        ic2_ptr->buffer_index = 0;
 
         // Save the slave address
-        ic_ptr->slave_addr = slave_addr;
+        ic2_ptr->slave_addr = slave_addr;
 
         // Assert a Start condition and move to the next substate
-        SSP1CON2bits.SEN = 1;
-        ic_ptr->substate = I2C_SUBSTATE_START_SENT;
+        SSP2CON2bits.SEN = 1;
+        ic2_ptr->substate = I2C_SUBSTATE_START_SENT;
 
     }
 
     return ret_code;
 }
 
-i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length) {
+i2c_error_code i2c2_master_read(unsigned char slave_addr, unsigned char reg, unsigned char data_length) {
     i2c_error_code ret_code = I2C_ERR_NONE;
 
     // Check if the driver is busy
-    if (ic_ptr->state != I2C_MASTER_IDLE) {
+    if (ic2_ptr->state != I2C_MASTER_IDLE) {
         ret_code = I2C_ERR_BUSY;
 
     }// Check the requested data length against the maximum length
@@ -112,41 +110,41 @@ i2c_error_code i2c_master_read(unsigned char slave_addr, unsigned char reg, unsi
     }// Otherwise proceed
     else {
         // Set the main state to indicate a read in progress
-        ic_ptr->state = I2C_MASTER_READ;
+        ic2_ptr->state = I2C_MASTER_READ;
 
         // Save the requested data length
-        ic_ptr->buffer_length = data_length;
+        ic2_ptr->buffer_length = data_length;
 
         // Reset the buffer index
-        ic_ptr->buffer_index = 0;
+        ic2_ptr->buffer_index = 0;
 
         // Save the slave address
-        ic_ptr->slave_addr = slave_addr;
+        ic2_ptr->slave_addr = slave_addr;
 
         // Save the register
-        ic_ptr->register_byte = reg;
+        ic2_ptr->register_byte = reg;
 
         // Assert a Start condition and move to the next substate
-        SSP1CON2bits.SEN = 1;
-        ic_ptr->substate = I2C_SUBSTATE_START_SENT;
+        SSP2CON2bits.SEN = 1;
+        ic2_ptr->substate = I2C_SUBSTATE_START_SENT;
 
     }
 
     return ret_code;
 }
 
-void i2c_master_handler() {
+void i2c2_master_handler() {
     // Make sure we are not in an idle state, or else we don't know why this
     // interrupt triggered.
-    if (ic_ptr->state != I2C_MASTER_IDLE) {
-        switch (ic_ptr->substate) {
+    if (ic2_ptr->state != I2C_MASTER_IDLE) {
+        switch (ic2_ptr->substate) {
             case I2C_SUBSTATE_START_SENT:
             {
                 // The Start has completed, send the address and W bit (0)
-                SSPBUF = (ic_ptr->slave_addr << 1);
+                SSP2BUF = (ic2_ptr->slave_addr << 1);
 
                 // Move to the next substate
-                ic_ptr->substate = I2C_SUBSTATE_ADDR_W_SENT;
+                ic2_ptr->substate = I2C_SUBSTATE_ADDR_W_SENT;
 
                 break;
             } // End case I2C_SUBSTATE_START_SENT
@@ -158,26 +156,26 @@ void i2c_master_handler() {
 
 #ifndef I2C_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
-                if (1 == SSPCON2bits.ACKSTAT) {
+                if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
-                    i2c_master_handle_error();
+                    i2c2_master_handle_error();
                 } else
 #endif
                 {
                     unsigned char first_byte;
 
                     // The first byte differs for reads and writes
-                    if (I2C_MASTER_WRITE == ic_ptr->state) {
-                        first_byte = ic_ptr->buffer[ic_ptr->buffer_index];
-                    } else if (I2C_MASTER_READ == ic_ptr->state) {
-                        first_byte = ic_ptr->register_byte;
+                    if (I2C_MASTER_WRITE == ic2_ptr->state) {
+                        first_byte = ic2_ptr->buffer[ic2_ptr->buffer_index];
+                    } else if (I2C_MASTER_READ == ic2_ptr->state) {
+                        first_byte = ic2_ptr->register_byte;
                     }
 
                     // Send the first byte
-                    SSPBUF = first_byte;
+                    SSP2BUF = first_byte;
 
                     // Move to the next substate
-                    ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
+                    ic2_ptr->substate = I2C_SUBSTATE_DATA_SENT;
                 }
                 break;
             } // End case I2C_SUBSTATE_ADDR_W_SENT
@@ -189,40 +187,40 @@ void i2c_master_handler() {
 
 #ifndef I2C_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
-                if (1 == SSPCON2bits.ACKSTAT) {
+                if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
-                    i2c_master_handle_error();
+                    i2c2_master_handle_error();
                 } else
 #endif
                 {
                     // The path differs for reads and writes
-                    if (I2C_MASTER_WRITE == ic_ptr->state) {
+                    if (I2C_MASTER_WRITE == ic2_ptr->state) {
                         // Increment the data index
-                        ic_ptr->buffer_index++;
+                        ic2_ptr->buffer_index++;
 
                         // Check if there is more data to send
-                        if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
+                        if (ic2_ptr->buffer_index < ic2_ptr->buffer_length) {
                             // Send the next byte
-                            SSPBUF = ic_ptr->buffer[ic_ptr->buffer_index];
+                            SSP2BUF = ic2_ptr->buffer[ic2_ptr->buffer_index];
 
                             // Stay in the same substate (we just sent data)
-                            ic_ptr->substate = I2C_SUBSTATE_DATA_SENT;
+                            ic2_ptr->substate = I2C_SUBSTATE_DATA_SENT;
 
                         }// Otherwise there is no more data
                         else {
                             // Assert a Stop condition (the write is complete)
-                            SSPCON2bits.PEN = 1;
+                            SSP2CON2bits.PEN = 1;
 
                             // Move to the next substate
-                            ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+                            ic2_ptr->substate = I2C_SUBSTATE_STOP_SENT;
                         }
                     }
-                    else if (I2C_MASTER_READ == ic_ptr->state) {
+                    else if (I2C_MASTER_READ == ic2_ptr->state) {
                         // Assert a Restart condition
-                        SSPCON2bits.RSEN = 1;
+                        SSP2CON2bits.RSEN = 1;
 
                         // Move to the next substate
-                        ic_ptr->substate = I2C_SUBSTATE_RESTART_SENT;
+                        ic2_ptr->substate = I2C_SUBSTATE_RESTART_SENT;
                     }
 
                 } // End ACK check - else
@@ -239,27 +237,27 @@ void i2c_master_handler() {
 
                 // Send a success message to main only if this point was reached
                 // through normal operation.
-                if (ic_ptr->substate != I2C_SUBSTATE_ERROR) {
+                if (ic2_ptr->substate != I2C_SUBSTATE_ERROR) {
                     // Send a success message to main
-                    if (I2C_MASTER_WRITE == ic_ptr->state) {
-                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_COMPLETE, NULL);
-                    } else if (I2C_MASTER_READ == ic_ptr->state) {
-                        ToMainHigh_sendmsg(ic_ptr->buffer_index, MSGT_I2C_MASTER_RECV_COMPLETE, ic_ptr->buffer);
+                    if (I2C_MASTER_WRITE == ic2_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C2_MASTER_SEND_COMPLETE, NULL);
+                    } else if (I2C_MASTER_READ == ic2_ptr->state) {
+                        ToMainHigh_sendmsg(ic2_ptr->buffer_index, MSGT_I2C2_MASTER_RECV_COMPLETE, ic2_ptr->buffer);
                     }
 
                 }// Otherwise send the appropriate error message to main
                 else {
                     // Send an error message to main
-                    if (I2C_MASTER_WRITE == ic_ptr->state) {
-                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_SEND_FAILED, NULL);
-                    } else if (I2C_MASTER_READ == ic_ptr->state) {
-                        ToMainHigh_sendmsg(0, MSGT_I2C_MASTER_RECV_FAILED, NULL);
+                    if (I2C_MASTER_WRITE == ic2_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C2_MASTER_SEND_FAILED, NULL);
+                    } else if (I2C_MASTER_READ == ic2_ptr->state) {
+                        ToMainHigh_sendmsg(0, MSGT_I2C2_MASTER_RECV_FAILED, NULL);
                     }
                 }
 
                 // Return to idle states
-                ic_ptr->state = I2C_MASTER_IDLE;
-                ic_ptr->substate = I2C_SUBSTATE_IDLE;
+                ic2_ptr->state = I2C_MASTER_IDLE;
+                ic2_ptr->substate = I2C_SUBSTATE_IDLE;
 
                 break;
             } // End case I2C_SUBSTATE_STOP_SENT
@@ -267,10 +265,10 @@ void i2c_master_handler() {
             case I2C_SUBSTATE_RESTART_SENT:
             {
                 // The restart has completed, send the address and R bit (1)
-                SSPBUF = (ic_ptr->slave_addr << 1) | 0x01;
+                SSP2BUF = (ic2_ptr->slave_addr << 1) | 0x01;
 
                 // Move to the next substate
-                ic_ptr->substate = I2C_SUBSTATE_ADDR_R_SENT;
+                ic2_ptr->substate = I2C_SUBSTATE_ADDR_R_SENT;
 
                 break;
             } // End case I2C_SUBSTATE_RESTART_SENT
@@ -282,17 +280,17 @@ void i2c_master_handler() {
 
 #ifndef I2C_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
-                if (1 == SSPCON2bits.ACKSTAT) {
+                if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
-                    i2c_master_handle_error();
+                    i2c2_master_handle_error();
                 } else
 #endif
                 {
                     // Prepare to receive a byte
-                    SSPCON2bits.RCEN = 1;
+                    SSP2CON2bits.RCEN = 1;
 
                     // Move to the next substate
-                    ic_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
+                    ic2_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
                 }
 
                 break;
@@ -303,30 +301,30 @@ void i2c_master_handler() {
                 // A byte has been received, ACK or NACK it as appropriate.
 
                 // Save the byte
-                ic_ptr->buffer[ic_ptr->buffer_index] = SSPBUF;
+                ic2_ptr->buffer[ic2_ptr->buffer_index] = SSP2BUF;
 
                 // Increment the index (received byte counter)
-                ic_ptr->buffer_index++;
+                ic2_ptr->buffer_index++;
 
                 // Check if all requested bytes have been received
-                if (ic_ptr->buffer_index < ic_ptr->buffer_length) {
+                if (ic2_ptr->buffer_index < ic2_ptr->buffer_length) {
                     // Prepare to ACK the byte
-                    SSPCON2bits.ACKDT = 0;
+                    SSP2CON2bits.ACKDT = 0;
 
                     // Move to the next substate
-                    ic_ptr->substate = I2C_SUBSTATE_ACK_SENT;
+                    ic2_ptr->substate = I2C_SUBSTATE_ACK_SENT;
 
                 }// Otherwise no more data is needed from the slave
                 else {
                     // Prepare to NACK the byte
-                    SSPCON2bits.ACKDT = 1;
+                    SSP2CON2bits.ACKDT = 1;
 
                     // Move to the next substate
-                    ic_ptr->substate = I2C_SUBSTATE_NACK_SENT;
+                    ic2_ptr->substate = I2C_SUBSTATE_NACK_SENT;
                 }
 
                 // Send the ACK/NACK as configured above
-                SSPCON2bits.ACKEN = 1;
+                SSP2CON2bits.ACKEN = 1;
 
                 break;
             } // End case I2C_SUBSTATE_WAITING_TO_RECEIVE
@@ -334,10 +332,10 @@ void i2c_master_handler() {
             case I2C_SUBSTATE_ACK_SENT:
             {
                 // Sending of the ACK has completed, prepare to receive a byte
-                SSPCON2bits.RCEN = 1;
+                SSP2CON2bits.RCEN = 1;
 
                 // Move to the next substate
-                ic_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
+                ic2_ptr->substate = I2C_SUBSTATE_WAITING_TO_RECEIVE;
 
                 break;
             } // End case I2C_SUBSTATE_ACK_SENT
@@ -346,17 +344,17 @@ void i2c_master_handler() {
             {
                 // Sending of the NACK has completed, assert a Stop to complete
                 // the read.
-                SSPCON2bits.PEN = 1;
+                SSP2CON2bits.PEN = 1;
 
                 // Move to the next substate
-                ic_ptr->substate = I2C_SUBSTATE_STOP_SENT;
+                ic2_ptr->substate = I2C_SUBSTATE_STOP_SENT;
 
                 break;
             } // End case I2C_SUBSTATE_NACK_SENT
 
             default:
             {
-                i2c_master_handle_error();
+                i2c2_master_handle_error();
                 break;
             } // End default case
         }
@@ -364,21 +362,19 @@ void i2c_master_handler() {
         // The only time we should get an interrupt while in IDLE is if a Stop
         // was asserted after an error.  If that's not what heppened, indicate
         // an error
-        if (I2C_SUBSTATE_ERROR != ic_ptr->substate) {
+        if (I2C_SUBSTATE_ERROR != ic2_ptr->substate) {
             SET_I2C2_ERROR_PIN();
         }
 
-        ic_ptr->state = I2C_MASTER_IDLE;
-        ic_ptr->substate = I2C_SUBSTATE_IDLE;
+        ic2_ptr->state = I2C_MASTER_IDLE;
+        ic2_ptr->substate = I2C_SUBSTATE_IDLE;
     }
 }
 
-void i2c_master_handle_error() {
+void i2c2_master_handle_error() {
     // Assert a Stop condition to reset the bus
-    SSPCON2bits.PEN = 1;
+    SSP2CON2bits.PEN = 1;
 
     // Move to the error substate
-    ic_ptr->substate = I2C_SUBSTATE_ERROR;
+    ic2_ptr->substate = I2C_SUBSTATE_ERROR;
 }
-
-#endif //ifdef I2C_MASTER

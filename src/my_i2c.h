@@ -11,8 +11,6 @@
 
 #define MAXI2CBUF (PUB_MSG_MAX_SIZE)
 
-#ifdef I2C_SLAVE
-
 typedef enum {
     I2C_IDLE = 0x5,
     I2C_STARTED = 0x6,
@@ -20,19 +18,17 @@ typedef enum {
     I2C_SLAVE_SEND = 0x8
 } i2c_slave_status;
 
-#else // I2C_MASTER
-
 /**
  * High-level states for the I2C Master driver.  These do not fully describe the
  * state of the driver, only which major operation is in progress.
  */
 typedef enum {
     /** No activity, ready for a new operation to begin */
-    I2C_IDLE,
+    I2C_MASTER_IDLE,
     /** A write to a slave is in progress (i2c_master_write() has been called)*/
-    I2C_WRITE,
+    I2C_MASTER_WRITE,
     /** A read from a slave is in progress(i2c_master_read() has been called)*/
-    I2C_READ
+    I2C_MASTER_READ
 } i2c_master_state;
 
 /**
@@ -63,7 +59,6 @@ typedef enum {
     /** An error has occurred and a STOP has been sent to free the bus. */
     I2C_SUBSTATE_ERROR
 } i2c_master_substate;
-#endif // ifdef I2C_SLAVE - else
 
 typedef struct __i2c_comm {
 #ifdef I2C_SLAVE

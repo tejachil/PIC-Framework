@@ -21,16 +21,20 @@
 #define MSGT_I2C_MASTER_RECV_COMPLETE 45
 #define MSGT_I2C_MASTER_RECV_FAILED 46
 #define MSGT_ADC 50 // ADC conversion value
+#define MSGT_ENC 51
 #define MSGT_I2C_QUEUED_MSG (60)
 #define MSGT_UART_QUEUED_MSG (61)
-#define MSGT_ENC 51
+#define MSGT_I2C2_MASTER_SEND_COMPLETE (70)
+#define MSGT_I2C2_MASTER_SEND_FAILED (71)
+#define MSGT_I2C2_MASTER_RECV_COMPLETE (72)
+#define MSGT_I2C2_MASTER_RECV_FAILED (73)
 
 // Main device ID definitions
 
 /** Define MASTER_PIC to compile for the Master PIC. */
-#define MASTER_PIC
+//#define MASTER_PIC
 /** Define MOTOR_PIC to compile for the Motor Controller PIC. */
-//#define MOTOR_PIC
+#define MOTOR_PIC
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
 //#define SENSOR_PIC
 
@@ -44,7 +48,10 @@
 #define I2C_MASTER
 // Define I2C_MASTER_IGNORE_NACK to allow limited testing with no slave.
 //#define I2C_MASTER_IGNORE_NACK
-#else
+#elif defined(MOTOR_PIC)
+#define I2C_SLAVE
+#define I2C2_MASTER
+#elif defined(SENSOR_PIC)
 #define I2C_SLAVE
 #endif
 

@@ -5,6 +5,7 @@
 #include "my_uart.h"
 #include "my_i2c.h"
 #include "my_adc.h"
+#include "my_i2c2.h"
 
 //----------------------------------------------------------------------------
 // Note: This code for processing interrupts is configured to allow for high and
@@ -91,6 +92,14 @@ void InterruptHandlerHigh() {
         PIR1bits.SSPIF = 0;
         // call the handler
         i2c_int_handler();
+    }
+
+    // check to see if we have an I2C2 interrupt
+    if (PIR3bits.SSP2IF) {
+        // clear the interrupt flag
+        PIR3bits.SSP2IF = 0;
+        // call the handler
+        i2c2_int_handler();
     }
 
     //check to see if there is an interrupt on RBIF for encoders

@@ -8,7 +8,7 @@
 
 // Pin definitions for debug output (should probably be unique to each target
 // device)
-#ifdef MASTER_PIC
+#if defined(MASTER_PIC)
 /** Pin toggled on UART Rx timeout. */
 #define TOGGLE_UART_RX_TIMEOUT_PIN() (LATBbits.LATB0 ^= 1)
 /** Pin toggled when the UART Rx timeout is stoppped. */
@@ -25,17 +25,40 @@
 #define SET_UART_MESSAGE_ERROR_PIN() (LATBbits.LATB6 = 1)
 /** Pin set when an I2C error occurs. */
 #define SET_I2C_ERROR_PIN() (LATBbits.LATB7 = 1)
-#else
-// Define blank macros so they will compile but do nothing
-#define TOGGLE_UART_RX_TIMEOUT_PIN()
-#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN()
-#define TOGGLE_UART_RX_TIMEOUT_START_PIN()
-#define TOGGLE_UART_RX_OVERFLOW_PIN()
-#define SET_I2C_QUEUE_ERROR_PIN()
-#define SET_UART_QUEUE_ERROR_PIN()
-#define SET_UART_MESSAGE_ERROR_PIN()
-#define SET_I2C_ERROR_PIN()
+#elif defined(MOTOR_PIC)
+/** Pin set when an error occurs on I2C2. */
+#define SET_I2C2_ERROR_PIN() (LATBbits.LATB0 = 1)
 #endif // MASTER_PIC - else
+
+// If macros aren't defined, define blank macros so they will compile but do
+// nothing
+#ifndef TOGGLE_UART_RX_TIMEOUT_PIN
+#define TOGGLE_UART_RX_TIMEOUT_PIN()
+#endif
+#ifndef TOGGLE_UART_RX_TIMEOUT_STOP_PIN
+#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN()
+#endif
+#ifndef TOGGLE_UART_RX_TIMEOUT_START_PIN
+#define TOGGLE_UART_RX_TIMEOUT_START_PIN()
+#endif
+#ifndef TOGGLE_UART_RX_OVERFLOW_PIN
+#define TOGGLE_UART_RX_OVERFLOW_PIN()
+#endif
+#ifndef SET_I2C_QUEUE_ERROR_PIN
+#define SET_I2C_QUEUE_ERROR_PIN()
+#endif
+#ifndef SET_UART_QUEUE_ERROR_PIN
+#define SET_UART_QUEUE_ERROR_PIN()
+#endif
+#ifndef SET_UART_MESSAGE_ERROR_PIN
+#define SET_UART_MESSAGE_ERROR_PIN()
+#endif
+#ifndef SET_I2C_ERROR_PIN
+#define SET_I2C_ERROR_PIN()
+#endif
+#ifndef SET_I2C2_ERROR_PIN
+#define SET_I2C2_ERROR_PIN()
+#endif
 
 void gpio_init_portb_output(void);
 void gpio_write_portb(const unsigned char val);

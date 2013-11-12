@@ -37,7 +37,7 @@ void handle_start(unsigned char data_read) {
         if (SSPSTATbits.D_A == 1) {
             // this is bad because we got data and
             // we wanted an address
-            ic_ptr->state = I2C_IDLE;
+            ic_ptr->state = I2C_MASTER_IDLE;
             ic_ptr->error_count++;
             ic_ptr->error_code = I2C_ERR_NOADDR;
         } else {
@@ -111,7 +111,7 @@ void i2c_slave_handler() {
         // we failed to read the buffer in time, so we know we
         // can't properly receive this message, just put us in the
         // a state where we are looking for a new message
-        ic_ptr->state = I2C_IDLE;
+        ic_ptr->state = I2C_MASTER_IDLE;
         overrun_error = 1;
         ic_ptr->error_count++;
         ic_ptr->error_code = I2C_ERR_OVERRUN;
@@ -124,7 +124,7 @@ void i2c_slave_handler() {
 
     if (!overrun_error) {
         switch (ic_ptr->state) {
-            case I2C_IDLE:
+            case I2C_MASTER_IDLE:
             {
                 // ignore anything except a start
                 if (SSPSTATbits.S == 1) {
@@ -152,7 +152,7 @@ void i2c_slave_handler() {
                             ic_ptr->error_code = I2C_ERR_NODATA;
                         }
                     }
-                    ic_ptr->state = I2C_IDLE;
+                    ic_ptr->state = I2C_MASTER_IDLE;
                 } else if (data_read) {
                     ic_ptr->event_count++;
                     if (SSPSTATbits.D_A == 0) {
@@ -166,7 +166,7 @@ void i2c_slave_handler() {
                         }
                     } else {
                         ic_ptr->error_count++;
-                        ic_ptr->state = I2C_IDLE;
+                        ic_ptr->state = I2C_MASTER_IDLE;
                         ic_ptr->error_code = I2C_ERR_NODATA;
                     }
                 }
@@ -180,7 +180,7 @@ void i2c_slave_handler() {
                     data_written = 1;
                 } else {
                     // we have nothing left to send
-                    ic_ptr->state = I2C_IDLE;
+                    ic_ptr->state = I2C_MASTER_IDLE;
                 }
                 break;
             }
@@ -198,12 +198,12 @@ void i2c_slave_handler() {
                         } else {
                             ic_ptr->error_count++;
                             ic_ptr->error_code = I2C_ERR_NODATA;
-                            ic_ptr->state = I2C_IDLE;
+                            ic_ptr->state = I2C_MASTER_IDLE;
                         }
                     } else {
                         msg_ready = 1;
                     }
-                    ic_ptr->state = I2C_IDLE;
+                    ic_ptr->state = I2C_MASTER_IDLE;
                 } else if (data_read) {
                     ic_ptr->event_count++;
                     if (SSPSTATbits.D_A == 1) {
@@ -219,7 +219,7 @@ void i2c_slave_handler() {
                         } else { /* bad to recv an address again, we aren't ready */
                             ic_ptr->error_count++;
                             ic_ptr->error_code = I2C_ERR_NODATA;
-                            ic_ptr->state = I2C_IDLE;
+                            ic_ptr->state = I2C_MASTER_IDLE;
                         }
                     }
                 }
@@ -238,7 +238,7 @@ void i2c_slave_handler() {
 
     // must check if the message is too long, if
     if ((ic_ptr->inbuflen > MAXI2CBUF - 2) && (!msg_ready)) {
-        ic_ptr->state = I2C_IDLE;
+        ic_ptr->state = I2C_MASTER_IDLE;
         ic_ptr->error_count++;
         ic_ptr->error_code = I2C_ERR_MSGTOOLONG;
     }
