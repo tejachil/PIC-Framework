@@ -47,7 +47,6 @@
       <itemPath>../src/uart_queue_thread.c</itemPath>
       <itemPath>../src/my_encoder.c</itemPath>
       <itemPath>../src/my_motor.c</itemPath>
-      <itemPath>../src/i2c2_master.c</itemPath>
       <itemPath>../src/my_i2c2.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
