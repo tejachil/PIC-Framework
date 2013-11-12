@@ -18,6 +18,7 @@
 #include "my_motor.h"
 #include "user_interrupts.h"
 #include "my_i2c2.h"
+#include "i2c2_thread.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -220,7 +221,8 @@ void main(void) {
 
     {
         unsigned char const test_data[2] = {0xAA, 0xBB};
-        i2c2_master_write(0x11, test_data, 2);
+        //i2c2_master_write(0x11, test_data, 2);
+        i2c2_master_read(0x11, 0x22, 2);
     }
 
     // loop forever
@@ -256,8 +258,7 @@ void main(void) {
                 case MSGT_I2C2_MASTER_RECV_COMPLETE:
                 case MSGT_I2C2_MASTER_RECV_FAILED:
                 {
-                    LATBbits.LATB3 ^= 1;
-                    //i2c2_lthread(msgtype, length, msgbuffer);
+                    i2c2_lthread(msgtype, length, msgbuffer);
                     break;
                 } // End I2C2 cases
 #endif // I2C2_MASTER
@@ -295,7 +296,6 @@ void main(void) {
                 default:
                 {
                     // Your code should handle this error
-                    LATBbits.LATB2 ^= 1;
                     break;
                 };
             };
