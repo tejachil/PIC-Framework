@@ -55,7 +55,6 @@ void adc_int_handler()
     int adc_value;
     unsigned char adc_bytes[2];
 
-    LATBbits.LATB1 ^= 1;
     // Read the conversion value
     adc_value = ReadADC();
     

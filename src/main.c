@@ -129,12 +129,10 @@ Something is messed up
 #endif
 #endif
 
-char buf[9] = {0};
 void main(void) {
     signed char length;
     unsigned char msgtype;
     uart_comm uc;
-    int x = 0;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
     uart_thread_struct uthread_data; // info for uart_lthread
@@ -234,11 +232,6 @@ void main(void) {
         // messages queues has a message (this may put the processor into
         // an idle mode)
         block_on_To_msgqueues();
-       /* if(x==0){
-            sprintf(buf,"#%d,%d;",adc_read(0), adc_read(1));
-            uart_send_bytes(buf, 9);
-        }
-        x = (x+1)%50;*/
 
         // At this point, one or both of the queues has a message.  It
         // makes sense to check the high-priority messages first -- in fact,

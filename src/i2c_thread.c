@@ -173,7 +173,7 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
         // Fill in the message type, count, and data length
         response.message_type = type;
         response.message_count = public_message_get_count(type);
-        response.data_length = 12;//public_message_data_size[type];
+        response.data_length = public_message_data_size[type];
 
         // Send the full message as the reply
         start_i2c_slave_reply(response.data_length + PUB_MSG_MIN_SIZE, response.raw_message_bytes);
