@@ -52,7 +52,7 @@
 #define I2C_SLAVE
 #define I2C2_MASTER
 // Define I2C2_MASTER_IGNORE_NACK to allow limited I2C2 testing with no slave.
-//#define I2C2_MASTER_IGNORE_NACK
+#define I2C2_MASTER_IGNORE_NACK
 #elif defined(SENSOR_PIC)
 #define I2C_SLAVE
 #endif

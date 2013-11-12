@@ -87,6 +87,8 @@ i2c_error_code i2c2_master_write(unsigned char slave_addr, unsigned char const *
         SSP2CON2bits.SEN = 1;
         ic2_ptr->substate = I2C_SUBSTATE_START_SENT;
 
+        LATBbits.LATB0 ^= 1;
+
     }
 
     return ret_code;
@@ -134,6 +136,7 @@ i2c_error_code i2c2_master_read(unsigned char slave_addr, unsigned char reg, uns
 }
 
 void i2c2_master_handler() {
+    LATBbits.LATB1 ^= 1;
     // Make sure we are not in an idle state, or else we don't know why this
     // interrupt triggered.
     if (ic2_ptr->state != I2C_MASTER_IDLE) {

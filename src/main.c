@@ -17,6 +17,7 @@
 #include "uart_queue_thread.h"
 #include "my_motor.h"
 #include "user_interrupts.h"
+#include "my_i2c2.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -122,6 +123,8 @@ Something is messed up
 #endif
 #endif
 
+static i2c2_comm ic2;
+
 void main(void) {
     signed char length;
     unsigned char msgtype;
@@ -161,7 +164,7 @@ void main(void) {
 
     // initialize message queues before enabling any interrupts
     init_queues();
-	
+
     // Initialize encoder tick counter and revolution counter
     encoders_init();
 
@@ -194,6 +197,11 @@ void main(void) {
     i2c_configure_master();
 #endif
 
+#ifdef I2C2_MASTER
+    init_i2c2(&ic2);
+    i2c2_configure_master();
+#endif // I2C2_MASTER
+
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
 #ifdef I2C2_MASTER
@@ -209,6 +217,11 @@ void main(void) {
     adc_init();
     adc_start();
 #endif //ifdef USE_ADC_TEST
+
+    {
+        unsigned char const test_data[2] = {0xAA, 0xBB};
+        i2c2_master_write(0x11, test_data, 2);
+    }
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
@@ -236,6 +249,18 @@ void main(void) {
                     i2c_lthread(msgtype, length, msgbuffer);
                     break;
                 } // End I2C cases
+
+#ifdef I2C2_MASTER
+                case MSGT_I2C2_MASTER_SEND_COMPLETE:
+                case MSGT_I2C2_MASTER_SEND_FAILED:
+                case MSGT_I2C2_MASTER_RECV_COMPLETE:
+                case MSGT_I2C2_MASTER_RECV_FAILED:
+                {
+                    LATBbits.LATB3 ^= 1;
+                    //i2c2_lthread(msgtype, length, msgbuffer);
+                    break;
+                } // End I2C2 cases
+#endif // I2C2_MASTER
 
                 default:
                 {
@@ -270,6 +295,7 @@ void main(void) {
                 default:
                 {
                     // Your code should handle this error
+                    LATBbits.LATB2 ^= 1;
                     break;
                 };
             };
