@@ -36,9 +36,6 @@
 
 // Specific functionality enable/disable definitions
 
-// Define USE_ADC_TEST to enable reporting ADC readings over I2C.
-#define USE_ADC_TEST
-
 // Define either I2C_MASTER or I2C_SLAVE (but not both) to select I2C role.
 #if defined(MASTER_PIC)
 #define I2C_MASTER

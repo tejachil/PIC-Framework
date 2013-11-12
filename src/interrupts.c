@@ -120,7 +120,7 @@ void InterruptHandlerLow() {
     }
 
 
-    #ifdef USE_ADC_TEST
+    #ifdef SENSOR_PIC
     // Check to see if we have an ADC interrupt
     if (PIR1bits.ADIF) {
         // Clear the interrupt flag
@@ -128,7 +128,7 @@ void InterruptHandlerLow() {
         // Call the ADC interrupt handler
         adc_int_handler();
     }
-    #endif //ifdef USE_ADC_TEST
+    #endif //ifdef SENSOR_PIC
 
     // Check if we have a USART Tx interrupt (TXIF will remain set as long as
     // the peripheral is ready to transmit, so we must also check if the
