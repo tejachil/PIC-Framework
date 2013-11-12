@@ -20,6 +20,7 @@
       <itemPath>../src/uart_queue_thread.h</itemPath>
       <itemPath>../src/my_encoder.h</itemPath>
       <itemPath>../src/my_motor.h</itemPath>
+      <itemPath>../src/my_i2c2.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -46,6 +47,8 @@
       <itemPath>../src/uart_queue_thread.c</itemPath>
       <itemPath>../src/my_encoder.c</itemPath>
       <itemPath>../src/my_motor.c</itemPath>
+      <itemPath>../src/i2c2_master.c</itemPath>
+      <itemPath>../src/my_i2c2.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
