@@ -154,7 +154,7 @@ void i2c2_master_handler() {
                 // Sending of the address has completed, check the ACK status
                 // and send some data.
 
-#ifndef I2C_MASTER_IGNORE_NACK
+#ifndef I2C2_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
                 if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
@@ -185,7 +185,7 @@ void i2c2_master_handler() {
                 // A data byte has completed, send the next one or finish the
                 // write.
 
-#ifndef I2C_MASTER_IGNORE_NACK
+#ifndef I2C2_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
                 if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
@@ -278,7 +278,7 @@ void i2c2_master_handler() {
                 // Sending of the address has completed, check the ACK status
                 // and prepare to receive data.
 
-#ifndef I2C_MASTER_IGNORE_NACK
+#ifndef I2C2_MASTER_IGNORE_NACK
                 // Check for a NACK (ACKSTAT 0 indicates ACK received)
                 if (1 == SSP2CON2bits.ACKSTAT) {
                     // NACK probably means there is no slave with that address
