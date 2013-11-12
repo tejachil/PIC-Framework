@@ -185,6 +185,12 @@ void i2c_slave_handler() {
                 } else {
                     // we have nothing left to send
                     ic_ptr->state = I2C_IDLE;
+                    LATBbits.LATB0 ^= 1;
+                    if ((ic_ptr->outbuflen != 15) || (ic_ptr->outbufind != 15)) {
+                        const unsigned char bufind = ic_ptr->outbufind;
+                        const unsigned char buflen = ic_ptr->outbuflen;
+                        ic_ptr->outbufind++;
+                    }
                 }
                 break;
             }

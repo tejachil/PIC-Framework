@@ -19,9 +19,9 @@
 #include "timer1_thread.h"
 #include "timer0_thread.h"
 #include "my_gpio.h"
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
 #include "my_adc.h"
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
 #include "public_messages.h"
 #include "i2c_thread.h"
 
@@ -129,10 +129,12 @@ Something is messed up
 #endif
 #endif
 
+char buf[9] = {0};
 void main(void) {
     signed char length;
     unsigned char msgtype;
     uart_comm uc;
+    int x = 0;
     i2c_comm ic;
     unsigned char msgbuffer[MSGLEN + 1];
     uart_thread_struct uthread_data; // info for uart_lthread
@@ -190,10 +192,10 @@ void main(void) {
     IPR1bits.RCIP = 0;
     // I2C interrupt
     IPR1bits.SSPIP = 1;
-#ifdef USE_ADC_TEST
-    // ADC interrupt
-    IPR1bits.ADIP = 1;
-#endif //ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
+    // ADC interrupt low 
+    IPR1bits.ADIP = 0;
+#endif //ifdef SENSOR_PIC
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
 
@@ -216,11 +218,11 @@ void main(void) {
     // enable high-priority interrupts and low-priority interrupts
     enable_interrupts();
 
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
     // Initialize and start the ADC driver
     adc_init();
     adc_start();
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines
@@ -232,6 +234,11 @@ void main(void) {
         // messages queues has a message (this may put the processor into
         // an idle mode)
         block_on_To_msgqueues();
+       /* if(x==0){
+            sprintf(buf,"#%d,%d;",adc_read(0), adc_read(1));
+            uart_send_bytes(buf, 9);
+        }
+        x = (x+1)%50;*/
 
         // At this point, one or both of the queues has a message.  It
         // makes sense to check the high-priority messages first -- in fact,
@@ -294,9 +301,9 @@ void main(void) {
                 };
                 case MSGT_ADC:
                 {
-#ifdef USE_ADC_TEST
+#ifdef SENSOR_PIC
                     adc_lthread(msgtype, length, msgbuffer);
-#endif //ifdef USE_ADC_TEST
+#endif //ifdef SENSOR_PIC
                     break;
                 }
                 default:

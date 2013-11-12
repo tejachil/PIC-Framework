@@ -22,12 +22,12 @@ void adc_init() {
 	// counter for loop
 	int i = 0;
     // Configure ADC for a read on channel 0,1
-    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
+    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_CH2 & ADC_CH3 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
     SetChanADC(ADC_CH0);
     currentChannel = 0;
     // Initialize all channels to 0
-	for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
-		adc_val[i] = 0;
+    for(i = 0; i < NUMBER_OF_CHANNELS; ++i)
+            adc_val[i] = 0;
 }
 
 /*
@@ -52,15 +52,27 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 unsigned char adc_val_low = msgbuffer[1];
                 adc_val[currentChannel] = adc_val_low + (((int) adc_val_high) << 8);
 
+                // prepare ADC for next conversion
                 // toggle between channels to read them sequentially
-                if(currentChannel == 0){
-                    SetChanADC(ADC_CH1);
-                    currentChannel = 1;
+                switch(currentChannel){
+                    case 0:
+                        SetChanADC(ADC_CH1);
+                        currentChannel = 1;
+                        break;
+                    case 1:
+                        SetChanADC(ADC_CH2);
+                        currentChannel = 2;
+                        break;
+                    case 2:
+                        SetChanADC(ADC_CH3);
+                        currentChannel = 3;
+                        break;
+                    case 3:
+                        SetChanADC(ADC_CH0);
+                        currentChannel = 0;
+                        break;
                 }
-                else if(currentChannel == 1){
-                    SetChanADC(ADC_CH0);
-                    currentChannel = 0;
-                }
+                
                 // Start a new conversion of the selected channel
                 ConvertADC();
 
