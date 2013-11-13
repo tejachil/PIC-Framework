@@ -4,11 +4,13 @@
 #include <timers.h>
 #include "my_encoder.h"
 
-static unsigned char forward[] = {0x34, 0xB3};
-static unsigned char backward[] = {0x4C, 0xCB};
-static unsigned char turnLeft[] = {0x55, 0xAB};
-static unsigned char turnRight[] = {0x2B, 0xD5};
-static unsigned char stop[] = {0, 0};
+
+static char forward[] = {0x34, 0xB3};
+static char backward[] = {0x4C, 0xCB};
+static char turnLeft[] = {0x52, 0xAE};
+static char turnRight[] = {0x2E, 0xD2};
+static char stop[] = {0, 0};
+
 int timer1_counter = 0;
 int tickCount;
 int totalRevolutions;
