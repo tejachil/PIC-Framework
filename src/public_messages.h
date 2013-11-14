@@ -12,6 +12,11 @@
  */
 #define SENSOR_PIC_ADDR (0x2A)
 
+/**
+ * I2C2 address for the gyro. This address is used for initializing the gyro.
+ */
+#define GYRO_SLAVE_ADDRESS (0b1101000)
+
 /** Public message type values. */
 typedef enum {
     /** Distance reading for a given sensor. */
@@ -36,6 +41,8 @@ typedef enum {
     PUB_MSG_T_CORNER_WEB,
     /** Encoder data for distance. */
     PUB_MSG_T_ENCODER_DATA,
+    /** Gyro data for angle. */
+    PUB_MSG_T_GYRO_DATA,
 
     // ADD ANY NEW MESSAGE TYPES ABOVE THIS LINE
     // So that NUM_PUB_MSG_T will be correct.
