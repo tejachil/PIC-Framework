@@ -7,6 +7,7 @@
 #include "my_gpio.h"
 #include "messages.h"
 #include "my_motor.h"
+#include "i2c2_thread.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -171,6 +172,12 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             response.data[2] = totalRevolutions;
             encoders_init();
 
+            break;
+        }
+        case PUB_MSG_T_GYRO_DATA:
+        {
+            response.data[0] = gyroDataHigh;
+            response.data[1] = gyroDataLow;
             break;
         }
 

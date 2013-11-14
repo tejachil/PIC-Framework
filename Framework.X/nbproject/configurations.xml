@@ -22,6 +22,7 @@
       <itemPath>../src/my_motor.h</itemPath>
       <itemPath>../src/my_i2c2.h</itemPath>
       <itemPath>../src/i2c2_thread.h</itemPath>
+      <itemPath>../src/my_gyro.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -50,6 +51,7 @@
       <itemPath>../src/my_motor.c</itemPath>
       <itemPath>../src/my_i2c2.c</itemPath>
       <itemPath>../src/i2c2_thread.c</itemPath>
+      <itemPath>../src/my_gyro.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
