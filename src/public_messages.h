@@ -12,6 +12,11 @@
  */
 #define SENSOR_PIC_ADDR (0x2A)
 
+/**
+ * I2C2 address for the gyro. This address is used for initializing the gyro.
+ */
+#define GYRO_SLAVE_ADDRESS (0b1101000)
+
 /** Public message type values. */
 typedef enum {
     /** Distance reading for a given sensor. */
@@ -46,8 +51,12 @@ typedef enum {
 
 /** Data byte values for MOV_CMD. */
 typedef enum {
+    /** Command to start moving forward fast. */
+    MOV_CMD_GO_FAST = 0x56,
     /** Command to start moving forward. */
     MOV_CMD_GO = 0x55,
+    /** Command to start moving forward. */
+    MOV_CMD_GO_SLOW = 0x56,
     /** Command to stop moving. */
     MOV_CMD_STOP = 0xAA
 } MOV_CMD_VALUE;

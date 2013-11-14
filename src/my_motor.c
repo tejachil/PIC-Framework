@@ -4,7 +4,9 @@
 #include <timers.h>
 #include "my_encoder.h"
 
+static unsigned char forwardFast[] = {0x37, 0xB0};
 static unsigned char forward[] = {0x34, 0xB3};
+static unsigned char forwardSlow[] = {0x37, 0xB6};
 static unsigned char backward[] = {0x4C, 0xCB};
 static unsigned char turnLeft[] = {0x55, 0xAB};
 static unsigned char turnRight[] = {0x2B, 0xD5};

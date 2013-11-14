@@ -19,6 +19,7 @@
 #include "user_interrupts.h"
 #include "my_i2c2.h"
 #include "i2c2_thread.h"
+#include "my_gyro.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
