@@ -12,6 +12,7 @@ const unsigned char public_message_data_size[NUM_PUB_MSG_T] = {
     4, //NEW_CORNER
     2, //NEW_CORNER_WEB
     3, //ENCODER_DATA
+    2, //GYRO_DATA
 };
 
 static unsigned char message_counts[NUM_PUB_MSG_T] = {0};
