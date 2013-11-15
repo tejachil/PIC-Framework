@@ -8,8 +8,12 @@ static unsigned char forwardFast[] = {0x37, 0xB0};
 static unsigned char forward[] = {0x34, 0xB3};
 static unsigned char forwardSlow[] = {0x37, 0xB6};
 static unsigned char backward[] = {0x4C, 0xCB};
+static unsigned char turnLeftSlow[] = {0x52, 0xAE};
 static unsigned char turnLeft[] = {0x55, 0xAB};
+static unsigned char turnLeftFast[] = {0x5B, 0xA5};
+static unsigned char turnRightSlow[] = {0x2E, 0xD2};
 static unsigned char turnRight[] = {0x2B, 0xD5};
+static unsigned char turnRightFast[] = {0x28, 0xD8};
 static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
 int tickCount;
@@ -27,9 +31,19 @@ void motor_control_thread(public_message_t *msg) {
         {
             // Check if it's a move or a stop
             switch (msg->data[0]) {
+                case MOV_CMD_GO_SLOW:
+                {
+                    motor_forward_both_slow();
+                    break;
+                }
                 case MOV_CMD_GO:
                 {
                     motor_forward_both();
+                    break;
+                }
+                case MOV_CMD_GO_FAST:
+                {
+                    motor_forward_both_fast();
                     break;
                 }
                 case MOV_CMD_STOP:
@@ -72,10 +86,19 @@ void motor_control_thread(public_message_t *msg) {
         }
     }
 }
+void motor_forward_both_slow(){
+    countFlag = 1;
+    uart_send_bytes(forwardSlow, 2);
+}
 
 void motor_forward_both() {
     countFlag = 1;
     uart_send_bytes(forward, 2);
+}
+
+void motor_forward_both_fast(){
+    countFlag = 1;
+    uart_send_bytes(forwardFast, 2);
 }
 
 void motor_stop_both() {
@@ -87,12 +110,32 @@ void motor_turn() {
     uart_send_bytes(turnRight, 2);
 }
 
+void motor_fix_left_slow() {
+    countFlag = 0;
+    uart_send_bytes(turnLeftSlow, 2);
+}
+
 void motor_fix_left() {
     countFlag = 0;
     uart_send_bytes(turnLeft, 2);
 }
 
+void motor_fix_left_fast() {
+    countFlag = 0;
+    uart_send_bytes(turnLeftFast, 2);
+}
+
+void motor_fix_right_slow() {
+    countFlag = 0;
+    uart_send_bytes(turnRightSlow, 2);
+}
+
 void motor_fix_right() {
     countFlag = 0;
     uart_send_bytes(turnRight, 2);
+}
+
+void motor_fix_right_fast() {
+    countFlag = 0;
+    uart_send_bytes(turnRightFast, 2);
 }

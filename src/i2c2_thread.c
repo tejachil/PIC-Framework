@@ -3,8 +3,8 @@
 #include "maindefs.h"
 #include "my_gyro.h"
 
-char gyroDataHigh;
-char gyroDataLow;
+unsigned char gyroDataHigh;
+unsigned char gyroDataLow;
 
 void i2c2_lthread(int msgtype, int length, unsigned char *msgbuffer) {
     switch (msgtype) {
@@ -29,10 +29,14 @@ void i2c2_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             LATBbits.LATB3 ^= 1;
             break;
         }
-            // SEND_FAILED indicates a failed write from this master device
-        case MSGT_I2C2_MASTER_SEND_FAILED:
             // RECV_FAILED indicates a failed read by this master device
         case MSGT_I2C2_MASTER_RECV_FAILED:
+        {
+            i2c2_master_read(GYRO_SLAVE_ADDRESS, ZaxisGyro, lengthGyroZ);
+            break;
+        }
+        // SEND_FAILED indicates a failed write from this master device
+        case MSGT_I2C2_MASTER_SEND_FAILED:
 #endif // I2C2_MASTER
 
             // The following cases (and the cases above) indicate an error

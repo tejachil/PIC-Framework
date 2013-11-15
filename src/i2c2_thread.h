@@ -1,8 +1,8 @@
 #ifndef I2C2_THREAD_H
 #define	I2C2_THREAD_H
 
-extern char gyroDataHigh;
-extern char gyroDataLow;
+extern unsigned char gyroDataHigh;
+extern unsigned char gyroDataLow;
 
 /**
  * Thread to handle all I2C2-related messages.
