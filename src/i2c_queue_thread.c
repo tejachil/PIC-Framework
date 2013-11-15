@@ -42,6 +42,7 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             } // End commands for Motor Controller PIC
 
             case PUB_MSG_T_ENCODER_DATA:
+            case PUB_MSG_T_GYRO_DATA:
             {
                 // Read the full message from the slave
                 if (I2C_ERR_NONE != i2c_master_read(MOTOR_PIC_ADDR, type, msg_total_size)) {

@@ -9,10 +9,10 @@
 // Pin definitions for debug output (should probably be unique to each target
 // device)
 #ifdef MASTER_PIC
-/** Pin toggled on UART Rx timeout. */
-#define TOGGLE_UART_RX_TIMEOUT_PIN() (LATBbits.LATB0 ^= 1)
 /** Pin toggled when the UART Rx timeout is stoppped. */
-#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN() (LATBbits.LATB1 ^= 1)
+#define TOGGLE_UART_RX_TIMEOUT_STOP_PIN() (LATBbits.LATB0 ^= 1)
+/** Pin toggled on UART Rx timeout. */
+#define TOGGLE_UART_RX_TIMEOUT_PIN() (LATBbits.LATB1 ^= 1)
 /** Pin toggled when the UART Rx timeout is started. */
 #define TOGGLE_UART_RX_TIMEOUT_START_PIN() (LATBbits.LATB2 ^= 1)
 /** Pin toggled when the UART Rx driver resets due to an overflow. */
