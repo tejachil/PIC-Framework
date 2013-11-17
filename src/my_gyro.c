@@ -52,7 +52,7 @@ void timer0_gyro_trigger(){
     WriteTimer0(TIMER_0_COUNT);
     LATBbits.LATB0 ^= 1;
     timer0_counter++;
-    if(timer0_counter == 149){
+    if(timer0_counter == 100){
         timer0_counter_stop();
     }
 }
