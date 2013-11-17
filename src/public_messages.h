@@ -43,7 +43,8 @@ typedef enum {
     PUB_MSG_T_ENCODER_DATA,
     /** Gyro data for angle. */
     PUB_MSG_T_GYRO_DATA,
-
+    /** Information about whether or not the rover has finished turning*/
+    PUB_MSG_T_TURN_STATUS,
     // ADD ANY NEW MESSAGE TYPES ABOVE THIS LINE
     // So that NUM_PUB_MSG_T will be correct.
 
@@ -53,18 +54,31 @@ typedef enum {
 
 /** Data byte values for MOV_CMD. */
 typedef enum {
+    /** Command to start moving forward fast. */
+    MOV_CMD_GO_FAST,
     /** Command to start moving forward. */
-    MOV_CMD_GO = 0x55,
+    MOV_CMD_GO,
+    /** Command to start moving forward. */
+    MOV_CMD_GO_SLOW,
     /** Command to stop moving. */
-    MOV_CMD_STOP = 0xAA
+    MOV_CMD_STOP
 } MOV_CMD_VALUE;
 
 /** Data byte values for FIX_CMD. */
 typedef enum {
+    /** Command to fix to the left slow*/
+    FIX_CMD_LEFT_SLOW,
     /** Command to fix to the left*/
-    FIX_CMD_LEFT = 0x5A,
+    FIX_CMD_LEFT,
+    /** Command to fix to the left fast*/
+    FIX_CMD_LEFT_FAST,
     /** Command to fix to the right*/
-    FIX_CMD_RIGHT = 0xA5
+    FIX_CMD_RIGHT_SLOW,
+    /** Command to fix to the right*/
+    FIX_CMD_RIGHT,
+    /** Command to fix to the right*/
+    FIX_CMD_RIGHT_FAST
+
 } FIX_CMD_VALUE;
 
 /**

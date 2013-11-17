@@ -28,11 +28,11 @@
 // Main device ID definitions
 
 /** Define MASTER_PIC to compile for the Master PIC. */
-//#define MASTER_PIC
+#define MASTER_PIC
 /** Define MOTOR_PIC to compile for the Motor Controller PIC. */
 //#define MOTOR_PIC
 /** Define SENSOR_PIC to compile for the Proximity Sensors PIC. */
-#define SENSOR_PIC
+//#define SENSOR_PIC
 
 // Specific functionality enable/disable definitions
 
