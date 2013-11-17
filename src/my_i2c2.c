@@ -105,8 +105,6 @@ i2c_error_code i2c2_master_write(unsigned char slave_addr, unsigned char const *
         SSP2CON2bits.SEN = 1;
         ic2_ptr->substate = I2C_SUBSTATE_START_SENT;
 
-        LATBbits.LATB0 ^= 1;
-
     }
 
     return ret_code;

@@ -43,7 +43,8 @@ typedef enum {
     PUB_MSG_T_ENCODER_DATA,
     /** Gyro data for angle. */
     PUB_MSG_T_GYRO_DATA,
-
+    /** Information about whether or not the rover has finished turning*/
+    PUB_MSG_T_TURN_STATUS,
     // ADD ANY NEW MESSAGE TYPES ABOVE THIS LINE
     // So that NUM_PUB_MSG_T will be correct.
 

@@ -170,6 +170,9 @@ void main(void) {
     // Initialize encoder tick counter and revolution counter
     encoders_init();
 
+    // Initialize the gyro
+    init_myGyro();
+
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
     // USART RX interrupt
@@ -182,8 +185,6 @@ void main(void) {
 #endif //ifdef USE_ADC_TEST
     // USART Tx interrupt
     IPR1bits.TXIP = 0;
-    // Timer0 interrupt
-    INTCON2bits.TMR0IP = 0;
     // I2C2 interrupt
     IPR3bits.SSP2IP = 1;
 

@@ -6,11 +6,18 @@
 #include "my_encoder.h"
 #include "my_motor.h"
 #include "my_uart.h"
+#include "my_gyro.h"
+#include "i2c2_thread.h"
 
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer0 interrupt
 
 void timer0_int_handler() {
+#ifdef MOTOR_PIC
+    timer0_gyro_trigger();
+    gyro_angleData(gyroDataHigh, gyroDataLow);
+    
+#endif
 }
 
 // A function called by the interrupt handler

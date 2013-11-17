@@ -8,6 +8,7 @@
 #include "messages.h"
 #include "my_motor.h"
 #include "i2c2_thread.h"
+#include "my_gyro.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -178,6 +179,11 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
         {
             response.data[0] = gyroDataHigh;
             response.data[1] = gyroDataLow;
+            break;
+        }
+        case PUB_MSG_T_TURN_STATUS:
+        {
+            response.data[0] = gyro_finished_flag;
             break;
         }
 
