@@ -32,7 +32,6 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             case PUB_MSG_T_MOV_CMD:
             case PUB_MSG_T_TURN_CMD:
             case PUB_MSG_T_FIX_CMD:
-            case PUB_MSG_T_TURN_STATUS:
             {
                 // Forward the full message to the slave
                 if (I2C_ERR_NONE != i2c_master_write(MOTOR_PIC_ADDR, raw_msg, msg_total_size)) {
@@ -44,6 +43,7 @@ void i2c_queue_lthread(int msgtype, int length, unsigned char *msgbuffer) {
 
             case PUB_MSG_T_ENCODER_DATA:
             case PUB_MSG_T_GYRO_DATA:
+            case PUB_MSG_T_TURN_STATUS:
             {
                 // Read the full message from the slave
                 if (I2C_ERR_NONE != i2c_master_read(MOTOR_PIC_ADDR, type, msg_total_size)) {
