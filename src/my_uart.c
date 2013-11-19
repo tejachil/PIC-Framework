@@ -143,6 +143,7 @@ void uart_rx_int_handler() {
 
 void uart_rx_reset() {
     uc_ptr->rx_count = 0;
+    memset(uc_ptr->rx_message.raw_message_bytes, 0, sizeof (uc_ptr->rx_message.raw_message_bytes));
     uart_timeout_stop();
 }
 
