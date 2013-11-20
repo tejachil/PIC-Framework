@@ -20,6 +20,7 @@ int timer1_counter = 0;
 int tickCount;
 int totalRevolutions;
 int countFlag;
+int angleCalc;
 
 void encoders_init() {
     tickCount = 0;
@@ -58,7 +59,8 @@ void motor_control_thread(public_message_t *msg) {
         }
         case PUB_MSG_T_TURN_CMD:
         {
-            timer0_counter_start();
+            angleCalc = (int)msg.data[0];
+            timer0_counter_start(angleCalc);
             motor_turn();
             break;
         }

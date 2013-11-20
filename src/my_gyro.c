@@ -22,6 +22,9 @@ unsigned char firstMessageLength = 0x04;
 int timer0_counter = 0;
 int gyro_finished_flag = 0;
 
+static int targetTickCount;
+static int angleToTurn;
+
 void init_myGyro(){
     // Timer0 interrupt
     INTCON2bits.TMR0IP = 0;
@@ -36,9 +39,11 @@ void init_myGyro(){
     i2c2_master_write(GYRO_SLAVE_ADDRESS, gyro_init_data, firstMessageLength);
 }
 
-void timer0_counter_start(){
+void timer0_counter_start(int angleCalc){
+    angleToTurn = angleCalc;
     T0CONbits.TMR0ON = 1;
     timer0_counter = 0;
+    targetTickCount = (int)angleCalc*10/9; // will be moved into timer trigger logic
     gyro_finished_flag = 0;
 }
 
@@ -49,10 +54,11 @@ void timer0_counter_stop(){
 }
 
 void timer0_gyro_trigger(){
+    //Logic to calc counter value for angle based on gyro readings
     WriteTimer0(TIMER_0_COUNT);
     LATBbits.LATB0 ^= 1;
     timer0_counter++;
-    if(timer0_counter == 100){
+    if(timer0_counter >= targetTickCount){
         timer0_counter_stop();
     }
 }
