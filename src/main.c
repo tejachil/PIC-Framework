@@ -170,9 +170,6 @@ void main(void) {
     // Initialize encoder tick counter and revolution counter
     encoders_init();
 
-    // Initialize the gyro
-    init_myGyro();
-
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
     // USART RX interrupt
@@ -203,8 +200,13 @@ void main(void) {
 #ifdef I2C2_MASTER
     init_i2c2(&ic2);
     i2c2_configure_master();
+
 #endif // I2C2_MASTER
 
+#ifdef MOTOR_PIC
+    // Initialize the gyro
+    init_myGyro();
+#endif
     // must specifically enable the I2C interrupts
     PIE1bits.SSPIE = 1;
 #ifdef I2C2_MASTER
@@ -220,12 +222,6 @@ void main(void) {
     adc_init();
     adc_start();
 #endif //ifdef USE_ADC_TEST
-
-    {
-        unsigned char const test_data[2] = {0xAA, 0xBB};
-        //i2c2_master_write(0x11, test_data, 2);
-        i2c2_master_read(0x11, 0x22, 2);
-    }
 
     // loop forever
     // This loop is responsible for "handing off" messages to the subroutines

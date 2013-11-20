@@ -15,7 +15,7 @@
 void timer0_int_handler() {
 #ifdef MOTOR_PIC
     timer0_gyro_trigger();
-    gyro_angleData(gyroDataHigh, gyroDataLow);
+   // gyro_angleData(gyroDataHigh, gyroDataLow);
     
 #endif
 }

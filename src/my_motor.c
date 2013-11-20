@@ -59,6 +59,7 @@ void motor_control_thread(public_message_t *msg) {
         }
         case PUB_MSG_T_TURN_CMD:
         {
+            i2c2_master_write(GYRO_SLAVE_ADDRESS, gyro_init_data, firstMessageLength);
             angleCalc = (int)msg.data[0];
             timer0_counter_start(angleCalc);
             motor_turn();
