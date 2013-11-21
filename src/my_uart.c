@@ -96,10 +96,19 @@ void uart_rx_int_handler() {
     if (DataRdyUSART()) {
         const unsigned char rx_byte = ReadUSART();
 #endif
+        // This flag is cleared if an invalid byte is received and must be
+        // ignored
+        unsigned char valid_byte_received = 1;
 
         // Place the byte in the appropriate message field
         if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(message_type)) {
             uc_ptr->rx_message.message_type = rx_byte;
+            
+            // If this was an invalid message type, we must ignore it
+            if (rx_byte >= (unsigned char) NUM_PUB_MSG_T) {
+                valid_byte_received = 0;
+            }
+
         } else if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(message_count)) {
             uc_ptr->rx_message.message_count = rx_byte;
         } else if (uc_ptr->rx_count == PUB_MSG_FIELD_OFFSET(data_length)) {
@@ -108,24 +117,27 @@ void uart_rx_int_handler() {
             uc_ptr->rx_message.data[uc_ptr->rx_count - PUB_MSG_MIN_SIZE] = rx_byte;
         }
 
-        // Increment received byte counter
-        uc_ptr->rx_count++;
+        // Process the new byte only if a valid byte was received
+        if (valid_byte_received) {
+            // Increment the byte counter
+            uc_ptr->rx_count++;
 
-        // If a complete message has been received, send it to main and reset
-        if ((uc_ptr->rx_message.data_length + PUB_MSG_MIN_SIZE) == uc_ptr->rx_count) {
-            ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_message.raw_message_bytes);
-            uart_rx_reset();
-        }// Otherwise, restart the timeout in case the next byte doesn't come
-        else {
-            uart_timeout_restart();
-
-            // If this byte reached or exceeded the buffer size without
-            // completing a message, the receiver must be reset.
-            if (uc_ptr->rx_count >= PUB_MSG_MAX_SIZE) {
-                TOGGLE_UART_RX_OVERFLOW_PIN();
+            // If a complete message has been received, send it to main and reset
+            if ((uc_ptr->rx_message.data_length + PUB_MSG_MIN_SIZE) == uc_ptr->rx_count) {
+                ToMainLow_sendmsg(uc_ptr->rx_count, MSGT_UART_DATA, (void *) uc_ptr->rx_message.raw_message_bytes);
                 uart_rx_reset();
+            }// Otherwise, restart the timeout in case the next byte doesn't come
+            else {
+                uart_timeout_restart();
+
+                // If this byte reached or exceeded the buffer size without
+                // completing a message, the receiver must be reset.
+                if (uc_ptr->rx_count >= PUB_MSG_MAX_SIZE) {
+                    TOGGLE_UART_RX_OVERFLOW_PIN();
+                    uart_rx_reset();
+                }
             }
-        }
+        } // end if(valid_byte_received)
     }
 #ifdef __USE18F26J50
     if (USART1_Status.OVERRUN_ERROR == 1) {
