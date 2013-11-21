@@ -171,6 +171,11 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             response.data[1] = (tickCount & 0xFF00) >> 8;
             response.data[0] = tickCount & 0x00FF;
             response.data[2] = totalRevolutions;
+
+            response.data[4] = (tickCountTwo & 0xFF00) >> 8;
+            response.data[3] = tickCountTwo & 0x00FF;
+            response.data[5] = totalRevolutionsTwo;
+
             encoders_init();
 
             break;

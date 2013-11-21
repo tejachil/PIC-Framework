@@ -4,6 +4,8 @@
 #include <timers.h>
 #include "my_encoder.h"
 #include "my_gyro.h"
+#include "user_interrupts.h"
+#include "my_i2c2.h"
 
 static unsigned char forwardFast[] = {0x37, 0xB0};
 static unsigned char forward[] = {0x34, 0xB3};
@@ -18,13 +20,19 @@ static unsigned char turnRightFast[] = {0x5B, 0xA5};
 static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
 int tickCount;
+int tickCountTwo;
 int totalRevolutions;
+int totalRevolutionsTwo;
 int countFlag;
 int angleCalc;
 
 void encoders_init() {
     tickCount = 0;
+    tickCountTwo = 0;
     totalRevolutions = 0;
+    totalRevolutionsTwo = 0;
+    encoderOne = PORTBbits.RB4;
+    encoderTwo = PORTBbits.RB5;
 }
 
 void motor_control_thread(public_message_t *msg) {
@@ -60,7 +68,7 @@ void motor_control_thread(public_message_t *msg) {
         case PUB_MSG_T_TURN_CMD:
         {
             i2c2_master_write(GYRO_SLAVE_ADDRESS, gyro_init_data, firstMessageLength);
-            angleCalc = (int)msg.data[0];
+            angleCalc = (int) msg->data[0];
             timer0_counter_start(angleCalc);
             motor_turn();
             break;

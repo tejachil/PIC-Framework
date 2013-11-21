@@ -78,7 +78,7 @@ void gyro_angleData(unsigned char ZaxisHigh, unsigned char ZaxisLow) {
     //ZaxisLow = 0x4E;
     if (timer0_counter < 30) {
         Zaxis = (int) ((((int) ZaxisHigh) << 8) | ((int) ZaxisLow));
-        if(Zaxis < 0){
+        if (Zaxis < 0) {
             Zaxis *= -1;
         }
         gyroDataHolder[timer0_counter] = Zaxis;

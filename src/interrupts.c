@@ -24,7 +24,8 @@ void enable_interrupts() {
     INTCONbits.RBIE = 1;
     INTCON2bits.RBIP = 1;
     TRISBbits.RB4 = 1;
-    
+    TRISBbits.RB5 = 1;
+
 }
 
 int in_high_int() {
@@ -84,7 +85,6 @@ InterruptVectorHigh(void) {
 #pragma code
 #pragma interrupt InterruptHandlerHigh
 
-
 void InterruptHandlerHigh() {
     // check to see if we have an I2C interrupt
     if (PIR1bits.SSPIF) {
@@ -103,10 +103,10 @@ void InterruptHandlerHigh() {
     }
 
     //check to see if there is an interrupt on RBIF for encoders
-    if (INTCONbits.RBIF){
+    if (INTCONbits.RBIF) {
         encoder_interrupt_handler();
     }
-	
+
 #ifdef USE_ADC_TEST
     // Check to see if we have an ADC interrupt
     if (PIR1bits.ADIF) {
