@@ -6,6 +6,12 @@
 #include "my_adc.h"
 #include "my_gpio.h"
 
+// Array to hold ADC channel names, indexed by channel number
+static const unsigned char ADC_CHANNEL[16] = {
+    ADC_CH0, ADC_CH1, ADC_CH2, ADC_CH3, ADC_CH4, ADC_CH5, ADC_CH6, ADC_CH7,
+    ADC_CH8, ADC_CH9, ADC_CH10, ADC_CH11, ADC_CH12, ADC_CH13, ADC_CH14, ADC_CH15
+};
+
 // Most recent ADC conversion value
 static int adc_val[NUMBER_OF_CHANNELS];
 //this variable keeps track of which ADC channel is selected
@@ -17,10 +23,17 @@ static int currentChannel;
 void adc_init() {
     // counter for loop
     int i = 0;
-    // Configure ADC for a read on channel 0,1
-    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, ADC_CH0 & ADC_CH1 & ADC_CH2 & ADC_CH3 & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
+    // Configure ADC for a read on all needed channels
+    unsigned char channel_selection = ADC_CHANNEL[0];
+    for (i = 0; i < NUMBER_OF_CHANNELS; i++) {
+        channel_selection &= ADC_CHANNEL[i];
+    }
+    OpenADC(ADC_FOSC_16 & ADC_RIGHT_JUST & ADC_2_TAD, channel_selection & ADC_INT_ON & ADC_VREFPLUS_VDD & ADC_VREFMINUS_VSS, 0b1110);
+
+    // Start on channel 0
     SetChanADC(ADC_CH0);
     currentChannel = 0;
+    
     // Initialize all channels to 0
     for (i = 0; i < NUMBER_OF_CHANNELS; ++i)
         adc_val[i] = 0;
@@ -49,26 +62,9 @@ void adc_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 adc_val[currentChannel] = adc_val_low + (((int) adc_val_high) << 8);
 
                 // prepare ADC for next conversion
-                // toggle between channels to read them sequentially
-                switch(currentChannel){
-                    case 0:
-                        SetChanADC(ADC_CH1);
-                        currentChannel = 1;
-                        break;
-                    case 1:
-                        SetChanADC(ADC_CH2);
-                        currentChannel = 2;
-                        break;
-                    case 2:
-                        SetChanADC(ADC_CH3);
-                        currentChannel = 3;
-                        break;
-                    case 3:
-                        SetChanADC(ADC_CH0);
-                        currentChannel = 0;
-                        break;
-                }
-                
+                currentChannel = (currentChannel + 1) % NUMBER_OF_CHANNELS;
+                SetChanADC(ADC_CHANNEL[currentChannel]);
+
                 // Start a new conversion of the selected channel
                 ConvertADC();
 

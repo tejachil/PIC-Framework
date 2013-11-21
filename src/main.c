@@ -161,7 +161,7 @@ void main(void) {
 
     // initialize message queues before enabling any interrupts
     init_queues();
-	
+
     // Initialize encoder tick counter and revolution counter
     encoders_init();
 
