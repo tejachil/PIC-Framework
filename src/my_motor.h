@@ -5,8 +5,6 @@
 extern int tickCount;
 extern int totalRevolutions;
 extern int countFlag;
-extern int tickCountTwo;
-extern int totalRevolutionsTwo;
 
 void encoders_init(void);
 void motor_control_thread(public_message_t *msg);

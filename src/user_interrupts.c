@@ -9,17 +9,14 @@
 #include "my_gyro.h"
 #include "i2c2_thread.h"
 
-int encoderOne;
-int encoderTwo;
-
 // A function called by the interrupt handler
 // This one does the action I wanted for this program on a timer0 interrupt
 
 void timer0_int_handler() {
 #ifdef MOTOR_PIC
     timer0_gyro_trigger();
-    // gyro_angleData(gyroDataHigh, gyroDataLow);
-
+   // gyro_angleData(gyroDataHigh, gyroDataLow);
+    
 #endif
 }
 
@@ -50,19 +47,13 @@ void adc_int_handler() {
 #endif //ifdef USE_ADC_TEST
 
 void encoder_interrupt_handler() {
+    unsigned int encData = PORTBbits.RB4;
     INTCONbits.RBIF = 0;
-    if (countFlag == 1 && (PORTBbits.RB4 != encoderOne)) {
+    if (countFlag == 1) {
         tickCount++;
         if (tickCount == 5250) {
             totalRevolutions += 1;
             tickCount = 0;
-        }
-    }
-    if (countFlag == 1 && (PORTBbits.RB5 != encoderTwo)) {
-        tickCountTwo++;
-        if (tickCountTwo == 5250) {
-            totalRevolutionsTwo += 1;
-            tickCountTwo = 0;
         }
     }
 }
