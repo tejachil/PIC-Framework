@@ -51,7 +51,7 @@ void encoder_interrupt_handler() {
     INTCONbits.RBIF = 0;
     if (countFlag == 1) {
         tickCount++;
-        if (tickCount == 5250) {
+        if (tickCount == 6000) {
             totalRevolutions += 1;
             tickCount = 0;
         }
