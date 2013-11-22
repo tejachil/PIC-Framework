@@ -3,7 +3,7 @@
 #include "public_messages.h"
 
 extern int tickCount;
-extern int totalRevolutions;
+extern unsigned char totalRevolutions;
 extern int countFlag;
 
 void encoders_init(void);

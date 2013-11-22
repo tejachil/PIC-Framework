@@ -19,7 +19,7 @@ static unsigned char turnRightFast[] = {0x5B, 0xA5};
 static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
 int tickCount;
-int totalRevolutions;
+unsigned char totalRevolutions;
 int countFlag;
 int angleCalc;
 
