@@ -20,6 +20,7 @@
 #include "my_i2c2.h"
 #include "i2c2_thread.h"
 #include "my_gyro.h"
+#include "my_encoder.h"
 
 #ifdef __USE18F45J10
 // CONFIG1L
@@ -167,8 +168,10 @@ void main(void) {
     // initialize message queues before enabling any interrupts
     init_queues();
 
-    // Initialize encoder tick counter and revolution counter
+#ifdef MOTOR_PIC
+    // Initialize encoders driver
     encoders_init();
+#endif
 
     // Decide on the priority of the enabled peripheral interrupts
     // 0 is low, 1 is high
@@ -200,7 +203,6 @@ void main(void) {
 #ifdef I2C2_MASTER
     init_i2c2(&ic2);
     i2c2_configure_master();
-
 #endif // I2C2_MASTER
 
 #ifdef MOTOR_PIC

@@ -6,6 +6,7 @@
 #include "my_i2c.h"
 #include "my_adc.h"
 #include "my_i2c2.h"
+#include "my_encoder.h"
 
 //----------------------------------------------------------------------------
 // Note: This code for processing interrupts is configured to allow for high and
@@ -21,10 +22,6 @@ void enable_interrupts() {
     RCONbits.IPEN = 1;
     INTCONbits.GIEH = 1;
     INTCONbits.GIEL = 1;
-    INTCONbits.RBIE = 1;
-    INTCON2bits.RBIP = 1;
-    TRISBbits.RB4 = 1;
-    
 }
 
 int in_high_int() {
@@ -84,7 +81,6 @@ InterruptVectorHigh(void) {
 #pragma code
 #pragma interrupt InterruptHandlerHigh
 
-
 void InterruptHandlerHigh() {
     // check to see if we have an I2C interrupt
     if (PIR1bits.SSPIF) {
@@ -103,10 +99,15 @@ void InterruptHandlerHigh() {
     }
 
     //check to see if there is an interrupt on RBIF for encoders
-    if (INTCONbits.RBIF){
-        encoder_interrupt_handler();
+    if (INTCONbits.RBIF) {
+        // Read the new value of PORTB and clear the interrupt flag
+        unsigned int portB_new = PORTB;
+        INTCONbits.RBIF = 0;
+
+        // Call the encoder interrupt processor
+        encoders_int_handler(portB_new);
     }
-	
+
 #ifdef USE_ADC_TEST
     // Check to see if we have an ADC interrupt
     if (PIR1bits.ADIF) {

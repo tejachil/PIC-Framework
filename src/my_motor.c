@@ -18,15 +18,8 @@ static unsigned char turnRight[] = {0x55, 0xAB};
 static unsigned char turnRightFast[] = {0x5B, 0xA5};
 static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
-int tickCount;
-unsigned char totalRevolutions;
 int countFlag;
 int angleCalc;
-
-void encoders_init() {
-    tickCount = 0;
-    totalRevolutions = 0;
-}
 
 void motor_control_thread(public_message_t *msg) {
     switch (msg->message_type) {

@@ -15,8 +15,8 @@
 void timer0_int_handler() {
 #ifdef MOTOR_PIC
     timer0_gyro_trigger();
-   // gyro_angleData(gyroDataHigh, gyroDataLow);
-    
+    // gyro_angleData(gyroDataHigh, gyroDataLow);
+
 #endif
 }
 
@@ -45,15 +45,3 @@ void adc_int_handler() {
     ToMainLow_sendmsg(2, MSGT_ADC, (void *) adc_bytes);
 }
 #endif //ifdef USE_ADC_TEST
-
-void encoder_interrupt_handler() {
-    unsigned int encData = PORTBbits.RB4;
-    INTCONbits.RBIF = 0;
-    if (countFlag == 1) {
-        tickCount++;
-        if (tickCount == 6000) {
-            totalRevolutions += 1;
-            tickCount = 0;
-        }
-    }
-}

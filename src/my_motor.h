@@ -2,11 +2,8 @@
 #define	MY_MOTOR_H
 #include "public_messages.h"
 
-extern int tickCount;
-extern unsigned char totalRevolutions;
 extern int countFlag;
 
-void encoders_init(void);
 void motor_control_thread(public_message_t *msg);
 void motor_forward_both_slow(void);
 void motor_forward_both(void);

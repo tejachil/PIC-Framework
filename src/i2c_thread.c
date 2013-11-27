@@ -9,6 +9,7 @@
 #include "my_motor.h"
 #include "i2c2_thread.h"
 #include "my_gyro.h"
+#include "my_encoder.h"
 
 /** Last received message request.  Initialized to an invalid value. */
 static public_message_type_t last_message_request = NUM_PUB_MSG_T;
@@ -168,10 +169,23 @@ void i2c_lthread_send_slave_response(const public_message_type_t type) {
             // ENCODER_DATA is a request for encoder readings
         case PUB_MSG_T_ENCODER_DATA:
         {
-            response.data[1] = (tickCount & 0xFF00) >> 8;
-            response.data[0] = tickCount & 0x00FF;
-            response.data[2] = totalRevolutions;
-            encoders_init();
+            unsigned char rotations;
+            unsigned int ticks;
+
+            // Copy the readings for encoder 1 into the response
+            encoders_get_encoder_1(&rotations, &ticks);
+            response.data[0] = (unsigned char) (ticks & 0x00FF);
+            response.data[1] = (unsigned char) ((ticks & 0xFF00) >> 8);
+            response.data[2] = rotations;
+
+            // Copy the readings for encoder 2 into the response
+            encoders_get_encoder_2(&rotations, &ticks);
+            response.data[3] = (unsigned char) (ticks & 0x00FF);
+            response.data[4] = (unsigned char) ((ticks & 0xFF00) >> 8);
+            response.data[5] = rotations;
+
+            // Reset the counters for the encoders
+            encoders_reset();
 
             break;
         }
