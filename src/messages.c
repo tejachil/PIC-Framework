@@ -285,28 +285,16 @@ void block_on_To_msgqueues() {
     if (!in_main()) {
         return;
     }
-#ifdef __USE18F2680
-    LATBbits.LATB3 = 1;
-#endif
     MQ_Main_Willing_to_block = 1;
     while (1) {
         if (check_msg(&ToMainHigh_MQ)) {
             MQ_Main_Willing_to_block = 0;
-#ifdef __USE18F2680
-            LATBbits.LATB3 = 0;
-#endif
             return;
         }
         if (check_msg(&ToMainLow_MQ)) {
             MQ_Main_Willing_to_block = 0;
-#ifdef __USE18F2680
-            LATBbits.LATB3 = 0;
-#endif
             return;
         }
         Delay1KTCYx(10);
-#ifdef __USE18F2680
-        LATBbits.LATB3 = !LATBbits.LATB3;
-#endif
     }
 }

@@ -152,7 +152,6 @@ i2c_error_code i2c2_master_read(unsigned char slave_addr, unsigned char reg, uns
 }
 
 void i2c2_master_handler() {
-    LATBbits.LATB1 ^= 1;
     // Make sure we are not in an idle state, or else we don't know why this
     // interrupt triggered.
     if (ic2_ptr->state != I2C_MASTER_IDLE) {

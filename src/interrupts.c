@@ -7,6 +7,7 @@
 #include "my_adc.h"
 #include "my_i2c2.h"
 #include "my_encoder.h"
+#include "my_gpio.h"
 
 //----------------------------------------------------------------------------
 // Note: This code for processing interrupts is configured to allow for high and
@@ -155,6 +156,7 @@ void InterruptHandlerLow() {
     // check to see if we have an interrupt on timer 0
     if (INTCONbits.TMR0IF) {
         INTCONbits.TMR0IF = 0; // clear this interrupt flag
+        TOGGLE_TIMER0_PIN();
         timer0_int_handler();
     }
 }

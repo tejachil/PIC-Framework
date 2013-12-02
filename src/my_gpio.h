@@ -28,6 +28,10 @@
 #elif defined(MOTOR_PIC)
 /** Pin set when an error occurs on I2C2. */
 #define SET_I2C2_ERROR_PIN() (LATBbits.LATB0 = 1)
+/** Pin toggled when turn timer is triggered. */
+#define TOGGLE_TIMER0_PIN() (LATBbits.LATB1 ^= 1)
+/** Ping toggled when the gyro data is averaged. */
+#define TOGGLE_GYRO_AVG_PIN() (LATBbits.LATB2 ^= 1)
 #endif // MASTER_PIC - else
 
 // If macros aren't defined, define blank macros so they will compile but do
@@ -58,6 +62,12 @@
 #endif
 #ifndef SET_I2C2_ERROR_PIN
 #define SET_I2C2_ERROR_PIN()
+#endif
+#ifndef TOGGLE_TIMER0_PIN
+#define TOGGLE_TIMER0_PIN()
+#endif
+#ifndef TOGGLE_GYRO_AVG_PIN
+#define TOGGLE_I2C2_INT_PIN()
 #endif
 
 void gpio_init_portb_output(void);

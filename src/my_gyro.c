@@ -3,6 +3,7 @@
 #include "i2c2_thread.h"
 #include <timers.h>
 #include "my_motor.h"
+#include "my_gpio.h"
 
 /**
  * Timeout timer count register value.  Calculation is based on the
@@ -19,14 +20,14 @@
 const unsigned char gyro_init_data[] = {0x15, 0x07, 0x1B};
 unsigned char firstMessageLength = 0x03;
 
-int timer0_counter = 0;
+static int timer0_counter = 0;
 int gyro_finished_flag = 0;
 
 static int targetTickCount;
 static int angleToTurn;
-static int gyroDataHolder[10];
+static int gyroDataHolder[50];
 static int Zaxis;
-static int sumOfGyroData;
+static unsigned long sumOfGyroData;
 static int averageOfGyroData;
 static double degreesPerSecond;
 
@@ -62,13 +63,13 @@ void timer0_counter_stop() {
 void timer0_gyro_trigger() {
     //Logic to calc counter value for angle based on gyro readings
     WriteTimer0(TIMER_0_COUNT);
-    LATBbits.LATB0 ^= 1;
     timer0_counter++;
+
     if (timer0_counter < 31) {
         i2c2_master_read(GYRO_SLAVE_ADDRESS, ZaxisGyro, lengthGyroZ);
         gyro_angleData(gyroDataHigh, gyroDataLow);
     }
-    if (timer0_counter >= targetTickCount) {
+    else if (timer0_counter >= targetTickCount) {
         timer0_counter_stop();
     }
 }
@@ -78,12 +79,13 @@ void gyro_angleData(unsigned char ZaxisHigh, unsigned char ZaxisLow) {
     //ZaxisLow = 0x4E;
     if (timer0_counter < 30) {
         Zaxis = (int) ((((int) ZaxisHigh) << 8) | ((int) ZaxisLow));
-        if(Zaxis < 0){
+        if (Zaxis < 0) {
             Zaxis *= -1;
         }
         gyroDataHolder[timer0_counter] = Zaxis;
     } else if (timer0_counter >= 30) {
         int i = 8;
+        TOGGLE_GYRO_AVG_PIN();
         sumOfGyroData = 0;
         for (i; i < 30; i++) {
             sumOfGyroData += (int) gyroDataHolder[i];

@@ -17,7 +17,6 @@ void i2c2_lthread(int msgtype, int length, unsigned char *msgbuffer) {
                 gyroDataHigh = msgbuffer[0];
                 gyroDataLow = msgbuffer[1];
             }
-            LATBbits.LATB2 ^= 1;
             break;
         } // End case RECV_COMPLETE
 
@@ -25,7 +24,6 @@ void i2c2_lthread(int msgtype, int length, unsigned char *msgbuffer) {
         case MSGT_I2C2_MASTER_SEND_COMPLETE:
         {
             i2c2_master_read(GYRO_SLAVE_ADDRESS, ZaxisGyro, lengthGyroZ);
-            LATBbits.LATB3 ^= 1;
             break;
         }
             // RECV_FAILED indicates a failed read by this master device
@@ -41,7 +39,6 @@ void i2c2_lthread(int msgtype, int length, unsigned char *msgbuffer) {
             // The following cases (and the cases above) indicate an error
         default:
         {
-            LATBbits.LATB4 ^= 1;
         } // End cases DBG and default
 
     } // End switch(msgtype)
