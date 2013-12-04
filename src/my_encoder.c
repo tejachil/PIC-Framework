@@ -8,6 +8,7 @@
 #include "my_gpio.h"
 #include "my_encoder.h"
 #include "my_motor.h"
+#include "public_messages.h"
 
 // State of PORTB the last time the encoder interrupt was triggered
 static unsigned char portB_prev;

@@ -17,6 +17,9 @@
  */
 #define GYRO_SLAVE_ADDRESS (0b1101000)
 
+/** Number of encoder ticks for each revolution of a wheel. */
+#define ENCODER_TICKS_PER_REVOLUTION (6207)
+
 /** Public message type values. */
 typedef enum {
     /** Distance reading for a given sensor. */

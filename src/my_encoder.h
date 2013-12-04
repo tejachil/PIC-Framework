@@ -8,9 +8,6 @@
 #ifndef MY_ENCODER_H
 #define	MY_ENCODER_H
 
-// Number of encoder ticks for each revolution of a wheel
-#define ENCODER_TICKS_PER_REVOLUTION (6000)
-
 // Bitmasks for the encoder inputs (used to mask a single bit of PORTB)
 #define ENCODER_1_BIT (0b00010000)
 #define ENCODER_2_BIT (0b00100000)
