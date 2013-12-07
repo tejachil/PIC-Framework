@@ -143,7 +143,7 @@ void motor_stop_both() {
 }
 
 void motor_turn() {
-    countFlag = 0;
+    countFlag = 1;
     uart_send_bytes(turnRight, 2);
 }
 
