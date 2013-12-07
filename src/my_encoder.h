@@ -24,6 +24,19 @@ void encoders_init(void);
 void encoders_reset(void);
 
 /**
+ * Tells the encoder driver to stop the motors after moving forward the given
+ * distance.
+ */
+void encoders_set_stop_target(unsigned char target_rotations, unsigned int target_ticks);
+
+/**
+ * Checks if the encoders have reached the target set with
+ * {@link encoders_set_stop_target()} and stopped the motors.
+ * @return 1 if the encoders have reached the target, 0 if not.
+ */
+unsigned char encoders_reached_target();
+
+/**
  * Updates encoder counts when PORTB changes.
  * @param portB_new The new (changed) value of PORTB.
  */

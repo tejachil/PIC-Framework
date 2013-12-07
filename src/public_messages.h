@@ -64,7 +64,9 @@ typedef enum {
     /** Command to start moving forward. */
     MOV_CMD_GO_SLOW,
     /** Command to stop moving. */
-    MOV_CMD_STOP
+    MOV_CMD_STOP,
+    /** Command to move forward a given distance. */
+    MOV_CMD_GO_DIST
 } MOV_CMD_VALUE;
 
 /** Data byte values for FIX_CMD. */

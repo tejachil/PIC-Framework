@@ -47,6 +47,24 @@ void motor_control_thread(public_message_t *msg) {
                     motor_stop_both();
                     break;
                 }
+                case MOV_CMD_GO_DIST:
+                {
+                    unsigned int target_ticks;
+                    unsigned char target_rotations;
+
+                    // Clear encoder counters
+                    encoders_reset();
+
+                    // Tell the encoders when to stop
+                    target_ticks = msg->data[1] | (((unsigned int) msg->data[2]) << 8);
+                    target_rotations = msg->data[3];
+                    encoders_set_stop_target(target_rotations, target_ticks);
+
+                    // Start moving forward
+                    motor_forward_both();
+
+                    break;
+                }
             }
 
             break;
