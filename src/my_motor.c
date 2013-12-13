@@ -6,15 +6,15 @@
 #include "my_gyro.h"
 #include "my_i2c2.h"
 
-static unsigned char forwardFast[] = {0x37, 0xB0};
+static unsigned char forwardFast[] = {1, 128};
 static unsigned char forward[] = {0x34, 0xB3};
 static unsigned char forwardSlow[] = {0x37, 0xB6};
-static unsigned char backward[] = {0x4C, 0xCB};
+static unsigned char backward[] = {127, 255};
 static unsigned char turnLeftSlow[] = {0x2E, 0xD2};
-static unsigned char turnLeft[] = {0x2B, 0xD5};
+static unsigned char turnLeft[] = {1, 255};
 static unsigned char turnLeftFast[] = {0x28, 0xD8};
 static unsigned char turnRightSlow[] = {0x52, 0xAE};
-static unsigned char turnRight[] = {0x55, 0xAB};
+static unsigned char turnRight[] = {127, 128};
 static unsigned char turnRightFast[] = {0x5B, 0xA5};
 static unsigned char stop[] = {0, 0};
 int timer1_counter = 0;
@@ -125,7 +125,7 @@ void motor_control_thread(public_message_t *msg) {
 
 void motor_forward_both_slow() {
     countFlag = 1;
-    uart_send_bytes(forwardSlow, 2);
+    uart_send_bytes(backward, 2);
 }
 
 void motor_forward_both() {
